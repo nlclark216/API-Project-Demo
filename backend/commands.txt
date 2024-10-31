@@ -1,0 +1,73 @@
+**GIT COMMANDS**
+
+// pull all branches from repository
+
+1. git clone <<REPO-URL>>
+2. git branch -r | grep -v '\->' | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" | while read remote; do git branch --track "${remote#origin/}" "$remote"; done
+3. git pull all
+
+// create a branch
+
+// MAKE SURE NEW BRANCHES START 
+// FROM CORRECT BRANCH (usually dev)
+
+git checkout -b <<BRANCH-NAME>>
+
+
+
+// push created branch to GitHub remote repository
+
+git push origin <<BRANCH-NAME>>
+
+
+
+// move to specific branch
+
+git checkout <<BRANCH-NAME>>
+
+
+
+// merge a branch
+
+1. git checkout dev
+2. git pull origin dev
+3. git merge <<NEW-BRANCH-NAME>>
+4. git push origin dev
+
+
+**SEQUELIZE COMMANDS**
+
+
+npx dotenv sequelize db:seed:undo:all
+npx dotenv sequelize db:migrate:undo:all
+
+
+npx dotenv sequelize db:migrate
+npx dotenv sequelize db:seed:all
+
+
+// create Spot model
+npx sequelize model:generate --name Spot --attributes ownerId:integer,address:string,city:string,state:string,country:string,lat:decimal,lng:decimal,name:string,description:string,price:decimal
+npx sequelize model:generate --name SpotImage --attributes spotId:integer,url:string,preview:boolean
+npx sequelize model:generate --name Review --attributes spotId:integer,review:string,stars:integer
+npx sequelize model:generate --name ReviewImage --attributes url:string
+
+
+//create associations
+
+npx sequelize migration:generate --name review-association
+
+
+// generate demo-spot seeder
+npx sequelize seed:generate --name demo-spot
+npx sequelize seed:generate --name demo-review
+npx sequelize seed:generate --name demo-booking
+npx sequelize seed:generate --name demo-review-img
+npx sequelize seed:generate --name demo-spot-img
+
+
+One-to-Many between Review and ReviewImage
+review.js
+Review.hasMany(models.ReviewImage, { foreignKey: "reviewId" });
+reviewimage.js
+ReviewImage.belongsTo(models.Review, { foreignKey: "reviewId" });
