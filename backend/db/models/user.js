@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  
+
   User.init({
     username: {
       type: DataTypes.STRING,
@@ -21,6 +21,24 @@ module.exports = (sequelize, DataTypes) => {
             throw new Error('Cannot be an email.');
           }
         }
+      }
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        len: [3, 256],
+        isEmail: false
+      }
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        len: [3, 256],
+        isEmail: false
       }
     },
     email: {
