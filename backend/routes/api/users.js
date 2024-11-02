@@ -17,11 +17,11 @@ const validateSignup = [
       .withMessage('Please provide a valid email.'),
     check('firstName')
         .exists({ checkFalsy: true })
-        .isLength({ max: 256 })
+        .isLength({ min: 2 })
         .withMessage('Please provide a first name.'),
     check('lastName')
         .exists({ checkFalsy: true })
-        .isLength({ max: 256 })
+        .isLength({ min: 2 })
         .withMessage('Please provide a last name.'),
     check('username')
       .exists({ checkFalsy: true })
@@ -38,10 +38,33 @@ const validateSignup = [
     handleValidationErrors
   ];
 
-// Sign up
+// Sign up a user
 router.post('/', validateSignup, async (req, res) => {
       const { firstName, lastName, email, password, username } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
+
+      const existingEmail = await User.findOne({
+        where: { email: email }});
+      if(existingEmail) {
+        return res.status(500).json({
+          message: "User already exists",
+          errors: {
+            email: "User with that email already exists"
+          }
+        })
+      };
+
+      const existingUsername = await User.findOne({
+        where: { username: username }});
+      if(existingUsername) {
+        return res.status(500).json({
+          message: "User already exists",
+          errors: {
+            email: "User with that username already exists"
+          }
+        })
+      };
+
       const user = await User.create({ firstName, lastName, email, username, hashedPassword });
   
       const safeUser = {
@@ -54,7 +77,7 @@ router.post('/', validateSignup, async (req, res) => {
   
       await setTokenCookie(res, safeUser);
   
-      return res.json({
+      return res.status(201).json({
         user: safeUser
       });
     }
