@@ -17,7 +17,8 @@ module.exports = {
       },
       ownerId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        foreignKey: true
       },
       address: {
         type: Sequelize.STRING,
@@ -67,7 +68,7 @@ module.exports = {
       }
     }, options);
   },
-  
+
   async down(queryInterface, Sequelize) {
     options.tableName = "Spots";
     await queryInterface.dropTable(options);
