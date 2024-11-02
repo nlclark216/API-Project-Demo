@@ -13,7 +13,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     const spots = await Spot.findAll();
     
-    return res.status(200).json(spots);
+    return res.status(200).json({
+        Spots: spots
+    });
     }  
 );
 
