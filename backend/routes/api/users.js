@@ -15,6 +15,14 @@ const validateSignup = [
       .exists({ checkFalsy: true })
       .isEmail()
       .withMessage('Please provide a valid email.'),
+    check('firstName')
+        .exists({ checkFalsy: true })
+        .isLength({ max: 256 })
+        .withMessage('Please provide a first name.'),
+    check('lastName')
+        .exists({ checkFalsy: true })
+        .isLength({ max: 256 })
+        .withMessage('Please provide a last name.'),
     check('username')
       .exists({ checkFalsy: true })
       .isLength({ min: 4 })
