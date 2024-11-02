@@ -26,11 +26,19 @@ module.exports = {
       },
       review: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          notEmpty: true
+        }
       },
       stars: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        validate: {
+          isInt: true,
+          min: 1,
+          max: 5
+        }
       },
       createdAt: {
         allowNull: false,
