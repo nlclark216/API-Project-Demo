@@ -60,7 +60,7 @@ const restoreUser = (req, res, next) => {
     });
 };
 
-  // If there is no current user, return an error
+// Require Authentication
 const requireAuth = function (req, _res, next) {
     if (req.user) return next();
   
@@ -69,7 +69,18 @@ const requireAuth = function (req, _res, next) {
     err.errors = { message: 'Authentication required' };
     err.status = 401;
     return next(err);
-  };
+};
+
+// All Require Authorization = error code 403
+// const requireAutho = function (req, _res, next) {
+//     if (req.user) return next();
+  
+//     const err = new Error('Authorization required');
+//     err.title = 'Authorization required';
+//     err.errors = { message: 'Forbidden' };
+//     err.status = 403;
+//     return next(err);
+// };
 
 
 
