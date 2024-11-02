@@ -71,16 +71,7 @@ const requireAuth = function (req, _res, next) {
     return next(err);
 };
 
-// All Require Authorization = error code 403
-// const requireAutho = function (req, _res, next) {
-//     if (req.user) return next();
-  
-//     const err = new Error('Authorization required');
-//     err.title = 'Authorization required';
-//     err.errors = { message: 'Forbidden' };
-//     err.status = 403;
-//     return next(err);
-// };
+
 
 
 
