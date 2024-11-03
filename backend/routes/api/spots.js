@@ -141,9 +141,8 @@ router.get('/current', requireAuth, async (req, res) => {
         previewImage: spot.get('previewImage') || null
     }));
 
-    if(spots) return res.status(200).json({ Spots: formattedSpots });
-    }  
-);
+    if(spots) return res.status(200).json({ Spots: formattedSpots });    
+});
 
 // Get details of a Spot from an id
 router.get('/:spotId', async (req, res) => {
@@ -317,10 +316,25 @@ router.put('/:spotId', requireAuth, spotAuth, validateSpot, async (req, res) => 
       name: name,
       description: description,
       price: price
-    })
+    });
     
     return res.status(200).json(spot);
   }
+});
+
+// Delete a Spot
+router.delete('/:spotId', requireAuth, spotAuth, async (req, res) => {
+  const { spotId } = req.params;
+
+  const spot = await Spot.findByPk(spotId);
+
+  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
+
+  else {
+    await spot.destroy();
+
+    return res.status(200).json({ "message": "Successfully deleted" });
+  };
 });
 
 
