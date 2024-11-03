@@ -1,12 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 
 const { requireAuth } = require('../../utils/auth');
 const { Spot, Sequelize, Review, SpotImage, User } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { UPDATE } = require('sequelize/lib/query-types');
 
 const router = express.Router();
 
