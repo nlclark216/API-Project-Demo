@@ -34,6 +34,11 @@ git checkout <<BRANCH-NAME>>
 3. git merge <<NEW-BRANCH-NAME>>
 4. git push origin dev
 
+// revert to previous commit
+
+1. git log
+2. git reset --hard <<commit #>>
+
 
 **SEQUELIZE COMMANDS**
 
