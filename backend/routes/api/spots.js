@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, spotAuth } = require('../../utils/auth');
 const { Spot, Sequelize, Review, SpotImage, User } = require('../../db/models');
 
 const { check } = require('express-validator');
@@ -147,67 +147,62 @@ router.get('/current', requireAuth, async (req, res) => {
 
 // Get details of a Spot from an id
 router.get('/:spotId', async (req, res) => {
-    const { spotId } = req.params;
+  const { spotId } = req.params;
 
-    const findSpot = await Spot.findByPk(spotId);
-    if(!findSpot) {
-      return res.status(404).json({
-      message: "Spot couldn't be found"
-    })
-    } else {
-      const spot = await Spot.findByPk(spotId,
-        { 
-          attributes: {
-            include: [
-              [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-              [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
-            ]
-          },
-        include: [
-          { 
-            model: SpotImage,
-            attributes: ['id', 'url', 'preview']
-          }, 
-          {
-            model: User,
-            as: 'Owner',
-            attributes: ['id', 'firstName', 'lastName']
-          },
-          {
-            model: Review,
-            attributes: ['stars']
-          }]
-        });
-        
-      const formattedSpots = 
+  const findSpot = await Spot.findByPk(spotId);
+
+  if(!findSpot) {
+    return res.status(404).json({ message: "Spot couldn't be found"});
+  } else {
+    const spot = await Spot.findByPk(spotId,
+      { 
+        attributes: {
+          include: [
+            [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
+            [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
+            // [Sequelize.fn('GROUP', Sequelize.col('SpotImages.id')), 'SpotImages']
+          ]
+        },
+      include: [
         {
-          id: spot.id,
-          ownerId: spot.ownerId,
-          address: spot.address,
-          city: spot.city,
-          state: spot.state,
-          country: spot.country,
-          lat: parseFloat(spot.lat),
-          lng: parseFloat(spot.lng),
-          name: spot.name,
-          description: spot.description,
-          price: spot.price,
-          createdAt: spot.createdAt,
-          updatedAt: spot.updatedAt,
-          avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
-          numReviews: spot.get('numReviews') ? +parseFloat(spot.get('numReviews')).toFixed(1) : null,
-          SpotImages: spot.SpotImages,
-          Owner: spot.Owner
-        };
+          model: User,
+          as: 'Owner',
+          attributes: ['id', 'firstName', 'lastName']
+        },
+        {
+          model: Review,
+          attributes: ['stars']
+        }]
+      });
+
+    const imgs = await SpotImage.findAll({
+      where: { spotId: spotId },
+      attributes: ['id', 'url', 'preview']
+    });
+        
+    const formattedSpots = 
+      {
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat: parseFloat(spot.lat),
+        lng: parseFloat(spot.lng),
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt,
+        avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
+        numReviews: spot.get('numReviews') ? +parseFloat(spot.get('numReviews')).toFixed(1) : null,
+        SpotImages: [...imgs],
+        Owner: spot.Owner
+      };
       
-      return res.status(200).json({ Spots: formattedSpots });
-    }
-    
-
-
-       
-    
-    
+    return res.status(200).json({ Spots: formattedSpots });
+  }; 
 
 });
 
@@ -227,7 +222,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
       errors: {
         address: "Spot with that address already exists"
       }
-    })
+    });
   };
 
   const spot = await Spot.create({address, city, state, country, 
@@ -264,6 +259,29 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     price: validSpot.price,
     createdAt: validSpot.createdAt,
     updatedAt: validSpot.updatedAt        
+  });
+});
+
+// Add an Image to a Spot based on the Spot's id
+router.post('/:spotId/images', requireAuth, spotAuth, async (req, res) => {
+  const { spotId } = req.params;
+
+  const spot = await Spot.findByPk(spotId);
+
+  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
+
+  const { url, preview } = req.body;
+
+  const img = await SpotImage.create({
+    url: url,
+    preview: preview,
+    spotId: spot.id
+  });
+
+  return res.status(201).json({
+    id: img.id,
+    url: img.url,
+    preview: img.preview
   });
 });
 

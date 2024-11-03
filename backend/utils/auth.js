@@ -1,7 +1,7 @@
 // backend/utils/auth.js
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User } = require('../db/models');
+const { User, Spot } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -71,8 +71,23 @@ const requireAuth = function (req, res, next) {
     return next(err);
 };
 
+const spotAuth = async function (req, res, next) {
+  
+  const spot = await Spot.findOne({where: {
+    id: req.params.spotId
+  }});
+
+  if(spot === null) return res.status(404).json({
+    message: "Spot couldn't be found"
+  });
+
+  if (spot.ownerId === req.user.id) return next();
+
+  return res.status(403).json({ message: 'Forbidden' });
+};
 
 
 
 
-  module.exports = { setTokenCookie, restoreUser, requireAuth };
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth };
