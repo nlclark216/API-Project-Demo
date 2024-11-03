@@ -160,7 +160,6 @@ router.get('/:spotId', async (req, res) => {
           include: [
             [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
             [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
-            // [Sequelize.fn('GROUP', Sequelize.col('SpotImages.id')), 'SpotImages']
           ]
         },
       include: [
@@ -283,6 +282,45 @@ router.post('/:spotId/images', requireAuth, spotAuth, async (req, res) => {
     url: img.url,
     preview: img.preview
   });
+});
+
+// Edit a Spot
+router.put('/:spotId', requireAuth, spotAuth, validateSpot, async (req, res) => {
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+  const { spotId } = req.params;
+
+  const spot = await Spot.findByPk(spotId);
+
+  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
+
+  else {
+    const existingAddress = await Spot.findOne({
+      where: { address: address }});
+      
+    if(existingAddress) {
+      return res.status(500).json({
+        message: "Spot with that address is already on file",
+        errors: {
+          address: "Spot with that address already exists"
+        }
+      });
+    };
+
+    await spot.update({
+      address: address,
+      city: city,
+      state: state,
+      country: country,
+      lat: lat,
+      lng: lng,
+      name: name,
+      description: description,
+      price: price
+    })
+    
+    return res.status(200).json(spot);
+  }
 });
 
 
