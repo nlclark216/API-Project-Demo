@@ -148,60 +148,55 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:spotId', async (req, res) => {
   const { spotId } = req.params;
 
-  const findSpot = await Spot.findByPk(spotId);
-
-  if(!findSpot) {
-    return res.status(404).json({ message: "Spot couldn't be found"});
-  } else {
-    const spot = await Spot.findByPk(spotId,
-      { 
-        attributes: {
-          include: [
-            [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-            [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
-          ]
-        },
+  const spots = await Spot.findAll({
+    where: { id: spotId },
+    attributes: {
       include: [
-        {
-          model: User,
-          as: 'Owner',
-          attributes: ['id', 'firstName', 'lastName']
-        },
-        {
-          model: Review,
-          attributes: ['stars']
-        }]
-      });
-
-    const imgs = await SpotImage.findAll({
-      where: { spotId: spotId },
-      attributes: ['id', 'url', 'preview']
-    });
-        
-    const formattedSpots = 
+        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
+        [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
+      ]
+    },
+    include: [
       {
-        id: spot.id,
-        ownerId: spot.ownerId,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        country: spot.country,
-        lat: parseFloat(spot.lat),
-        lng: parseFloat(spot.lng),
-        name: spot.name,
-        description: spot.description,
-        price: spot.price,
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
-        avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
-        numReviews: spot.get('numReviews') ? +parseFloat(spot.get('numReviews')).toFixed(1) : null,
-        SpotImages: [...imgs],
-        Owner: spot.Owner
-      };
-      
-    return res.status(200).json({ Spots: formattedSpots });
-  }; 
+        model: User,
+        as: 'Owner',
+        attributes: ['id', 'firstName', 'lastName']
+      },
+      {
+        model: Review,
+        attributes: ['stars']
+      },
+      {
+        model: SpotImage,
+        attributes: ['id', 'url', 'preview']
+      }
+    ]
+  });
 
+  if(!spots) {
+      return res.status(404).json({ message: "Spot couldn't be found"});
+  } else {
+    const formattedSpots = spots.map(spot => ({
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: parseFloat(spot.lat),
+      lng: parseFloat(spot.lng),
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
+      numReviews: spot.get('numReviews') ? +parseFloat(spot.get('numReviews')).toFixed(1) : null,
+      SpotImages: spot.SpotImages,
+      Owner: spot.Owner
+    }));
+    return res.status(200).json({ Spots: formattedSpots });
+  };
 });
 
 // Create a spot
