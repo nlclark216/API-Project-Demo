@@ -168,7 +168,8 @@ router.get('/:spotId', async (req, res) => {
       },
       {
         model: SpotImage,
-        attributes: ['id', 'url', 'preview']
+        attributes: ['id', 'url', 'preview'],
+        limit: 20
       }
     ]
   });
@@ -192,7 +193,7 @@ router.get('/:spotId', async (req, res) => {
       updatedAt: spot.updatedAt,
       avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
       numReviews: spot.get('numReviews') ? +parseFloat(spot.get('numReviews')).toFixed(1) : null,
-      SpotImages: spot.SpotImages,
+      SpotImages: spot.get('SpotImages'),
       Owner: spot.Owner
     }));
     return res.status(200).json({ Spots: formattedSpots });
