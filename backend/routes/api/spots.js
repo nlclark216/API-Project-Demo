@@ -8,6 +8,8 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+const validateReview  = require('./reviews');
+
 const validateSpot = [
   check('address')
     .exists({checkFalsy: true})
@@ -333,8 +335,34 @@ router.delete('/:spotId', requireAuth, spotAuth, async (req, res) => {
 });
 
 // Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
+  const { review, stars } = req.body;
 
+  const { spotId } = req.params;
+
+  const spot = await Spot.findByPk(spotId);
+
+  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
+
+  const existingReview = await Review.findOne({ 
+    where: { userId: req.user.id, 
+              spotId: spotId
+            } 
+  });
+
+  if (existingReview) {
+    return res.status(403).json({ 
+      message: "User already has a review for this spot" });
+  };
+
+  const newReview = await Review.create({ 
+    userId: req.user.id, 
+    spotId: spotId, 
+    review: review, 
+    stars: stars 
+  });
+
+  return res.status(201).json(newReview);
 });
 
 
