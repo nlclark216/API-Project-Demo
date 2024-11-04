@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { requireAuth, spotAuth } = require('../../utils/auth');
-const { Spot, Sequelize, Review, SpotImage, User } = require('../../db/models');
+const { Spot, Sequelize, Review, SpotImage, User, ReviewImage } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -330,8 +330,33 @@ router.delete('/:spotId', requireAuth, spotAuth, async (req, res) => {
   else {
     await spot.destroy();
 
-    return res.status(200).json({ "message": "Successfully deleted" });
+    return res.status(200).json({ message: "Successfully deleted" });
   };
+});
+
+// Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async (req, res) => {
+  const { spotId } = req.params;
+
+  const spot = await Spot.findByPk(spotId);
+
+  if(!spot){
+    return res.status(404).json({ message: "Spot couldn't be found" })
+  } else {
+    const reviews = await Review.findAll({
+      where: { spotId: spotId },
+      include: [{
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      }, {
+        model: ReviewImage,
+        attributes: ['id', 'url']
+      }]
+    });
+    return res.status(200).json({ Reviews: reviews });
+  }
+
+  
 });
 
 // Create a Review for a Spot based on the Spot's id
