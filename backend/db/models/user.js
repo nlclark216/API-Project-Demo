@@ -4,12 +4,13 @@ const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.hasMany(models.Spot, { foreignKey: "ownerId", onDelete: 'cascade', hooks: true,  as: 'Owner' });
+      User.hasMany(models.Spot, { foreignKey: "ownerId", onDelete: 'cascade', hooks: true, as: 'Owner' });
       User.hasMany(models.Review, { foreignKey: "userId", onDelete: 'cascade', hooks: true });
       User.hasMany(models.Booking, { foreignKey: "userId", onDelete: 'cascade', hooks: true });
     }
   }
 
+  
   User.init({
     username: {
       type: DataTypes.STRING,
@@ -27,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: false,
+      unique: true,
       validate: {
         len: [3, 256]
       }
@@ -35,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: false,
+      unique: true,
       validate: {
         len: [3, 256]
       }
@@ -64,6 +65,16 @@ module.exports = (sequelize, DataTypes) => {
         exclude: ['hashedPassword', 'email', 'createdAt', 'updatedAt'],
       },
     },
+    scopes: {
+      checkPassword(email) {
+          return {
+              where: { email }, 
+              attributes: { 
+                  include: [ "hashedPassword" ]
+              }
+          }
+      }
+    }
   });
   return User;
 };

@@ -16,7 +16,11 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      foreignKey: true
+      foreignKey: true,
+      references: {
+        model: 'User',
+        key: 'id'
+      }
     },
     address: {
       type: DataTypes.STRING,
@@ -87,6 +91,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
+    scopes: {
+      
+    }
   });
   return Spot;
 };

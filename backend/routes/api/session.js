@@ -52,19 +52,23 @@ router.post('/', validateLogin, async (req, res, next) => {
   
       await setTokenCookie(res, safeUser);
   
-      return res.json({ user: safeUser });
+      return res.json({
+        user: safeUser
+      });
     }
 );
 
 // Log out
-router.delete('/', (_req, res) => {
+router.delete(
+    '/',
+    (_req, res) => {
       res.clearCookie('token');
       return res.json({ message: 'success' });
     }
 );
 
 // Get the current user
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
       const { user } = req;
       if (user) {
         const safeUser = {
@@ -77,8 +81,7 @@ router.get('/', (req, res) => {
           user: safeUser
         });
       } else return res.json({ user: null });
-    }
-);
+  });
 
 
 
