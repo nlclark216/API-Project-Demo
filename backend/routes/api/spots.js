@@ -3,7 +3,7 @@ const express = require('express');
 const { requireAuth, spotAuth } = require('../../utils/auth');
 const { Spot, Sequelize, Review, SpotImage, User, ReviewImage } = require('../../db/models');
 
-const { check } = require('express-validator');
+const { check, query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
@@ -51,7 +51,45 @@ const validateSpot = [
     .exists({checkFalsy: true})
     .isFloat({ min: 0})
     .withMessage("Price per day must be a positive number"),
-    handleValidationErrors
+  handleValidationErrors
+];
+
+const validateQuery = [
+  query('page')
+    .exists({checkFalsy: true})
+    .isInt({ min: 1 })
+    .default(1)
+    .withMessage("Page must be greater than or equal to 1"),
+  query('size')
+    .exists({checkFalsy: true})
+    .isInt({ min: 1, max: 20 })
+    .default(20)
+    .withMessage("Size must be between 1 and 20"),
+  query('minLat')
+    .isDecimal()
+    .optional()
+    .withMessage("Minimum latitude is invalid"),
+  query('maxLat')
+    .isDecimal()
+    .optional()
+    .withMessage("Maximum latitude is invalid"),
+  query('minLng')
+    .isDecimal()
+    .optional()
+    .withMessage("Minimum longitude is invalid"),
+  query('maxLng')
+    .isDecimal()
+    .optional()
+    .withMessage("Maximum longitude is invalid"),
+  query('minPrice')
+    .isDecimal({ min: 0 })
+    .optional()
+    .withMessage("Minimum price must be greater than or equal to 0"),
+  query('maxPrice')
+    .isDecimal({ min: 0 })
+    .optional()
+    .withMessage("Maximum price must be greater than or equal to 0"),
+  handleValidationErrors
 ];
 
 // Get all spots

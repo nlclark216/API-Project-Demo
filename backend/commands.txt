@@ -36,6 +36,7 @@ git checkout <<BRANCH-NAME>>
 1. git log
 2. git reset --hard <<commit #>>
 
+
 // delete branch
 
 git branch -D <<branch-name>>
