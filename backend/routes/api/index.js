@@ -8,7 +8,7 @@ const reviewsRouter = require('./reviews.js');
 
 // GET /api/restore-user
 const { restoreUser, requireAuth, spotAuth, imgAuth } = require('../../utils/auth.js');
-const { SpotImage } = require('../../db/models');
+const { SpotImage, ReviewImage } = require('../../db/models');
 
 router.use(restoreUser);
 router.use('/session', sessionRouter);
@@ -32,6 +32,19 @@ router.delete('/spot-images/:imageId', requireAuth, imgAuth, async (req, res) =>
 
   return res.status(200).json({ message: "Successfully deleted" });
 });
+
+// Delete a review image
+router.delete('/review-images/:imageId', requireAuth, imgAuth, async (req, res) => {
+  const { imageId } = req.params;
+  const img = await ReviewImage.findByPk(imageId);
+
+  if(!img) return res.status(404).json({ message: "Review Image couldn't be found" });
+
+  await img.destroy();
+
+  return res.status(200).json({ message: "Successfully deleted" });
+});
+
 
 
 /* ************** */
