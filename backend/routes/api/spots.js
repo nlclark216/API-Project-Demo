@@ -54,51 +54,120 @@ const validateSpot = [
     handleValidationErrors
 ];
 
+// Add Query Filters to Get All Spots
+const buildQueryOptions = async (query) => {
+  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = query;
+
+  // Set default values and validate query parameters
+  page = page && page >= 1 ? parseInt(page) : 1;
+  size = size && size >= 1 && size <= 20 ? parseInt(size) : 20;
+
+  const errors = {};
+  if (page < 1) errors.page = "Page must be greater than or equal to 1";
+  if (size < 1 || size > 20) errors.size = "Size must be between 1 and 20";
+  if (minLat && isNaN(minLat)) errors.minLat = "Minimum latitude is invalid";
+  if (maxLat && isNaN(maxLat)) errors.maxLat = "Maximum latitude is invalid";
+  if (minLng && isNaN(minLng)) errors.minLng = "Minimum longitude is invalid";
+  if (maxLng && isNaN(maxLng)) errors.maxLng = "Maximum longitude is invalid";
+  if (minPrice && (isNaN(minPrice) || minPrice < 0)) errors.minPrice = "Minimum price must be greater than or equal to 0";
+  if (maxPrice && (isNaN(maxPrice) || maxPrice < 0)) errors.maxPrice = "Maximum price must be greater than or equal to 0";
+
+  if (Object.keys(errors).length) { return { errors }; };
+
+  // Build the query options
+  const queryOptions = {
+    where: {},
+    limit: size,
+    offset: (page - 1) * size,
+    include: [
+      {
+        model: Review,
+        attributes: []
+      },
+      {
+        model: SpotImage,
+        attributes: ['url'],
+        where: { preview: true },
+        required: false
+      }
+    ],
+    attributes: {
+      include: [
+        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
+        [Sequelize.col('SpotImages.url'), 'previewImage']
+      ]
+    },
+    group: ['Spot.id', 'SpotImages.url']
+  };
+
+  if (minLat) queryOptions.where.lat = { [Op.gte]: parseFloat(minLat) };
+  if (maxLat) queryOptions.where.lat = { ...queryOptions.where.lat, [Op.lte]: parseFloat(maxLat) };
+  if (minLng) queryOptions.where.lng = { [Op.gte]: parseFloat(minLng) };
+  if (maxLng) queryOptions.where.lng = { ...queryOptions.where.lng, [Op.lte]: parseFloat(maxLng) };
+  if (minPrice) queryOptions.where.price = { [Op.gte]: parseFloat(minPrice) };
+  if (maxPrice) queryOptions.where.price = { ...queryOptions.where.price, [Op.lte]: parseFloat(maxPrice) };
+
+  return { queryOptions, page, size };
+};
+
 // Get all spots
 router.get('/', async (req, res) => {
-    const spots = await Spot.findAll({
-        attributes: {
-            include: [
-              [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-              [Sequelize.col('SpotImages.url'), 'previewImage']
-      
-            ]
-          },
-        include: [
-        {
-            model: Review, 
-            attributes: []
-        },
-        {
-            model: SpotImage,
-            attributes: []
-        }
-        ],
-        group: ['Spot.id', 'SpotImages.url']
-    });
+  let spots;
+  const { queryOptions, page, size, errors } = await buildQueryOptions(req.query);
 
-    // Format the response
-    const formattedSpots = spots.map(spot => ({
-        id: spot.id,
-        ownerId: spot.ownerId,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        country: spot.country,
-        lat: spot.lat,
-        lng: spot.lng,
-        name: spot.name,
-        description: spot.description,
-        price: spot.price,
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
-        avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
-        previewImage: spot.get('previewImage') || null
-    }));
+  if (errors) { return res.status(400).json({
+    message: "Bad Request",
+    errors: errors
+    });
+  } else if (!errors){
+    spots = await Spot.findAll(queryOptions);
+  } else {
+    spots = await Spot.findAll({
+      attributes: {
+          include: [
+            [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
+            [Sequelize.col('SpotImages.url'), 'previewImage']
+          ]
+        },
+      include: [
+      {
+          model: Review, 
+          attributes: []
+      },
+      {
+          model: SpotImage,
+          attributes: []
+      }
+      ],
+      group: ['Spot.id', 'SpotImages.url']
+    });
+  };
+
+  // Format the response
+  const formattedSpots = spots.map(spot => ({
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
+      previewImage: spot.get('previewImage') || null
+  }));
     
-    return res.status(200).json({ Spots: formattedSpots });
-  }  
-); 
+  return res.status(200).json({ 
+    Spots: formattedSpots,
+    page: page || null,
+    size: size || null
+   });
+}); 
 
 // Get all spots owned by current user
 router.get('/current', requireAuth, async (req, res) => {
