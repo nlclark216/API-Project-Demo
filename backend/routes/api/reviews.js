@@ -1,7 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, reviewAuth } = require('../../utils/auth');
 const { Review, User, Spot, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
@@ -40,6 +40,35 @@ router.get('/current', requireAuth, async (req, res) => {
     });
 
     return res.status(200).json({ Reviews: reviews });
+});
+
+// Add an Image to a Review based on the Review's id
+router.post('/:reviewId/images', requireAuth, reviewAuth, async (req, res) => {
+    const { reviewId } = req.params;
+    const { url } = req.body;
+
+    const targetReview = await Review.findByPk(reviewId);
+
+    if (!targetReview) {
+        return res.status(404).json({ message: "Review couldn't be found" });
+    };
+
+    const images = await ReviewImage.findAll({
+        where: { reviewId: reviewId }
+    });
+
+    if (images.length >= 10) {
+        return res.status(403).json({ 
+            message: "Maximum number of images for this resource was reached" 
+        });
+    };
+
+    const newImage = await targetReview.createReviewImage({ url });
+
+    return res.status(201).json({
+        id: newImage.id,
+        url: newImage.url
+    });
 });
 
 
