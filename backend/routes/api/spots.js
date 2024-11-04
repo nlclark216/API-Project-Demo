@@ -170,7 +170,7 @@ router.get('/:spotId', async (req, res) => {
         attributes: ['id', 'url', 'preview'],
         limit: 20
       }],
-    group: ['Spot.id'] 
+    group: ['Spot.id', 'Owner.id'] 
   });
 
   if(!spots) {
