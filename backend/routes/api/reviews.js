@@ -1,5 +1,5 @@
 const express = require('express');
-const { Op } = require('sequelize');
+// const { Op } = require('sequelize');
 
 const { requireAuth, reviewAuth } = require('../../utils/auth');
 const { Review, User, Spot, ReviewImage } = require('../../db/models');
@@ -69,6 +69,37 @@ router.post('/:reviewId/images', requireAuth, reviewAuth, async (req, res) => {
         id: newImage.id,
         url: newImage.url
     });
+});
+
+// Edit a Review
+router.put('/:reviewId', requireAuth, reviewAuth, validateReview, async (req, res) => {
+    const { review, stars } = req.body;
+    const { reviewId } = req.params;
+
+    const findReview = await Review.findByPk(reviewId);
+
+    if (!findReview) {
+        return res.status(404).json({ message: "Review couldn't be found" });
+    } else {
+        await findReview.update({
+            review:review,
+            stars:stars
+        });
+        return res.status(200).json(findReview);
+    }
+});
+
+// Delete a Review
+router.delete('/:reviewId', requireAuth, reviewAuth, async (req, res) => {
+    const { reviewId } = req.params;
+
+    const existingReview = await Review.findByPk(reviewId);
+
+    if (!existingReview) {return res.status(404).json({message: "Review couldn't be found"})};
+
+    existingReview.destroy();
+    
+    return res.status(200).json({message: "Successfully deleted"});
 });
 
 
