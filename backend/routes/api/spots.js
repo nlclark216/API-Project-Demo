@@ -104,26 +104,18 @@ router.get('/', validateQuery, async (req, res) => {
 
   const pagination = {};
   if (page >= 1 && size >= 1) {
-      pagination.limit = size;
-      pagination.offset = size * (page - 1);
+      pagination.limit = size || 1;
+      pagination.offset = size * (page - 1) || 20;
   };
 
 
   const spots = await Spot.findAll({
       attributes: {
-          // include: [
-          //   [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-          //   [Sequelize.col('SpotImages.url'), 'previewImage']
-          // ], 
+          include: [
+            [Sequelize.literal('(SELECT AVG(Stars) FROM Reviews WHERE Reviews.spotId = Spot.id)'), 'avgRating'],
+            [Sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true)'), 'previewImage']
+          ], 
       }, 
-      include: [
-      {
-        model: Review,
-        as: 'avgRating'
-      },
-      {
-        model: SpotImage
-      }], 
       group: [['Spot.id', 'SpotImages.url']],
       ...pagination
   });
@@ -149,8 +141,8 @@ router.get('/', validateQuery, async (req, res) => {
   
   return res.status(200).json({ 
     Spots: formattedSpots,
-    page,
-    size
+    page: page || 1,
+    size: size || 20
   });
 }); 
 
