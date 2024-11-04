@@ -110,16 +110,15 @@ router.get('/current', requireAuth, async (req, res) => {
       
             ]
           },
-        include: [
-        {
+        include: 
+        [{
             model: Review, 
             attributes: []
         },
         {
             model: SpotImage,
             attributes: []
-        }
-        ],
+        }],
         group: ['Spot.id', 'SpotImages.url']
     });
 
@@ -156,8 +155,8 @@ router.get('/:spotId', async (req, res) => {
         [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
       ]
     },
-    include: [
-      {
+    include: 
+      [{
         model: User,
         as: 'Owner',
         attributes: ['id', 'firstName', 'lastName']
@@ -170,8 +169,8 @@ router.get('/:spotId', async (req, res) => {
         model: SpotImage,
         attributes: ['id', 'url', 'preview'],
         limit: 20
-      }
-    ]
+      }],
+    group: ['Spot.id'] 
   });
 
   if(!spots) {
