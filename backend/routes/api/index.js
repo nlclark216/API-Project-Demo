@@ -22,15 +22,18 @@ router.post('/test', function (req, res) {
 });
 
 // Delete a spot image
-router.delete('/spot-images/:imageId', requireAuth, imgAuth, async (req, res) => {
+router.delete('/spot-images/:imageId', requireAuth, imgAuth, async (req, res, next) => {
   const { imageId } = req.params;
-  const img = await SpotImage.findByPk(imageId);
 
-  if(!img) return res.status(404).json({ message: "Spot Image couldn't be found" });
+  try {
+    const img = await SpotImage.findByPk(imageId);
 
-  await img.destroy();
-
-  return res.status(200).json({ message: "Successfully deleted" });
+    if(!img) return res.status(404).json({ message: "Spot Image couldn't be found" });
+    
+    await img.destroy();
+    
+    return res.status(200).json({ message: "Successfully deleted" });
+  } catch (error) { next(error); };
 });
 
 // Delete a review image

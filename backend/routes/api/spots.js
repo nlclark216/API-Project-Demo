@@ -320,106 +320,121 @@ router.get('/:spotId', async (req, res, next) => {
 });
 
 // Create a spot
-router.post('/', requireAuth, validateSpot, async (req, res) => {
+router.post('/', restoreUser, requireAuth, validateSpot, async (req, res, next) => {
   const {user} = req;
 
-  const {address, city, state, country, 
+  try {
+    const {address, city, state, country, 
     lat, lng, name, description, price } = req.body;
 
-  const existingAddress = await Spot.findOne({
-    where: { address: address }});
+    const existingAddress = await Spot.findOne({
+      where: { address: address }});
 
-  if(existingAddress) {
+    if(existingAddress) {
     return res.status(500).json({
       message: "Spot with that address is already on file",
       errors: {
         address: "Spot with that address already exists"
       }
-    });
-  };
+    });};
 
-  const spot = await Spot.create({address, city, state, country, 
-    lat, lng, name, description, price, ownerId: user.id});
+    const spot = await Spot.create({address, city, state, country, 
+      lat, lng, name, description, price, ownerId: user.id});
 
-  const validSpot = {
-    id: spot.id,
-    ownerId: user.id, 
-    address: spot.address, 
-    city: spot.city, 
-    state: spot.state, 
-    country: spot.country, 
-    lat: spot.lat, 
-    lng: spot.lng, 
-    name: spot.name, 
-    description: spot.description, 
-    price: spot.price,
-    createdAt: spot.createdAt,
-    updatedAt: spot.updatedAt
-  };
+      const validSpot = {
+        id: spot.id,
+        ownerId: user.id, 
+        address: spot.address, 
+        city: spot.city, 
+        state: spot.state, 
+        country: spot.country, 
+        lat: spot.lat, 
+        lng: spot.lng, 
+        name: spot.name, 
+        description: spot.description, 
+        price: spot.price,
+        createdAt: spot.createdAt,
+        updatedAt: spot.updatedAt
+      };
 
-  return res.status(201).json(validSpot);
+      return res.status(201).json(validSpot);
+  } catch (error) { next(error) };
+  
 });
 
 // Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', requireAuth, spotAuth, async (req, res) => {
+router.post('/:spotId/images', restoreUser, requireAuth, spotAuth, async (req, res, next) => {
   const { spotId } = req.params;
-
-  const spot = await Spot.findByPk(spotId);
-
-  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
-
   const { url, preview } = req.body;
 
-  const img = await SpotImage.create({
-    url: url,
-    preview: preview,
-    spotId: spot.id
-  });
+  try {
+    const targetSpot = await Spot.findByPk(spotId);
+    
+    if(!targetSpot) return res.status(404).json({ message: "Spot couldn't be found"});
 
-  return res.status(201).json({
-    id: img.id,
-    url: img.url,
-    preview: img.preview
-  });
+    const images = await SpotImage.findAll({
+      where: { spotId: spotId }
+    });
+
+    if (images.length >= 10) {
+      return res.status(403).json({ 
+          message: "Maximum number of images for this resource was reached" 
+      });
+    };
+
+    const newImg = await SpotImage.create({
+      url: url,
+      preview: preview,
+      spotId: spotId
+    });
+
+    return res.status(201).json({
+      id: newImg.id,
+      url: newImg.url,
+      preview: newImg.preview
+    });
+  } catch (error) { next(error) };
 });
 
-// Edit a Spot
-router.put('/:spotId', requireAuth, spotAuth, validateSpot, async (req, res) => {
+// Edit a Spot by Id
+router.put('/:spotId', restoreUser, requireAuth, spotAuth, validateSpot, async (req, res, next) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
   const { spotId } = req.params;
 
-  const spot = await Spot.findByPk(spotId);
+  try {
+    const spot = await Spot.findByPk(spotId);
 
-  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
+    if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
 
-  else {
-    const existingAddress = await Spot.findOne({
-      where: { address: address }});
-      
-    if(existingAddress) {
-      return res.status(500).json({
-        message: "Spot with that address is already on file",
-        errors: {
-          address: "Spot with that address already exists"
-        }
+    else {
+      const existingAddress = await Spot.findOne({
+        where: { address: address }});
+        
+      if(existingAddress) {
+        return res.status(500).json({
+          message: "Spot with that address is already on file",
+          errors: {
+            address: "Spot with that address already exists"
+          }
+        });
+      };
+
+      await spot.update({
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        lat: lat,
+        lng: lng,
+        name: name,
+        description: description,
+        price: price
       });
-    };
-
-    await spot.update({
-      address: address,
-      city: city,
-      state: state,
-      country: country,
-      lat: lat,
-      lng: lng,
-      name: name,
-      description: description,
-      price: price
-    });
-    
-    return res.status(200).json(spot);
-  }
+      
+      return res.status(200).json(spot);
+    }
+  } catch (error) { next(error) };
 });
 
 // Delete a Spot
