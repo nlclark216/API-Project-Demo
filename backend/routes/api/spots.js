@@ -455,14 +455,15 @@ router.delete('/:spotId', requireAuth, spotAuth, async (req, res, next) => {
 });
 
 // Get all Reviews by a Spot's id
-router.get('/:spotId/reviews', async (req, res) => {
+router.get('/:spotId/reviews', async (req, res, next) => {
   const { spotId } = req.params;
 
-  const spot = await Spot.findByPk(spotId);
+  try {
+    const spot = await Spot.findByPk(spotId);
 
-  if(!spot){
+    if(!spot){
     return res.status(404).json({ message: "Spot couldn't be found" })
-  } else {
+    } else {
     const reviews = await Review.findAll({
       where: { spotId: spotId },
       include: [
@@ -476,8 +477,10 @@ router.get('/:spotId/reviews', async (req, res) => {
         }
       ]
     });
+
     return res.status(200).json({ Reviews: reviews });
-  };  
+  }; 
+  } catch (error) { next(error); };
 });
 
 // Create a Review for a Spot based on the Spot's id
