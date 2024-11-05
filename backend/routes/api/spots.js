@@ -98,16 +98,18 @@ const validateQuery = [
 // Get all spots
 router.get('/', validateQuery, async (req, res) => {
   let { page, size } = req.query;
+
+  if(!page) page = 1;
+  if(!size) size = 20;
   
   page = parseInt(page);
   size = parseInt(size);
 
   const pagination = {};
   if (page >= 1 && size >= 1) {
-      pagination.limit = size || 1;
-      pagination.offset = size * (page - 1) || 20;
+      pagination.limit = size;
+      pagination.offset = size * (page - 1);
   };
-
 
   const spots = await Spot.findAll({
       attributes: {
