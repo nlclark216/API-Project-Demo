@@ -50,7 +50,7 @@ const validateSpot = [
     .withMessage("Description is required"),
   check('price')
     .exists({checkFalsy: true})
-    .isFloat({ min: 0})
+    .isFloat({ gt: 0})
     .withMessage("Price per day must be a positive number"),
   handleValidationErrors
 ];

@@ -1,8 +1,8 @@
 const express = require('express');
 // const { Op } = require('sequelize');
 
-const { requireAuth, reviewAuth } = require('../../utils/auth');
-const { Review, User, Spot, ReviewImage } = require('../../db/models');
+const { restoreUser, requireAuth, reviewAuth } = require('../../utils/auth');
+const { Review, User, Spot, ReviewImage, SpotImage, Sequelize } = require('../../db/models');
 
 const router = express.Router();
 
@@ -22,10 +22,11 @@ const validateReview = [
 ];
 
 // Get all Reviews of the Current User
-router.get('/current', requireAuth, async (req, res) => {
+router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
     const { user } = req;
 
-    const reviews = await Review.findAll({
+    try {
+      const reviews = await Review.findAll({
         where: { userId: user.id },
         include: [
             { 
@@ -34,16 +35,36 @@ router.get('/current', requireAuth, async (req, res) => {
             }, 
             { 
             model: Spot,
-            attributes: {exclude: ["description", 'createdAt', 'updatedAt']}
+            include: [
+                {
+                  model: SpotImage,
+                  attributes: [],
+                  required: false,
+                  where: { preview: true }
+                },
+              ],
+              attributes: [
+                'id',
+                'ownerId',
+                'address',
+                'city',
+                'state',
+                'country',
+                'lat',
+                'lng',
+                'name',
+                'price',
+                [Sequelize.literal('"Spot->SpotImages"."url"'), 'previewImage']]
             }, 
             { 
             model: ReviewImage ,
             attributes: ['id', 'url']
             }
         ]
-    });
-
-    return res.status(200).json({ Reviews: reviews });
+      });  
+      return res.status(200).json({ Reviews: reviews });
+    } catch (error) { next(error) };
+    
 });
 
 // Add an Image to a Review based on the Review's id
