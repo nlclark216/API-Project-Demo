@@ -5,7 +5,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static associate(models) {
-      Spot.belongsTo(models.User, { foreignKey: "ownerId",  as: 'Owner' });
+      Spot.belongsTo(models.User, { foreignKey: "ownerId", as: 'Owner' });
       Spot.hasMany(models.SpotImage, { foreignKey: "spotId", onDelete: 'cascade', hooks: true });
       Spot.hasMany(models.Review, { foreignKey: "spotId", onDelete: 'cascade', hooks: true });
       Spot.hasMany(models.Booking, { foreignKey: "spotId", onDelete: 'cascade', hooks: true });
@@ -90,10 +90,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Spot',
-    scopes: {
-      
-    }
+    modelName: 'Spot'
   });
   return Spot;
 };

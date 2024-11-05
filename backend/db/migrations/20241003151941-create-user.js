@@ -3,7 +3,9 @@
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+  if(!process.env.SCHEMA){
+    throw new Error('SCHEMA environment variable not defined');
+  } else options.schema = process.env.SCHEMA;
 };
 
 module.exports = {
@@ -53,7 +55,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
-    await queryInterface.dropTable(options);
+    await queryInterface.dropTable("Users", options);
   }
 };
