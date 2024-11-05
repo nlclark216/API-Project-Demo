@@ -96,7 +96,7 @@ const validateQuery = [
 
 
 // Get all spots
-router.get('/', validateQuery, async (req, res) => {
+router.get('/', validateQuery, async (req, res, next) => {
   let { page, size } = req.query;
 
   if(!page) page = 1;
@@ -111,7 +111,8 @@ router.get('/', validateQuery, async (req, res) => {
       pagination.offset = size * (page - 1);
   };
 
-  const spots = await Spot.findAll({
+  const spots = await Spot.findAll(
+    {
       attributes: {
           include: [
             [Sequelize.literal('(SELECT AVG(Stars) FROM Reviews WHERE Reviews.spotId = Spot.id)'), 'avgRating'],
@@ -120,29 +121,11 @@ router.get('/', validateQuery, async (req, res) => {
       }, 
       group: [['Spot.id', 'SpotImages.url']],
       ...pagination
-  });
-
-  // Format the response
-  const formattedSpots = spots.map(spot => ({
-      id: spot.id,
-      ownerId: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: spot.lat,
-      lng: spot.lng,
-      name: spot.name,
-      description: spot.description,
-      price: spot.price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
-      previewImage: spot.get('previewImage') || null
-  }));
+    }
+  );
   
   return res.status(200).json({ 
-    Spots: formattedSpots,
+    Spots: spots,
     page: page || 1,
     size: size || 20
   });
@@ -152,45 +135,17 @@ router.get('/', validateQuery, async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
     const spots = await Spot.findAll({
-        where: {ownerId: user.id},
+        where: {ownerId: {[Op.eq]: user.id}},
         attributes: {
-            include: [
-              [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-              [Sequelize.col('SpotImages.url'), 'previewImage']
-      
-            ]
-          },
-        include: 
-        [{
-            model: Review, 
-            attributes: []
-        },
-        {
-            model: SpotImage,
-            attributes: []
-        }],
-        group: ['Spot.id', 'SpotImages.url']
+          include: [
+            [Sequelize.literal('(SELECT AVG(Stars) FROM Reviews WHERE Reviews.spotId = Spot.id)'), 'avgRating'],
+            [Sequelize.literal('(SELECT url FROM SpotImages WHERE SpotImages.spotId = Spot.id AND preview = true)'), 'previewImage']
+          ], 
+        }, 
+        group: [['Spot.id', 'SpotImages.url']]
     });
 
-    const formattedSpots = spots.map(spot => ({
-        id: spot.id,
-        ownerId: spot.ownerId,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        country: spot.country,
-        lat: spot.lat,
-        lng: spot.lng,
-        name: spot.name,
-        description: spot.description,
-        price: spot.price,
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
-        avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
-        previewImage: spot.get('previewImage') || null
-    }));
-
-    if(spots) return res.status(200).json({ Spots: formattedSpots });    
+    if(spots) return res.status(200).json({ Spots: spots });    
 });
 
 // Get details of a Spot from an id
@@ -201,52 +156,22 @@ router.get('/:spotId', async (req, res) => {
     where: { id: spotId },
     attributes: {
       include: [
-        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-        [Sequelize.fn('COUNT', Sequelize.col('Reviews.id')), 'numReviews']
-      ]
-    },
+        [Sequelize.literal('(SELECT AVG(Stars) FROM Reviews WHERE Reviews.spotId = Spot.id)'), 'avgRating'],
+        [Sequelize.literal('(SELECT COUNT(*) FROM Reviews WHERE Reviews.spotId = Spot.id)'), 'numReviews']
+      ], 
+    }, 
+    group: [['Spot.id', 'SpotImages.url']],
     include: 
       [{
         model: User,
         as: 'Owner',
         attributes: ['id', 'firstName', 'lastName']
-      },
-      {
-        model: Review,
-        attributes: ['stars']
-      },
-      {
-        model: SpotImage,
-        attributes: ['id', 'url', 'preview'],
-        limit: 20
       }],
-    group: ['Spot.id', 'Owner.id', 'Reviews.id'] 
   });
 
   if(!spots) {
       return res.status(404).json({ message: "Spot couldn't be found"});
-  } else {
-    const formattedSpots = spots.map(spot => ({
-      id: spot.id,
-      ownerId: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: parseFloat(spot.lat),
-      lng: parseFloat(spot.lng),
-      name: spot.name,
-      description: spot.description,
-      price: spot.price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null,
-      numReviews: spot.get('numReviews') ? +parseFloat(spot.get('numReviews')).toFixed(1) : null,
-      SpotImages: spot.get('SpotImages'),
-      Owner: spot.Owner
-    }));
-    return res.status(200).json({ Spots: formattedSpots });
-  };
+  } else { return res.status(200).json({ Spots: spots }); };
 });
 
 // Create a spot
@@ -287,22 +212,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     updatedAt: spot.updatedAt
   };
 
-
-  return res.status(201).json({ 
-    id: validSpot.id,
-    ownerId: validSpot.ownerId,
-    address: validSpot.address, 
-    city: validSpot.city,
-    state: validSpot.state,
-    country: validSpot.country,
-    lat: validSpot.lat,
-    lng: validSpot.lng,
-    name: validSpot.name,
-    description: validSpot.description,
-    price: validSpot.price,
-    createdAt: validSpot.createdAt,
-    updatedAt: validSpot.updatedAt        
-  });
+  return res.status(201).json(validSpot);
 });
 
 // Add an Image to a Spot based on the Spot's id
@@ -393,18 +303,19 @@ router.get('/:spotId/reviews', async (req, res) => {
   } else {
     const reviews = await Review.findAll({
       where: { spotId: spotId },
-      include: [{
+      include: [
+        {
         model: User,
         attributes: ['id', 'firstName', 'lastName']
-      }, {
+        }, 
+        {
         model: ReviewImage,
         attributes: ['id', 'url']
-      }]
+        }
+      ]
     });
     return res.status(200).json({ Reviews: reviews });
-  }
-
-  
+  };  
 });
 
 // Create a Review for a Spot based on the Spot's id

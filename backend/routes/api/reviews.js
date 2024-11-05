@@ -27,16 +27,20 @@ router.get('/current', requireAuth, async (req, res) => {
 
     const reviews = await Review.findAll({
         where: { userId: user.id },
-        include: [{ 
+        include: [
+            { 
             model: User,
             attributes: ['id', 'firstName', 'lastName']
-        }, { 
+            }, 
+            { 
             model: Spot,
             attributes: {exclude: ["description", 'createdAt', 'updatedAt']}
-        }, { 
+            }, 
+            { 
             model: ReviewImage ,
             attributes: ['id', 'url']
-        }]
+            }
+        ]
     });
 
     return res.status(200).json({ Reviews: reviews });
