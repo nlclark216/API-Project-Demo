@@ -113,12 +113,11 @@ router.get('/', validateQuery, async (req, res) => {
 
   const where = {};
 
-  /* Search filters */
+  // Search filters
 
   if (minLat != undefined || maxLat != undefined) {
     const filter = []
 
-    // obligatory "sequelize sucks"
     if (minLat != undefined) {
       filter.push({ [Op.gte]: parseFloat(minLat) });
     }
@@ -169,8 +168,8 @@ router.get('/', validateQuery, async (req, res) => {
       ],
       include: [
         {
-          model: SpotImage, // Include associated images
-          attributes: ['url'], // Get image URL
+          model: SpotImage, 
+          attributes: ['url'], 
           where: { preview: true },
           required: false,
           duplicating: false,
@@ -306,8 +305,8 @@ router.get('/:spotId', async (req, res, next) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      numReviews: parseInt(aggregates.numReviews) || 0,                    
-      avgStarRating: parseFloat(aggregates.avgStarRating).toFixed(1) || 0,
+      numReviews: parseInt(aggregates.dataValues.numReviews) || 0,                    
+      avgStarRating: parseFloat(aggregates.dataValues.avgStarRating).toFixed(1) || 0,
       SpotImages: spot.SpotImages,                                    
       Owner: {                                                              
         id: spot.Owner.id,
