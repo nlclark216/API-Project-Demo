@@ -16,8 +16,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-        defaultValue: 1
+        type: Sequelize.INTEGER
       },
       spotId: {
         allowNull: false,
