@@ -68,63 +68,69 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 });
 
 // Add an Image to a Review based on the Review's id
-router.post('/:reviewId/images', requireAuth, reviewAuth, async (req, res) => {
+router.post('/:reviewId/images', restoreUser, requireAuth, reviewAuth, async (req, res, next) => {
     const { reviewId } = req.params;
     const { url } = req.body;
 
-    const targetReview = await Review.findByPk(reviewId);
+    try {
+        const targetReview = await Review.findByPk(reviewId);
 
-    if (!targetReview) {
-        return res.status(404).json({ message: "Review couldn't be found" });
-    };
-
-    const images = await ReviewImage.findAll({
-        where: { reviewId: reviewId }
-    });
-
-    if (images.length >= 10) {
-        return res.status(403).json({ 
-            message: "Maximum number of images for this resource was reached" 
+        if (!targetReview) {
+            return res.status(404).json({ message: "Review couldn't be found" });
+        };  
+        
+        const images = await ReviewImage.findAll({
+            where: { reviewId: reviewId }
         });
-    };
 
-    const newImage = await targetReview.createReviewImage({ url });
+        if (images.length >= 10) {
+            return res.status(403).json({ 
+                message: "Maximum number of images for this resource was reached" 
+            });
+        };
+        
+        const newImage = await targetReview.createReviewImage({ url });
 
-    return res.status(201).json({
-        id: newImage.id,
-        url: newImage.url
-    });
+        return res.status(201).json({
+            id: newImage.id,
+            url: newImage.url
+        });
+    } catch (error) { next(error); };
 });
 
 // Edit a Review
-router.put('/:reviewId', requireAuth, reviewAuth, validateReview, async (req, res) => {
+router.put('/:reviewId', restoreUser, requireAuth, reviewAuth, validateReview, async (req, res, next) => {
     const { review, stars } = req.body;
     const { reviewId } = req.params;
 
-    const findReview = await Review.findByPk(reviewId);
+    try {
+        const findReview = await Review.findByPk(reviewId);
 
-    if (!findReview) {
-        return res.status(404).json({ message: "Review couldn't be found" });
-    } else {
-        await findReview.update({
-            review:review,
-            stars:stars
-        });
-        return res.status(200).json(findReview);
-    }
+        if (!findReview) {
+            return res.status(404).json({ message: "Review couldn't be found" });
+        } else {
+            await findReview.update({
+                review:review,
+                stars:stars
+            });
+            return res.status(200).json(findReview);
+        };
+    } catch (error) { next(error); };
 });
 
 // Delete a Review
-router.delete('/:reviewId', requireAuth, reviewAuth, async (req, res) => {
+router.delete('/:reviewId', restoreUser, requireAuth, reviewAuth, async (req, res, next) => {
     const { reviewId } = req.params;
 
-    const existingReview = await Review.findByPk(reviewId);
+    try {
+        const existingReview = await Review.findByPk(reviewId);
 
-    if (!existingReview) {return res.status(404).json({message: "Review couldn't be found"})};
+        if (!existingReview) {return res.status(404).json({message: "Review couldn't be found"})};
 
-    existingReview.destroy();
-    
-    return res.status(200).json({message: "Successfully deleted"});
+        existingReview.destroy();
+        
+        return res.status(200).json({message: "Successfully deleted"});  
+    } catch (error) { next(error); }; 
 });
 
 

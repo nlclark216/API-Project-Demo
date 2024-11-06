@@ -438,7 +438,7 @@ router.put('/:spotId', restoreUser, requireAuth, spotAuth, validateSpot, async (
 });
 
 // Delete a Spot
-router.delete('/:spotId', requireAuth, spotAuth, async (req, res, next) => {
+router.delete('/:spotId', restoreUser, requireAuth, spotAuth, async (req, res, next) => {
   const { spotId } = req.params;
 
   try {
@@ -484,34 +484,34 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 });
 
 // Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
+router.post('/:spotId/reviews', restoreUser, requireAuth, validateReview, async (req, res, next) => {
   const { review, stars } = req.body;
-
   const { spotId } = req.params;
 
-  const spot = await Spot.findByPk(spotId);
-
-  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
-
-  const existingReview = await Review.findOne({ 
+  try {
+    const spot = await Spot.findByPk(spotId);
+    
+    if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
+    const existingReview = await Review.findOne({ 
     where: { userId: req.user.id, 
               spotId: spotId
             } 
-  });
+    });
 
-  if (existingReview) {
-    return res.status(403).json({ 
-      message: "User already has a review for this spot" });
-  };
+    if (existingReview) {
+      return res.status(403).json({ 
+        message: "User already has a review for this spot" });
+    };
 
-  const newReview = await Review.create({ 
-    userId: req.user.id, 
-    spotId: spotId, 
-    review: review, 
-    stars: stars 
-  });
+    const newReview = await Review.create({ 
+      userId: req.user.id, 
+      spotId: spotId, 
+      review: review, 
+      stars: stars 
+    });
 
-  return res.status(201).json(newReview);
+    return res.status(201).json(newReview);
+  } catch (error) { next(error); }
 });
 
 

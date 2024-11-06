@@ -39,48 +39,47 @@ const validateSignup = [
   ];
 
 // Sign up a user
-router.post('/', validateSignup, async (req, res) => {
-      const { firstName, lastName, email, password, username } = req.body;
-      const hashedPassword = bcrypt.hashSync(password);
+router.post('/', validateSignup, async (req, res, next) => {
+  const { firstName, lastName, email, password, username } = req.body;
+  const hashedPassword = bcrypt.hashSync(password);
 
-      const existingEmail = await User.findOne({
-        where: { email: email }});
-      if(existingEmail) {
-        return res.status(500).json({
-          message: "User already exists",
-          errors: {
-            email: "User with that email already exists"
-          }
-        })
-      };
+  const existingEmail = await User.findOne({
+    where: { email: email }});
+  if(existingEmail) {
+    return res.status(500).json({
+      message: "User already exists",
+      errors: {
+        email: "User with that email already exists"
+      }
+    })
+  };
 
-      const existingUsername = await User.findOne({
-        where: { username: username }});
-      if(existingUsername) {
-        return res.status(500).json({
-          message: "User already exists",
-          errors: {
-            email: "User with that username already exists"
-          }
-        })
-      };
+  const existingUsername = await User.findOne({
+    where: { username: username }});
+  if(existingUsername) {
+    return res.status(500).json({
+      message: "User already exists",
+      errors: {
+        email: "User with that username already exists"
+      }
+    })
+  };
 
-      const user = await User.create({ firstName, lastName, email, username, hashedPassword });
-  
-      const safeUser = {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        username: user.username,
-      };
-  
-      await setTokenCookie(res, safeUser);
-  
-      return res.status(201).json({
-        user: safeUser
-      });
-    }
-);
+  try {
+    const user = await User.create({ firstName, lastName, email, username, hashedPassword });
+
+    const safeUser = {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    username: user.username,
+    };
+    
+    await setTokenCookie(res, safeUser);
+    
+    return res.status(201).json({ user: safeUser });
+  } catch (error) { next(error); };    
+});
 
 module.exports = router;
