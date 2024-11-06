@@ -7,7 +7,7 @@ const reviewsRouter = require('./reviews.js');
 
 
 // GET /api/restore-user
-const { restoreUser, requireAuth, spotAuth, imgAuth } = require('../../utils/auth.js');
+const { restoreUser, requireAuth, imgAuth } = require('../../utils/auth.js');
 const { SpotImage, ReviewImage } = require('../../db/models');
 
 router.use(restoreUser);
@@ -22,7 +22,7 @@ router.post('/test', function (req, res) {
 });
 
 // Delete a spot image
-router.delete('/spot-images/:imageId', requireAuth, imgAuth, async (req, res, next) => {
+router.delete('/spot-images/:imageId', restoreUser, requireAuth, imgAuth, async (req, res, next) => {
   const { imageId } = req.params;
 
   try {
@@ -37,7 +37,7 @@ router.delete('/spot-images/:imageId', requireAuth, imgAuth, async (req, res, ne
 });
 
 // Delete a review image
-router.delete('/review-images/:imageId', requireAuth, imgAuth, async (req, res, next) => {
+router.delete('/review-images/:imageId', restoreUser, requireAuth, imgAuth, async (req, res, next) => {
   const { imageId } = req.params;
 
   try {
