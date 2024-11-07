@@ -181,7 +181,8 @@ router.get('/', restoreUser, validateQuery, async (req, res) => {
           duplicating: false,
         }
       ],
-      group: ['Spot.id', 'SpotImages.id']
+      group: ['Spot.id', 'SpotImages.id'],
+      order: ['id']
     });
     
     const formattedSpots = allSpots.map(spot => ({
@@ -234,8 +235,8 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
           'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt',
           [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']
         ],
-        group: ['Spot.id', 'SpotImages.id']
-      ,
+        group: ['Spot.id', 'SpotImages.id'],
+        order: ['id']
     });
 
     if(!userSpots) { return res.status(404).json({ message: "No spots found"}); }
@@ -476,7 +477,8 @@ router.get('/:spotId/reviews', async (req, res, next) => {
         model: ReviewImage,
         attributes: ['id', 'url']
         }
-      ]
+      ],
+      order: ['id']
     });
 
     return res.status(200).json({ Reviews: reviews });

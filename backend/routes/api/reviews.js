@@ -58,8 +58,8 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
             { 
             model: ReviewImage ,
             attributes: ['id', 'url']
-            }
-        ]
+        }],
+        order: ['id']
       });
       
       if(!reviews) { return res.status(404).json({ message: "No reviews found"}); };

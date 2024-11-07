@@ -18,7 +18,8 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
             include: {
                 model: Spot,
                 attributes: {exclude: ['createdAt', 'updatedAt']}
-            }
+            },
+            order: ['id']
         });
 
         if(!bookings) { return res.status(404).json({ message: "No bookings found"}); }
