@@ -20,6 +20,9 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
                 attributes: {exclude: ['createdAt', 'updatedAt']}
             }
         });
+
+        if(!bookings) { return res.status(404).json({ message: "No bookings found"}); }
+
         return res.status(200).json({ Bookings: bookings });
     } catch (error) { next(error); };
 });

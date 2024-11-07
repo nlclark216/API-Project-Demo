@@ -60,7 +60,10 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
             attributes: ['id', 'url']
             }
         ]
-      });  
+      });
+      
+      if(!reviews) { return res.status(404).json({ message: "No reviews found"}); };
+
       return res.status(200).json({ Reviews: reviews });
     } catch (error) { next(error) };
     

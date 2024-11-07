@@ -238,23 +238,25 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
       ,
     });
 
-  const formattedSpots = userSpots.map(spot => ({
-    id: spot.id,
-    ownerId: spot.ownerId,
-    address: spot.address,
-    city: spot.city,
-    state: spot.state,
-    country: spot.country,
-    lat: parseFloat(spot.lat),
-    lng: parseFloat(spot.lng),
-    name: spot.name,
-    description: spot.description,
-    price: parseFloat(spot.price),
-    createdAt: spot.createdAt,
-    updatedAt: spot.updatedAt,
-    avgRating: spot.get('avgRating') ? parseFloat(spot.get('avgRating')).toFixed(1) : null, 
-    previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null
-  }));
+    if(!userSpots) { return res.status(404).json({ message: "No spots found"}); }
+
+    const formattedSpots = userSpots.map(spot => ({
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: parseFloat(spot.lat),
+      lng: parseFloat(spot.lng),
+      name: spot.name,
+      description: spot.description,
+      price: parseFloat(spot.price),
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      avgRating: spot.get('avgRating') ? parseFloat(spot.get('avgRating')).toFixed(1) : null, 
+      previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null
+    }));
 
     return res.status(200).json({ Spots: formattedSpots });
   } catch (error) { next(error) };
