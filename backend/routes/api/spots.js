@@ -254,7 +254,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
       lng: spot.lng,
       name: spot.name,
       description: spot.description,
-      price: parseFloat(spot.price),
+      price: spot.price,
       createdAt: spot.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
       updatedAt: spot.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
       avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null, 
