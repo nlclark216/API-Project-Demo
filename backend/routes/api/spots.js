@@ -199,7 +199,7 @@ router.get('/', restoreUser, validateQuery, async (req, res) => {
       price: parseFloat(spot.price),
       createdAt: spot.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
       updatedAt: spot.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
-      avgRating: spot.get('avgRating') ? Number(parseFloat(spot.get('avgRating')).toFixed(1)) : null, 
+      avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null, 
       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null
     }));
   
@@ -219,24 +219,28 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 
     const userSpots = await Spot.findAll({
       where: { ownerId: user.id },
-      include: [                      
+      attributes: [ 
+        'id', 'ownerId', 'address', 'city', 'state', 'country',
+        'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt',
+        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'] 
+      ],
+      include: [
         {
-          model: SpotImage,
-          where: { preview: true },  
-          required: false,            
-          attributes: ['url'],
+          model: SpotImage, 
+          attributes: ['url'], 
+          where: { preview: true },
+          required: false,
+          duplicating: false,
         },
         {
-          model: Review,             
-          attributes: []
-        }],
-        attributes: [                   
-          'id', 'ownerId', 'address', 'city', 'state', 'country',
-          'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt',
-          [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']
-        ],
-        group: ['Spot.id', 'SpotImages.id'],
-        order: ['id']
+          model: Review,
+          attributes: [],
+          required: false,
+          duplicating: false,
+        }
+      ],
+      group: ['Spot.id', 'SpotImages.id'],
+      order: ['id']
     });
 
     if(!userSpots) { return res.status(404).json({ message: "No spots found"}); }
