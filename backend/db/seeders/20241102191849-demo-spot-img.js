@@ -2,6 +2,11 @@
 
 const { SpotImage } = require('../models');
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  
+};
+
 const spotImages = [
   {
     spotId: 1,
@@ -71,6 +76,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    options.tableName = 'SpotImages';
     for (const img of spotImages) {
       await SpotImage.destroy({ where: img });
     }
