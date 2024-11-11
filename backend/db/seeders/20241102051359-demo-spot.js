@@ -2,6 +2,11 @@
 
 const { Spot } = require('../models');
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  
+};
+
 const spots = [
   {
     ownerId: 1,
@@ -83,6 +88,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    options.tableName = 'Spots';
     for (const spot of spots) {
       await Spot.destroy({ where: spot });
     }

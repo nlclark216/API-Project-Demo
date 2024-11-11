@@ -2,6 +2,11 @@
 
 const { Review } = require('../models');
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  
+};
+
 const reviews = [
   {
     userId: 2,
@@ -84,6 +89,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    options.tableName = 'Reviews';
     for (const review of reviews) {
       await Review.destroy({ where: review });
     }

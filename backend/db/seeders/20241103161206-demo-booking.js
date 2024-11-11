@@ -2,6 +2,11 @@
 
 const { Booking } = require('../models');
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  
+};
+
 const bookings = [
   {
     spotId: 1,
@@ -30,6 +35,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    options.tableName = 'Bookings';
     for (const booking of bookings) {
       await Booking.destroy({ where: booking });
     }

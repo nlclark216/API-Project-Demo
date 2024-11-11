@@ -2,6 +2,11 @@
 
 const { ReviewImage } = require('../models');
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  
+};
+
 const reviewImages = [
   {
     reviewId: 1,
@@ -60,6 +65,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    options.tableName = 'ReviewImages';
     for (const img of reviewImages) {
       await ReviewImage.destroy({ where: img });
     }

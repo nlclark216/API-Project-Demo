@@ -4,6 +4,11 @@ const { Op } = require('sequelize');
 const { User } = require('../models');
 const bcrypt = require("bcryptjs");
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA; 
+}
+
 const users = [
   {
     firstName: 'Chadwick',
@@ -34,6 +39,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    options.tableName = 'Users';
     for(const user of users){
       await User.destroy({
         where: {
