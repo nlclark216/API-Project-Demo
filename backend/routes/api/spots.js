@@ -255,7 +255,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
       price: parseFloat(spot.price),
       createdAt: spot.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
       updatedAt: spot.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
-      avgRating: spot.get('avgRating') ? Number(parseFloat(spot.get('avgRating')).toFixed(1)) : null, 
+      avgRating: +parseFloat(spot.get('avgRating')).toFixed(1) || null, 
       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null
     }));
 
@@ -309,7 +309,7 @@ router.get('/:spotId', async (req, res, next) => {
       createdAt: spot.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
       updatedAt: spot.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
       numReviews: parseInt(aggregates.dataValues.numReviews) || 0,                    
-      avgStarRating: Number(parseFloat(aggregates.dataValues.avgStarRating).toFixed(1)) || 0,
+      avgStarRating: +parseFloat(aggregates.dataValues.avgStarRating).toFixed(1) || 0,
       SpotImages: spot.SpotImages,                                    
       Owner: {                                                              
         id: spot.Owner.id,
