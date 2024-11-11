@@ -199,7 +199,7 @@ router.get('/', restoreUser, validateQuery, async (req, res) => {
       price: parseFloat(spot.price),
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgRating: spot.get('avgRating') ? parseFloat(spot.get('avgRating')).toFixed(1) : null, 
+      avgRating: spot.get('avgRating') ? Number(parseFloat(spot.get('avgRating')).toFixed(1)) : null, 
       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null
     }));
   
@@ -255,7 +255,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
       price: parseFloat(spot.price),
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgRating: spot.get('avgRating') ? parseFloat(spot.get('avgRating')).toFixed(1) : null, 
+      avgRating: spot.get('avgRating') ? Number(parseFloat(spot.get('avgRating')).toFixed(1)) : null, 
       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null
     }));
 
@@ -309,7 +309,7 @@ router.get('/:spotId', async (req, res, next) => {
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
       numReviews: parseInt(aggregates.dataValues.numReviews) || 0,                    
-      avgStarRating: parseFloat(aggregates.dataValues.avgStarRating).toFixed(1) || 0,
+      avgStarRating: Number(parseFloat(aggregates.dataValues.avgStarRating).toFixed(1)) || 0,
       SpotImages: spot.SpotImages,                                    
       Owner: {                                                              
         id: spot.Owner.id,
