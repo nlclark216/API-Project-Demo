@@ -243,8 +243,6 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
       order: ['id']
     });
 
-    if(!userSpots) { return res.status(404).json({ message: "No spots found"}); }
-
     const formattedSpots = userSpots.map(spot => ({
       id: spot.id,
       ownerId: spot.ownerId,
@@ -259,7 +257,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
       price: parseFloat(spot.price),
       createdAt: spot.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
       updatedAt: spot.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
-      avgRating: +parseFloat(spot.get('avgRating')).toFixed(1) || null, 
+      avgRating: spot.get('avgRating') ? +parseFloat(spot.get('avgRating')).toFixed(1) : null, 
       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null
     }));
 
