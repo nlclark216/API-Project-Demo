@@ -6,7 +6,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
 const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { handleValidationErrors, handleExistingUser } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -38,32 +38,30 @@ const validateSignup = [
     handleValidationErrors
   ];
 
+const checkUser = [
+  check('email')
+    .custom(async (email) => {
+      const existingEmail = await User.findOne({
+        where: { email: email }});
+      if(existingEmail) {
+        throw new Error("User with that email already exists")
+      }
+    }),
+  check('username')
+    .custom(async (username) => {
+      const existingUsername = await User.findOne({
+        where: { username: username }});
+        if(existingUsername) {
+          throw new Error("User with that username already exists")
+        }
+    }),
+  handleExistingUser
+];
+
 // Sign up a user
-router.post('/', validateSignup, async (req, res, next) => {
+router.post('/', validateSignup, checkUser, async (req, res, next) => {
   const { firstName, lastName, email, password, username } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
-
-  const existingEmail = await User.findOne({
-    where: { email: email }});
-  if(existingEmail) {
-    return res.status(500).json({
-      message: "User already exists",
-      errors: {
-        email: "User with that email already exists"
-      }
-    })
-  };
-
-  const existingUsername = await User.findOne({
-    where: { username: username }});
-  if(existingUsername) {
-    return res.status(500).json({
-      message: "User already exists",
-      errors: {
-        email: "User with that username already exists"
-      }
-    })
-  };
 
   try {
     const user = await User.create({ firstName, lastName, email, username, hashedPassword });

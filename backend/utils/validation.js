@@ -26,4 +26,27 @@ const handleValidationErrors = (req, res, next) => {
   next();
 };
 
-module.exports = { handleValidationErrors };
+const handleExistingUser = (req, res, next) => {
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) { 
+    const errors = {};
+    validationErrors
+      .array()
+      .forEach(error => errors[error.path] = error.msg);
+
+    const err = {};
+    err.errors = errors;
+    err.status = 400;
+    err.title = "User already exists";
+    err.message = err.title;
+    
+    return res.status(500).json({
+      message: err.message,
+      errors: err.errors
+    });
+  }
+  next();
+};
+
+module.exports = { handleValidationErrors, handleExistingUser };
