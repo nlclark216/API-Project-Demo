@@ -53,19 +53,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     lat: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validate: {
-        isNumeric: true,
-        len: [6, 15]
-      }
+      allowNull: false
     },
     lng: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validate: {
-        isNumeric: true,
-        len: [6, 15]
-      }
+      allowNull: false
     },
     name: {
       type: DataTypes.STRING,
