@@ -1,7 +1,7 @@
 // backend/utils/auth.js
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Spot, Review, SpotImage } = require('../db/models');
+const { User, Spot, Review, SpotImage, ReviewImage } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -100,7 +100,7 @@ const reviewAuth = async function (req, res, next) {
   return res.status(403).json({ message: 'Forbidden' });
 };
 
-const imgAuth = async function (req, res, next) {
+const spotImgAuth = async function (req, res, next) {
   const img = await SpotImage.findOne({where: {
     id: req.params.imageId
   }});
@@ -116,8 +116,24 @@ const imgAuth = async function (req, res, next) {
   return res.status(403).json({ message: 'Forbidden' });
 };
 
+const reviewImgAuth = async function (req, res, next) {
+  const img = await ReviewImage.findOne({where: {
+    id: req.params.imageId
+  }});
+
+  if(img){
+    const review = await Review.findByPk(img.reviewId);
+    
+    if (review.userId === req.user.id) return next();
+  };
+
+  if(img === null) return next();
+
+  return res.status(403).json({ message: 'Forbidden' });
+};
 
 
 
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth, reviewAuth, imgAuth };
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth, reviewAuth, spotImgAuth, reviewImgAuth };
