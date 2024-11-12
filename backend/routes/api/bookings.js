@@ -8,6 +8,35 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const validateBooking = [
+    check('startDate')
+      .exists({ checkFalsy: true })
+      .withMessage('Start date is required')
+      .isISO8601()
+      .withMessage('Start date must be a valid date')
+      .custom((value) => {
+        const startDate = new Date(value);
+        if (startDate < new Date()) {
+          throw new Error("startDate cannot be in the past");
+        }
+        return true;
+      }),
+    check('endDate')
+      .exists({ checkFalsy: true })
+      .withMessage('End date is required')
+      .isISO8601()
+      .withMessage('End date must be a valid date')
+      .custom((value, { req }) => {
+        const startDate = new Date(req.body.startDate);
+        const endDate = new Date(value);
+        if (endDate <= startDate) {
+          throw new Error("endDate cannot be on or before startDate");
+        }
+        return true;
+      }),
+    handleValidationErrors
+  ];
+
 // Get all of the Current User's Bookings
 router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
     const { user } = req;
@@ -64,4 +93,4 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 
 
 
-module.exports = router;
+module.exports = [router, validateBooking];
