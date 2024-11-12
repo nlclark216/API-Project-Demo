@@ -26,7 +26,7 @@ const validateLogin = [
 router.post('/', validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
-  try {
+  
     const user = await User.unscoped().findOne({
       where: {
         [Op.or]: {
@@ -47,7 +47,7 @@ router.post('/', validateLogin, async (req, res, next) => {
       email: user.email,
       username: user.username
     };
-    
+  try {
     await setTokenCookie(res, safeUser);
     
     return res.json({ user: safeUser });
@@ -56,17 +56,17 @@ router.post('/', validateLogin, async (req, res, next) => {
 
 // Log out
 router.delete('/', (_req, res, next) => {
-  try {
-    res.clearCookie('token');
-    return res.json({ message: 'success' });
-  } catch(error) { next(error) };
+
+  res.clearCookie('token');
+  return res.json({ message: 'success' });
+
 });
 
 // Get the current user
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
   const { user } = req;
 
-  try {
+  
     if (user) {
     const safeUser = {
       id: user.id,
@@ -77,7 +77,6 @@ router.get('/', async (req, res, next) => {
     };
     return res.json({ user: safeUser });
     } else return res.json({ user: null });
-  } catch (error) { next(error) }
 });
 
 
