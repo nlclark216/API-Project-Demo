@@ -43,51 +43,51 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
     const { user } = req;
 
     try {
-        const bookings = await Booking.findAll ({
-            where: { userId: user.id },
-            include: [ 
-                { 
-                model: Spot,
-                include: [
-                    {
-                      model: SpotImage,
-                      attributes: [],
-                      required: false,
-                      where: { preview: true }
-                    },
-                  ],
-                  attributes: [
-                    'id',
-                    'ownerId',
-                    'address',
-                    'city',
-                    'state',
-                    'country',
-                    'lat',
-                    'lng',
-                    'name',
-                    'price',
-                    [Sequelize.literal('"Spot->SpotImages"."url"'), 'previewImage']]
-                }, 
-               ],
-            order: ['id']
-        });
+      const bookings = await Booking.findAll ({
+          where: { userId: user.id },
+          include: [ 
+              { 
+              model: Spot,
+              include: [
+                  {
+                    model: SpotImage,
+                    attributes: [],
+                    required: false,
+                    where: { preview: true }
+                  },
+                ],
+                attributes: [
+                  'id',
+                  'ownerId',
+                  'address',
+                  'city',
+                  'state',
+                  'country',
+                  'lat',
+                  'lng',
+                  'name',
+                  'price',
+                  [Sequelize.literal('"Spot->SpotImages"."url"'), 'previewImage']]
+              }, 
+              ],
+          order: ['id']
+      });
 
 
-        if(!bookings) { return res.status(404).json({ message: "No bookings found"}); }
+      if(!bookings) { return res.status(404).json({ message: "No bookings found"}); }
 
-        const formattedBooking = bookings.map(b => ({
-            id: b.id,
-            spotId: b.spotId,
-            Spot: b.Spot,
-            userId: b.userId,
-            startDate: b.startDate.toISOString().substring(0, 10),
-            endDate: b.endDate.toISOString().substring(0, 10),
-            createdAt: b.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
-            updatedAt: b.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, '')
-        }));
+      const formattedBooking = bookings.map(b => ({
+          id: b.id,
+          spotId: b.spotId,
+          Spot: b.Spot,
+          userId: b.userId,
+          startDate: b.startDate.toISOString().substring(0, 10),
+          endDate: b.endDate.toISOString().substring(0, 10),
+          createdAt: b.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
+          updatedAt: b.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, '')
+      }));
 
-        return res.status(200).json({ Bookings: formattedBooking });
+      return res.status(200).json({ Bookings: formattedBooking });
     } catch (error) { next(error); };
 });
 
@@ -95,29 +95,31 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking, async (req, res, next) => {
     const { startDate, endDate } = req.body;
     const { bookingId } = req.params;
-    const booking = await Booking.findByPk(bookingId);
-    if (!booking) {
-        return res.status(404).json({ message: "Booking couldn't be found" });
-    };
 
-    const startTimestamp = new Date(req.body.startDate).toISOString();
-    const endTimestamp = new Date(req.body.endDate).toISOString();
+    try {
+      const booking = await Booking.findByPk(bookingId);
+      if (!booking) {
+          return res.status(404).json({ message: "Booking couldn't be found" });
+      };
 
-    const bookingConflicts = await Booking.findAll({
-        where: {                        
-          spotId: booking.spotId,            
-          [Op.or]: 
-          [
-            { startDate: { [Op.between]: [startTimestamp, endTimestamp] }},
-            { endDate: { [Op.between]: [startTimestamp, endTimestamp] }},
-            { [Op.and]: [
-              { startDate: { [Op.lte]: startTimestamp } },
-              { endDate: { [Op.gte]: endTimestamp } }
+      const startTimestamp = new Date(req.body.startDate).toISOString();
+      const endTimestamp = new Date(req.body.endDate).toISOString();
+
+      const bookingConflicts = await Booking.findAll({
+          where: {                        
+            spotId: booking.spotId,            
+            [Op.or]: 
+            [
+              { startDate: { [Op.between]: [startTimestamp, endTimestamp] }},
+              { endDate: { [Op.between]: [startTimestamp, endTimestamp] }},
+              { [Op.and]: [
+                { startDate: { [Op.lte]: startTimestamp } },
+                { endDate: { [Op.gte]: endTimestamp } }
+              ]}
             ]}
-          ]}
-    });
+      });
 
-    if (bookingConflicts.length) {
+      if (bookingConflicts.length) {
         const errors = {};
       
         for (const conflict of bookingConflicts) {
@@ -139,19 +141,19 @@ router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking
         });
       }
 
-    try {
-        booking.startDate = startDate;
-        booking.endDate = endDate;
-        await booking.save();
-        return res.status(200).json({
-            id: booking.id,
-            spotId: booking.spotId,
-            userId: booking.userId,
-            startDate: booking.startDate.toISOString().substring(0, 10),
-            endDate: booking.endDate.toISOString().substring(0, 10),
-            createdAt: booking.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
-            updatedAt: booking.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, '')
-          });
+    
+      booking.startDate = startDate;
+      booking.endDate = endDate;
+      await booking.save();
+      return res.status(200).json({
+          id: booking.id,
+          spotId: booking.spotId,
+          userId: booking.userId,
+          startDate: booking.startDate.toISOString().substring(0, 10),
+          endDate: booking.endDate.toISOString().substring(0, 10),
+          createdAt: booking.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
+          updatedAt: booking.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, '')
+        });
     } catch (error) { next(error); }
 });
 

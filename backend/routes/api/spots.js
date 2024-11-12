@@ -100,65 +100,66 @@ const validateQuery = [
 router.get('/', restoreUser, validateQuery, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
-  page = page ? page : 1;
-  size = size ? size : 20;
-  
-  page = parseInt(page);
-  size = parseInt(size);
-
-  const pagination = {};
-  if (page >= 1 && size >= 1) {
-      pagination.limit = size;
-      pagination.offset = size * (page - 1);
-  };
-
-  const where = {};
-
-  // Search filters
-
-  if (minLat != undefined || maxLat != undefined) {
-    const filter = []
-
-    if (minLat != undefined) {
-      filter.push({ [Op.gte]: parseFloat(minLat) });
-    }
-
-    if (maxLat != undefined) {
-      filter.push({ [Op.lte]: parseFloat(maxLat) });
-    }
-
-    where.lat = { [Op.and]: filter };
-  };
-
-  if (minLng != undefined || maxLng != undefined) {
-    const filter = []
-
-    if (minLng != undefined) {
-      filter.push({ [Op.gte]: parseFloat(minLng) });
-    }
-
-    if (maxLng != undefined) {
-      filter.push({ [Op.lte]: parseFloat(maxLng) });
-    }
-
-    where.lng = { [Op.and]: filter };
-  };
-
-  if (minPrice != undefined || maxPrice != undefined) {
-    const filter = []
-
-    if (minPrice != undefined) {
-      filter.push({ [Op.gte]: parseFloat(minPrice) });
-    }
-
-    if (maxPrice != undefined) {
-      filter.push({ [Op.lte]: parseFloat(maxPrice) });
-    }
-
-    where.price = { [Op.and]: filter };
-  };
-
   try{
+    page = page ? page : 1;
+    size = size ? size : 20;
+    
+    page = parseInt(page);
+    size = parseInt(size);
+
+    const pagination = {};
+    if (page >= 1 && size >= 1) {
+        pagination.limit = size;
+        pagination.offset = size * (page - 1);
+    };
+
+    const where = {};
+
+    // Search filters
+
+    if (minLat != undefined || maxLat != undefined) {
+      const filter = []
+
+      if (minLat != undefined) {
+        filter.push({ [Op.gte]: parseFloat(minLat) });
+      }
+
+      if (maxLat != undefined) {
+        filter.push({ [Op.lte]: parseFloat(maxLat) });
+      }
+
+      where.lat = { [Op.and]: filter };
+    };
+
+    if (minLng != undefined || maxLng != undefined) {
+      const filter = []
+
+      if (minLng != undefined) {
+        filter.push({ [Op.gte]: parseFloat(minLng) });
+      }
+
+      if (maxLng != undefined) {
+        filter.push({ [Op.lte]: parseFloat(maxLng) });
+      }
+
+      where.lng = { [Op.and]: filter };
+    };
+
+    if (minPrice != undefined || maxPrice != undefined) {
+      const filter = []
+
+      if (minPrice != undefined) {
+        filter.push({ [Op.gte]: parseFloat(minPrice) });
+      }
+
+      if (maxPrice != undefined) {
+        filter.push({ [Op.lte]: parseFloat(maxPrice) });
+      }
+
+      where.price = { [Op.and]: filter };
+    };
+
+  
     const allSpots = await Spot.findAll({
       ...pagination,
       ...where,
@@ -526,22 +527,23 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next)
   const { spotId } = req.params;
   const { user } = req;
 
-  const spot = await Spot.findByPk(spotId);
-  if(!spot) return res.status(404).json({
-    message: "Spot couldn't be found"
-  });
-  
-
-  const bookings = await Booking.findAll({
-    where: {spotId},
-    include: { 
-      model: User,
-      attributes: ['id', 'firstName', 'lastName']
-    }
-  });
-  
-
   try {
+    const spot = await Spot.findByPk(spotId);
+    if(!spot) return res.status(404).json({
+      message: "Spot couldn't be found"
+    });
+    
+
+    const bookings = await Booking.findAll({
+      where: {spotId},
+      include: { 
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      }
+    });
+  
+
+  
     if(!bookings.length) return res.status(200).json({Bookings: []});
     if(bookings[0].dataValues.userId === user.id){
       const formattedBooking = bookings.map(b => ({
@@ -574,31 +576,32 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBooking,  asy
   const { spotId } = req.params;
   const errors = {};
 
-  const startTimestamp = new Date(req.body.startDate).toISOString();
-  const endTimestamp = new Date(req.body.endDate).toISOString();
+  try {
+    const startTimestamp = new Date(req.body.startDate).toISOString();
+    const endTimestamp = new Date(req.body.endDate).toISOString();
 
-  const spot = await Spot.findByPk(spotId);
-  if(!spot) return res.status(404).json({
-    message: "Spot couldn't be found"
-  });
+    const spot = await Spot.findByPk(spotId);
+    if(!spot) return res.status(404).json({
+      message: "Spot couldn't be found"
+    });
 
-  if(user.id === spot.ownerId){
-    return res.status(403).json({ message: "Forbidden"})
-  };
+    if(user.id === spot.ownerId){
+      return res.status(403).json({ message: "Forbidden"})
+    };
 
-  const bookingConflicts = await Booking.findAll({
-    where: {                        
-      spotId: spotId,            
-      [Op.or]: 
-      [
-        { startDate: { [Op.between]: [startTimestamp, endTimestamp] }},
-        { endDate: { [Op.between]: [startTimestamp, endTimestamp] }},
-        { [Op.and]: [
-          { startDate: { [Op.lte]: startTimestamp } },
-          { endDate: { [Op.gte]: endTimestamp } }
+    const bookingConflicts = await Booking.findAll({
+      where: {                        
+        spotId: spotId,            
+        [Op.or]: 
+        [
+          { startDate: { [Op.between]: [startTimestamp, endTimestamp] }},
+          { endDate: { [Op.between]: [startTimestamp, endTimestamp] }},
+          { [Op.and]: [
+            { startDate: { [Op.lte]: startTimestamp } },
+            { endDate: { [Op.gte]: endTimestamp } }
+          ]}
         ]}
-      ]}
-  });
+    });
 
 
    if (bookingConflicts.length) {
@@ -621,7 +624,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBooking,  asy
     });
   }
   
-  try {
+  
     const newBooking = await spot.createBooking({
       spotId: spotId,
       userId: user.id,
