@@ -2,7 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 
 const { requireAuth, spotAuth, restoreUser } = require('../../utils/auth');
-const { Spot, Sequelize, Review, SpotImage, User, ReviewImage } = require('../../db/models');
+const { Spot, Sequelize, Review, SpotImage, User, ReviewImage, Booking } = require('../../db/models');
 
 const { check, query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -519,6 +519,53 @@ router.post('/:spotId/reviews', restoreUser, requireAuth, validateReview, async 
   } catch (error) { next(error); }
 });
 
+
+// Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next) => {
+  const { spotId } = req.params;
+  const { user } = req;
+
+  const spot = await Spot.findByPk(spotId);
+  if(!spot) return res.status(404).json({
+    message: "Spot couldn't be found"
+  });
+  
+
+  const bookings = await Booking.findAll({
+    where: {spotId},
+    include: { 
+      model: User,
+      attributes: ['id', 'firstName', 'lastName']
+    }
+  });
+  
+
+  try {
+    if(!bookings.length) return res.status(200).json({Bookings: []});
+    if(bookings[0].dataValues.userId === user.id){
+      const formattedBooking = bookings.map(b => ({
+        User: b.User,
+        id: b.id,
+        spotId: b.spotId,
+        Spot: b.Spot,
+        userId: b.userId,
+        startDate: b.startDate.toISOString().substring(0, 10),
+        endDate: b.endDate.toISOString().substring(0, 10),
+        createdAt: b.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
+        updatedAt: b.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, '')
+      }));
+      return res.json({ Bookings: formattedBooking });
+    } else {
+      const formattedBooking = bookings.map(b => ({
+        spotId: b.spotId,
+        startDate: b.startDate.toISOString().substring(0, 10),
+        endDate: b.endDate.toISOString().substring(0, 10),
+      }));
+      return res.json({ Bookings: formattedBooking });
+    }
+  } catch (error) { next(error) }
+  
+});
 
 
 
