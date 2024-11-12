@@ -1,6 +1,7 @@
 const express = require('express');
+const { Op } = require('sequelize');
 
-const { restoreUser, requireAuth } = require('../../utils/auth');
+const { restoreUser, requireAuth, bookingAuth, bookingSpotAuth } = require('../../utils/auth');
 const { Booking, Spot, SpotImage, Sequelize } = require('../../db/models');
 
 const router = express.Router();
@@ -88,6 +89,71 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 
         return res.status(200).json({ Bookings: formattedBooking });
     } catch (error) { next(error); };
+});
+
+// Edit a Booking
+router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking, async (req, res, next) => {
+    const { startDate, endDate } = req.body;
+    const { bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) {
+        return res.status(404).json({ message: "Booking couldn't be found" });
+    }
+
+    const startTimestamp = new Date(req.body.startDate).toISOString();
+    const endTimestamp = new Date(req.body.endDate).toISOString();
+
+    const bookingConflicts = await Booking.findAll({
+        where: {                        
+          spotId: booking.spotId,            
+          [Op.or]: 
+          [
+            { startDate: { [Op.between]: [startTimestamp, endTimestamp] }},
+            { endDate: { [Op.between]: [startTimestamp, endTimestamp] }},
+            { [Op.and]: [
+              { startDate: { [Op.lte]: startTimestamp } },
+              { endDate: { [Op.gte]: endTimestamp } }
+            ]}
+          ]}
+    });
+
+    if (bookingConflicts.length) {
+        const errors = {};
+      
+        for (const conflict of bookingConflicts) {
+          const conflictStartTimestamp = new Date(conflict.startDate).toISOString();
+          const conflictEndTimestamp = new Date(conflict.endDate).toISOString();
+    
+          if (conflictStartTimestamp === startTimestamp || (conflictStartTimestamp < startTimestamp && startTimestamp < conflictEndTimestamp)) {
+            errors.startDate = 'Start date conflicts with an existing booking';
+          }
+    
+          if (conflictEndTimestamp === endTimestamp || (endTimestamp < conflictEndTimestamp && endTimestamp > conflictStartTimestamp)) {
+            errors.endDate = 'End date conflicts with an existing booking';
+          }
+        }
+        
+        // User's requested dates can't overlap existing bookings
+        return res.status(403).json({
+          message: 'Sorry, this spot is already booked for the specified dates',
+          errors,
+        });
+      }
+
+    try {
+        booking.startDate = startDate;
+        booking.endDate = endDate;
+        await booking.save();
+        return res.status(200).json({
+            id: booking.id,
+            spotId: booking.spotId,
+            userId: booking.userId,
+            startDate: booking.startDate.toISOString().substring(0, 10),
+            endDate: booking.endDate.toISOString().substring(0, 10),
+            createdAt: booking.createdAt.toISOString().replace(/T/, ' ').replace(/\..+/g, ''),
+            updatedAt: booking.updatedAt.toISOString().replace(/T/, ' ').replace(/\..+/g, '')
+          });
+    } catch (error) { next(error); }
 });
 
 

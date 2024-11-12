@@ -582,7 +582,8 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBooking,  asy
   });
 
   if(user.id === spot.ownerId){
-    return res.status(403).json({ message: "Forbidden"})};
+    return res.status(403).json({ message: "Forbidden"})
+  };
 
   const bookingConflicts = await Booking.findAll({
     where: {                        

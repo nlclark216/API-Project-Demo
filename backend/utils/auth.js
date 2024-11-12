@@ -1,7 +1,7 @@
 // backend/utils/auth.js
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Spot, Review, SpotImage, ReviewImage } = require('../db/models');
+const { User, Spot, Review, SpotImage, ReviewImage, Booking } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -132,8 +132,37 @@ const reviewImgAuth = async function (req, res, next) {
   return res.status(403).json({ message: 'Forbidden' });
 };
 
+const bookingAuth = async function (req, res, next) {
+  const booking = await Booking.findOne({where: {
+    id: req.params.bookingId
+  }});
+
+  if(booking === null) return next();
+
+  if(booking.userId === req.user.id) return next();
+
+  return res.status(403).json({ message: 'Forbidden' });
+};
+
+const bookingSpotAuth = async function (req, res, next) {
+  const booking = await Booking.findOne({where: {
+    id: req.params.bookingId
+  }});
+
+  if(booking){
+    const spot = await Spot.findByPk(booking.spotId);
+    
+    if (booking.userId === req.user.id || 
+    spot.ownerId === req.user.id) return next();
+  };
+
+  if(booking === null) return next();
+
+  return res.status(403).json({ message: 'Forbidden' });
+};
 
 
 
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth, reviewAuth, spotImgAuth, reviewImgAuth };
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth, reviewAuth, spotImgAuth, reviewImgAuth, bookingAuth, bookingSpotAuth };
