@@ -572,6 +572,7 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next)
 router.post('/:spotId/bookings', restoreUser, requireAuth, validateBooking,  async (req, res, next) => {
   const { user } = req;
   const { spotId } = req.params;
+  const errors = {};
 
   const startTimestamp = new Date(req.body.startDate).toISOString();
   const endTimestamp = new Date(req.body.endDate).toISOString();
@@ -601,8 +602,6 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBooking,  asy
 
 
    if (bookingConflicts.length) {
-    const errors = {};
-  
     for (const conflict of bookingConflicts) {
       const conflictStartTimestamp = new Date(conflict.startDate).toISOString();
       const conflictEndTimestamp = new Date(conflict.endDate).toISOString();
@@ -615,14 +614,13 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBooking,  asy
         errors.endDate = 'End date conflicts with an existing booking';
       }
     }
-    
-    // User's requested dates can't overlap existing bookings
+   
     return res.status(403).json({
       message: 'Sorry, this spot is already booked for the specified dates',
       errors,
     });
   }
-
+  
   try {
     const newBooking = await spot.createBooking({
       spotId: spotId,
