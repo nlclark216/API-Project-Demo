@@ -98,7 +98,7 @@ router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking
     const booking = await Booking.findByPk(bookingId);
     if (!booking) {
         return res.status(404).json({ message: "Booking couldn't be found" });
-    }
+    };
 
     const startTimestamp = new Date(req.body.startDate).toISOString();
     const endTimestamp = new Date(req.body.endDate).toISOString();
@@ -133,7 +133,6 @@ router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking
           }
         }
         
-        // User's requested dates can't overlap existing bookings
         return res.status(403).json({
           message: 'Sorry, this spot is already booked for the specified dates',
           errors,
@@ -156,6 +155,26 @@ router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking
     } catch (error) { next(error); }
 });
 
+// Delete a Booking
+router.delete('/:bookingId', restoreUser, requireAuth, bookingSpotAuth, async (req, res, next) => {
+    const { bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) {
+        return res.status(404).json({ message: "Booking couldn't be found" });
+    };
+
+    // Check if the booking has already started
+    if (new Date(booking.startDate) <= new Date()) {
+        return res.status(403).json({
+            message: "Bookings that have been started can't be deleted"
+        });
+    };
+
+    try {
+        await booking.destroy();
+        return res.status(200).json({ message: "Successfully deleted" });
+    } catch (error) { next(error); };
+});
 
 
 
