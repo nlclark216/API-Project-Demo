@@ -40,9 +40,10 @@ const validateBooking = [
 
 // Get all of the Current User's Bookings
 router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
-    const { user } = req;
+    
 
     try {
+      const { user } = req;
       const bookings = await Booking.findAll ({
           where: { userId: user.id },
           include: [ 
@@ -93,10 +94,11 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 
 // Edit a Booking
 router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking, async (req, res, next) => {
-    const { startDate, endDate } = req.body;
-    const { bookingId } = req.params;
+    
 
     try {
+      const { startDate, endDate } = req.body;
+      const { bookingId } = req.params;
       const booking = await Booking.findByPk(bookingId);
       if (!booking) {
           return res.status(404).json({ message: "Booking couldn't be found" });
@@ -159,6 +161,7 @@ router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking
 
 // Delete a Booking
 router.delete('/:bookingId', restoreUser, requireAuth, bookingSpotAuth, async (req, res, next) => {
+  try {
     const { bookingId } = req.params;
     const booking = await Booking.findByPk(bookingId);
     if (!booking) {
@@ -172,7 +175,7 @@ router.delete('/:bookingId', restoreUser, requireAuth, bookingSpotAuth, async (r
         });
     };
 
-    try {
+   
         await booking.destroy();
         return res.status(200).json({ message: "Successfully deleted" });
     } catch (error) { next(error); };

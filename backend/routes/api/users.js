@@ -60,10 +60,11 @@ const checkUser = [
 
 // Sign up a user
 router.post('/', validateSignup, checkUser, async (req, res, next) => {
+  try {
   const { firstName, lastName, email, password, username } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
 
-  try {
+
     const user = await User.create({ firstName, lastName, email, username, hashedPassword });
 
     const safeUser = {

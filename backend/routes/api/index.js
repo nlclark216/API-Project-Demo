@@ -25,9 +25,10 @@ router.post('/test', function (req, res) {
 
 // Delete a spot image
 router.delete('/spot-images/:imageId', restoreUser, requireAuth, spotImgAuth, async (req, res, next) => {
-  const { imageId } = req.params;
+  
 
   try {
+    const { imageId } = req.params;
     const img = await SpotImage.findByPk(imageId);
 
     if(!img) return res.status(404).json({ message: "Spot Image couldn't be found" });
@@ -40,9 +41,10 @@ router.delete('/spot-images/:imageId', restoreUser, requireAuth, spotImgAuth, as
 
 // Delete a review image
 router.delete('/review-images/:imageId', restoreUser, requireAuth, reviewImgAuth, async (req, res, next) => {
-  const { imageId } = req.params;
+  
 
   try {
+    const { imageId } = req.params;
     const img = await ReviewImage.findByPk(imageId);
 
     if(!img) return res.status(404).json({ message: "Review Image couldn't be found" });

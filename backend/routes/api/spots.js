@@ -98,66 +98,66 @@ const validateQuery = [
 
 // Get all spots
 router.get('/', restoreUser, validateQuery, async (req, res) => {
+  try{
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
-  try{
-    page = page ? page : 1;
-    size = size ? size : 20;
-    
-    page = parseInt(page);
-    size = parseInt(size);
+  page = page ? page : 1;
+  size = size ? size : 20;
+  
+  page = parseInt(page);
+  size = parseInt(size);
 
-    const pagination = {};
-    if (page >= 1 && size >= 1) {
-        pagination.limit = size;
-        pagination.offset = size * (page - 1);
-    };
+  const pagination = {};
+  if (page >= 1 && size >= 1) {
+      pagination.limit = size;
+      pagination.offset = size * (page - 1);
+  };
 
     const where = {};
 
-    // Search filters
+  // Search filters
 
-    if (minLat != undefined || maxLat != undefined) {
-      const filter = []
+  if (minLat != undefined || maxLat != undefined) {
+    const filter = []
 
-      if (minLat != undefined) {
-        filter.push({ [Op.gte]: parseFloat(minLat) });
-      }
+    if (minLat != undefined) {
+      filter.push({ [Op.gte]: parseFloat(minLat) });
+    }
 
-      if (maxLat != undefined) {
-        filter.push({ [Op.lte]: parseFloat(maxLat) });
-      }
+    if (maxLat != undefined) {
+      filter.push({ [Op.lte]: parseFloat(maxLat) });
+    }
 
-      where.lat = { [Op.and]: filter };
-    };
+    where.lat = { [Op.and]: filter };
+  };
 
-    if (minLng != undefined || maxLng != undefined) {
-      const filter = []
+  if (minLng != undefined || maxLng != undefined) {
+    const filter = []
 
-      if (minLng != undefined) {
-        filter.push({ [Op.gte]: parseFloat(minLng) });
-      }
+    if (minLng != undefined) {
+      filter.push({ [Op.gte]: parseFloat(minLng) });
+    }
 
-      if (maxLng != undefined) {
-        filter.push({ [Op.lte]: parseFloat(maxLng) });
-      }
+    if (maxLng != undefined) {
+      filter.push({ [Op.lte]: parseFloat(maxLng) });
+    }
 
-      where.lng = { [Op.and]: filter };
-    };
+    where.lng = { [Op.and]: filter };
+  };
 
-    if (minPrice != undefined || maxPrice != undefined) {
-      const filter = []
+  if (minPrice != undefined || maxPrice != undefined) {
+    const filter = []
 
-      if (minPrice != undefined) {
-        filter.push({ [Op.gte]: parseFloat(minPrice) });
-      }
+    if (minPrice != undefined) {
+      filter.push({ [Op.gte]: parseFloat(minPrice) });
+    }
 
-      if (maxPrice != undefined) {
-        filter.push({ [Op.lte]: parseFloat(maxPrice) });
-      }
+    if (maxPrice != undefined) {
+      filter.push({ [Op.lte]: parseFloat(maxPrice) });
+    }
 
-      where.price = { [Op.and]: filter };
-    };
+    where.price = { [Op.and]: filter };
+  };
 
   
     const allSpots = await Spot.findAll({
@@ -218,7 +218,6 @@ router.get('/', restoreUser, validateQuery, async (req, res) => {
 router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
   try {
     const { user } = req;
-
     const userSpots = await Spot.findAll({
       where: { ownerId: user.id },
       attributes: [ 
@@ -270,26 +269,28 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 
 // Get details of a Spot from an id
 router.get('/:spotId', async (req, res, next) => {
+  try {
   const { spotId } = req.params;
 
-  try {
-    const spot = await Spot.findOne({
-      where: { id: spotId },
-      include: [
-        { 
-          model: SpotImage,
-          attributes: ['id', 'url', 'preview']
-        },
-        {
-          model: User,
-          as: 'Owner',
-          attributes: ['id', 'firstName', 'lastName']
-        }
-      ]
-    });
+  
+  const spot = await Spot.findOne({
+    where: { id: spotId },
+    include: [
+      { 
+        model: SpotImage,
+        attributes: ['id', 'url', 'preview']
+      },
+      {
+        model: User,
+        as: 'Owner',
+        attributes: ['id', 'firstName', 'lastName']
+      }
+    ]
+  });
 
-    if(!spot) { return res.status(404).json({ message: "Spot couldn't be found"}); }
+  if(!spot) { return res.status(404).json({ message: "Spot couldn't be found"}); };
 
+  
     const aggregates = await Review.findOne({
       where: { spotId: spot.id },
       attributes: [
@@ -327,23 +328,24 @@ router.get('/:spotId', async (req, res, next) => {
 
 // Create a spot
 router.post('/', restoreUser, requireAuth, validateSpot, async (req, res, next) => {
+  try {
   const {user} = req;
 
-  try {
-    const {address, city, state, country, 
-    lat, lng, name, description, price } = req.body;
+  const {address, city, state, country, 
+  lat, lng, name, description, price } = req.body;
 
-    const existingAddress = await Spot.findOne({
-      where: { address: address }});
+  const existingAddress = await Spot.findOne({
+    where: { address: address }});
 
-    if(existingAddress) {
-    return res.status(500).json({
-      message: "Spot with that address is already on file",
-      errors: {
-        address: "Spot with that address already exists"
-      }
-    });};
-
+  if(existingAddress) {
+  return res.status(500).json({
+    message: "Spot with that address is already on file",
+    errors: {
+      address: "Spot with that address already exists"
+    }
+  });};
+  
+  
     const spot = await Spot.create({address, city, state, country, 
       lat, lng, name, description, price, ownerId: user.id});
 
@@ -370,24 +372,25 @@ router.post('/', restoreUser, requireAuth, validateSpot, async (req, res, next) 
 
 // Add an Image to a Spot based on the Spot's id
 router.post('/:spotId/images', restoreUser, requireAuth, spotAuth, async (req, res, next) => {
+  try {
   const { spotId } = req.params;
   const { url, preview } = req.body;
 
-  try {
-    const targetSpot = await Spot.findByPk(spotId);
-    
-    if(!targetSpot) return res.status(404).json({ message: "Spot couldn't be found"});
+  const targetSpot = await Spot.findByPk(spotId);
+  
+  if(!targetSpot) return res.status(404).json({ message: "Spot couldn't be found"});
 
-    const images = await SpotImage.findAll({
-      where: { spotId: spotId }
+  const images = await SpotImage.findAll({
+    where: { spotId: spotId }
+  });
+
+  if (images.length >= 10) {
+    return res.status(403).json({ 
+        message: "Maximum number of images for this resource was reached" 
     });
+  };
 
-    if (images.length >= 10) {
-      return res.status(403).json({ 
-          message: "Maximum number of images for this resource was reached" 
-      });
-    };
-
+  
     const newImg = await SpotImage.create({
       url: url,
       preview: preview,
@@ -404,11 +407,12 @@ router.post('/:spotId/images', restoreUser, requireAuth, spotAuth, async (req, r
 
 // Edit a Spot by Id
 router.put('/:spotId', restoreUser, requireAuth, spotAuth, validateSpot, async (req, res, next) => {
+  try {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
   const { spotId } = req.params;
 
-  try {
+ 
     const spot = await Spot.findByPk(spotId);
 
     if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
@@ -445,31 +449,32 @@ router.put('/:spotId', restoreUser, requireAuth, spotAuth, validateSpot, async (
 
 // Delete a Spot
 router.delete('/:spotId', restoreUser, requireAuth, spotAuth, async (req, res, next) => {
+  try {
   const { spotId } = req.params;
 
-  try {
-    const spot = await Spot.findByPk(spotId);
+  const spot = await Spot.findByPk(spotId);
 
-    if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
+  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
 
-    else {
-      await spot.destroy();
+ 
+    await spot.destroy();
 
-      return res.status(200).json({ message: "Successfully deleted" });
-    };
+    return res.status(200).json({ message: "Successfully deleted" });
+  
   } catch (error) { next(error) };  
 });
 
 // Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res, next) => {
-  const { spotId } = req.params;
-
   try {
-    const spot = await Spot.findByPk(spotId);
+  const { spotId } = req.params;
+  
+  const spot = await Spot.findByPk(spotId);
 
-    if(!spot){
-    return res.status(404).json({ message: "Spot couldn't be found" })
-    } else {
+  if(!spot){
+  return res.status(404).json({ message: "Spot couldn't be found" })
+  };
+
     const reviews = await Review.findAll({
       where: { spotId: spotId },
       include: [
@@ -486,25 +491,27 @@ router.get('/:spotId/reviews', async (req, res, next) => {
     });
 
     return res.status(200).json({ Reviews: reviews });
-  }; 
+
   } catch (error) { next(error); };
 });
 
 // Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', restoreUser, requireAuth, validateReview, async (req, res, next) => {
+  try {
   const { review, stars } = req.body;
   const { spotId } = req.params;
+  
+  const spot = await Spot.findByPk(spotId);
+  
+  if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
 
-  try {
-    const spot = await Spot.findByPk(spotId);
-    
-    if(!spot) return res.status(404).json({ message: "Spot couldn't be found"});
-    const existingReview = await Review.findOne({ 
-    where: { userId: req.user.id, 
-              spotId: spotId
-            } 
-    });
+  const existingReview = await Review.findOne({ 
+  where: { userId: req.user.id, 
+            spotId: spotId
+          } 
+  });
 
+ 
     if (existingReview) {
       return res.status(500).json({ 
         message: "User already has a review for this spot" });
@@ -524,16 +531,15 @@ router.post('/:spotId/reviews', restoreUser, requireAuth, validateReview, async 
 
 // Get all Bookings for a Spot based on the Spot's id
 router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next) => {
+  try {
   const { spotId } = req.params;
   const { user } = req;
-
-  try {
+  
     const spot = await Spot.findByPk(spotId);
     if(!spot) return res.status(404).json({
       message: "Spot couldn't be found"
     });
     
-
     const bookings = await Booking.findAll({
       where: {spotId},
       include: { 
@@ -542,8 +548,8 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next)
       }
     });
   
-
-  
+ 
+    
     if(!bookings.length) return res.status(200).json({Bookings: []});
     if(bookings[0].dataValues.userId === user.id){
       const formattedBooking = bookings.map(b => ({
@@ -572,11 +578,12 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next)
 
 // Create a Booking from a Spot based on the Spot's id
 router.post('/:spotId/bookings', restoreUser, requireAuth, validateBooking,  async (req, res, next) => {
+  try {
   const { user } = req;
   const { spotId } = req.params;
   const errors = {};
 
-  try {
+
     const startTimestamp = new Date(req.body.startDate).toISOString();
     const endTimestamp = new Date(req.body.endDate).toISOString();
 

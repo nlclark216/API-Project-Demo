@@ -22,9 +22,10 @@ const validateReview = [
 
 // Get all Reviews of the Current User
 router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
-    const { user } = req;
+    
 
     try {
+      const { user } = req;
       const reviews = await Review.findAll({
         where: { userId: user.id },
         include: [
@@ -71,10 +72,11 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 
 // Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', restoreUser, requireAuth, reviewAuth, async (req, res, next) => {
-    const { reviewId } = req.params;
-    const { url } = req.body;
+    
 
     try {
+        const { reviewId } = req.params;
+        const { url } = req.body;
         const targetReview = await Review.findByPk(reviewId);
 
         if (!targetReview) {
@@ -102,10 +104,11 @@ router.post('/:reviewId/images', restoreUser, requireAuth, reviewAuth, async (re
 
 // Edit a Review
 router.put('/:reviewId', restoreUser, requireAuth, reviewAuth, validateReview, async (req, res, next) => {
-    const { review, stars } = req.body;
-    const { reviewId } = req.params;
+    
 
     try {
+        const { review, stars } = req.body;
+        const { reviewId } = req.params;
         const findReview = await Review.findByPk(reviewId);
 
         if (!findReview) {
@@ -122,9 +125,10 @@ router.put('/:reviewId', restoreUser, requireAuth, reviewAuth, validateReview, a
 
 // Delete a Review
 router.delete('/:reviewId', restoreUser, requireAuth, reviewAuth, async (req, res, next) => {
-    const { reviewId } = req.params;
+    
 
     try {
+        const { reviewId } = req.params;
         const existingReview = await Review.findByPk(reviewId);
 
         if (!existingReview) {return res.status(404).json({message: "Review couldn't be found"})};
