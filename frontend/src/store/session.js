@@ -11,12 +11,12 @@ const setUser = (user) => {
     }
 };
 
-const removeUser = (user) => {
-    return {
-        type: REMOVE_USER,
-        payload: user
-    }
-};
+// const removeUser = (user) => {
+//     return {
+//         type: REMOVE_USER,
+//         payload: user
+//     }
+// };
 
 // thunk action
 export const login = (user) => async (dispatch) => {
