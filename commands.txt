@@ -1,5 +1,10 @@
 **GIT COMMANDS**
 
+// FRONTEND
+
+run 'npm run build' before each commit and push
+
+
 // pull all branches from repository
 
 1. git clone <<REPO-URL>>
