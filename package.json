@@ -13,5 +13,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "http-proxy-middleware": "^3.0.3"
+  }
 }
