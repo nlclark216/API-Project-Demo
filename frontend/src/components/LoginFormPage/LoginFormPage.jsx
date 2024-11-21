@@ -41,7 +41,7 @@ export default function LoginFormPage() {
         <label>
           Password
           <input
-            type="password"
+            type="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
