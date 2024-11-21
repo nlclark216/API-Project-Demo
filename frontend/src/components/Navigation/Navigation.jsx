@@ -42,4 +42,4 @@ export default function Navigation({isLoaded}) {
             {isLoaded && sessionLinks}
         </ul>
     );
-};
+}
