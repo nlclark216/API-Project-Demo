@@ -51,4 +51,4 @@ export default function sessionReducer(state = initialState, action) {
         default:
             return state;
     }
-};
+}
