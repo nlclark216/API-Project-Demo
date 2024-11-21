@@ -85,7 +85,7 @@ export default function SignupFormPage() {
                 <label>
                     Password
                     <input 
-                        type='password'
+                        type='new-password'
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         required
@@ -95,7 +95,7 @@ export default function SignupFormPage() {
                 <label>
                     Confirm Password
                     <input 
-                        type='password'
+                        type='new-password'
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
                         required
