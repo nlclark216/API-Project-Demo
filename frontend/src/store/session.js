@@ -18,7 +18,7 @@ const setUser = (user) => {
 //     }
 // };
 
-// thunk action
+// thunk actions
 export const login = (user) => async (dispatch) => {
     // get user credentials
     const { credential, password } = user;
@@ -34,6 +34,13 @@ export const login = (user) => async (dispatch) => {
     const data = await res.json();
     dispatch(setUser(data.user));
     return res;
+};
+
+export const restoreUser = () => async (dispatch) => {
+    const response = await csrfFetch("/api/session");
+    const data = await response.json();
+    dispatch(setUser(data.user));
+    return response;
 };
 
 // initial state - user is logged out
