@@ -1,4 +1,38 @@
-li {
-    display: inline-flex;
-    margin: 10px;
+nav {
+    background-color: gray;
 }
+
+.home {
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    color: white;
+}
+
+.home:hover {
+    color: #03FFFF;
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+
+.profile {
+    margin-right: 30px;
+}
+
+.home-link {
+    font-size: 35px;
+    margin: 10px 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+

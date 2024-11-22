@@ -2,22 +2,29 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
+import { SiAirbnb } from "react-icons/si";
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && (
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-      )}
-    </ul>
+    <nav>
+        <ul>
+            <li>
+                <NavLink 
+                to="/"
+                className='home'
+                ><SiAirbnb className='home-link'/>demobnb</NavLink>
+            </li>
+            {isLoaded && (
+            <li className='profile'>
+            <ProfileButton user={sessionUser} />
+            </li>
+            )}
+        </ul> 
+    </nav>
+    
   );
 }
 

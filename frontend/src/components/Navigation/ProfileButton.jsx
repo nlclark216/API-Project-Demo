@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { CgProfile } from "react-icons/cg";
+import { IoMdMenu } from "react-icons/io";
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
@@ -45,6 +46,7 @@ export default function ProfileButton({ user }) {
     return (
         <>
           <button onClick={toggleMenu}>
+            <IoMdMenu />
             <CgProfile />
           </button>
           <ul className={ulClassName} ref={ulRef}>
