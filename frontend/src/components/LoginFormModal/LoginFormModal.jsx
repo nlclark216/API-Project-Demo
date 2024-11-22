@@ -1,8 +1,8 @@
 // frontend/src/components/LoginFormPage/LoginFormPage.jsx
 import { useState } from 'react';
-import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
+import * as sessionActions from '../../store/session';
 import './LoginForm.css';
 
 export default function LoginFormModal() {
@@ -18,7 +18,8 @@ export default function LoginFormModal() {
     return dispatch(
         sessionActions.login({ 
             credential, 
-            password }))
+            password 
+        }))
         .then(closeModal)
         .catch(async (res) => {
         const data = await res.json();
