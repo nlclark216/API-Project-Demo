@@ -17,8 +17,11 @@ export default function LoginFormPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
+    return dispatch(
+        sessionActions.login({ 
+            credential, 
+            password })
+        ).catch(async (res) => {
         const data = await res.json();
         if (data?.errors) setErrors(data.errors);
       }
@@ -38,6 +41,7 @@ export default function LoginFormPage() {
             required
           />
         </label>
+        {errors.credential && <p>{errors.credential}</p>}
         <label>
           Password
           <input
@@ -47,7 +51,7 @@ export default function LoginFormPage() {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+        {errors.password && <p>{errors.password}</p>}
         <button type="submit">Log In</button>
       </form>
     </>
