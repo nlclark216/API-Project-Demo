@@ -45,7 +45,7 @@ export default function ProfileButton({ user }) {
 
     return (
         <>
-          <button onClick={toggleMenu}>
+          <button className="nav-button" onClick={toggleMenu}>
             <IoMdMenu />
             <CgProfile />
           </button>

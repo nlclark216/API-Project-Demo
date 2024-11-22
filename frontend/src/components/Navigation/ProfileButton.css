@@ -7,9 +7,16 @@
     display: none;
 }
 
-button {
-    width: fit-content;
-    height: fit-content;
+.nav-button {
+    width: 75px;
+    height: 45px;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    align-content: center;
+    border-radius: 25px;
+    border: solid gray;
+    border-width: 1px;
+    background-color: black;
+    color: white;
 }
