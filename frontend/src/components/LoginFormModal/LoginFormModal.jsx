@@ -46,6 +46,7 @@ export default function LoginFormModal() {
           Password
           <input
             type="current-password"
+            // style="-webkit-text-security: circle"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
