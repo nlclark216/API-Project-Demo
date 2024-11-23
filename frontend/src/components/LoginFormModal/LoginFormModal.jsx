@@ -23,38 +23,46 @@ export default function LoginFormModal() {
         .then(closeModal)
         .catch(async (res) => {
         const data = await res.json();
-        if (data?.errors) setErrors(data.errors);
+        if (data?.errors) {
+          setErrors(data.errors)
+        }
       }
     );
   };
 
+
   return (
     <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
-          <input
-            type="text"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <label>
-          Password
-          <input
-            type="current-password"
-            // style="-webkit-text-security: circle"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
-      </form>
+      <div className='login-modal'>
+        <h1>Log in</h1>
+        <form onSubmit={handleSubmit}>
+          <div className='form-content'>
+              <input
+                type="text"
+                value={credential}
+                onChange={(e) => setCredential(e.target.value)}
+                placeholder='Username or Email'
+                required
+              />
+          </div>
+          {errors.credential && <p>{errors.credential}</p>}
+          <div className='password'>
+              <input
+                type="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder='Password'
+                required
+              />
+          </div>
+          {errors.password && <p>{errors.password}</p>}
+          <button 
+          type="submit" 
+          className='login-button'
+          disabled={errors.length}
+          >Log In</button>
+        </form>
+      </div>
     </>
   );
 }
