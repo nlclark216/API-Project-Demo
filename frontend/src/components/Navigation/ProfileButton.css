@@ -15,15 +15,15 @@
 }
 
 .profile-dropdown div {
-    /* border: solid purple; */
     padding: 5px;
     max-width: 200px;
 }
 
 .profile-dropdown li {
-    width: 100px;
+    width: 200px;
     padding: 10px 5px;
     text-align: left;
+    font-size: 20px;
 }
 
 .in-modal {
@@ -31,8 +31,6 @@
     border-radius: 10px;
     box-shadow: 2px 2px 6px rgb(68, 64, 64);
 }
-
-
 
 .nav-button {
     width: 75px;
@@ -54,3 +52,12 @@
     box-shadow: 2px 2px 6px rgb(68, 64, 64);
 }
 
+.profile-dropdown .logged-user button {
+    width: 100px;
+    font-size: 18px;
+    background-color: #00D199;
+}
+
+.profile-dropdown .logged-user {
+    font-size: 18px;
+}

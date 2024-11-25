@@ -13,12 +13,12 @@ export default function DemoUser() {
                 credential: 'anonymous',
                 password: 'password1'
             }))
-            .then(closeModal)
+            .then(closeModal);
     };
     return(
        <button
        type="submit"
        onClick={handleClick}
        className="demo-user">Demo User</button>
-    )
+    );
 }
