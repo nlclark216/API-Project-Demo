@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
+import DemoUser from '../DemoUserLink/DemoUser';
 import * as sessionActions from '../../store/session';
 import './LoginForm.css';
 
@@ -57,10 +58,9 @@ export default function LoginFormModal() {
           className='login-button'
           disabled={credential.length < 4 || password.length < 6}
           >Log In</button>
-          {<a>Demo User</a>}
         </form>
-      </div>
-      
+        {<DemoUser />}
+      </div> 
     </>
   );
 }
