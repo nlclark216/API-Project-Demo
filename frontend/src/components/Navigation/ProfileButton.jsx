@@ -45,41 +45,45 @@ export default function ProfileButton({ user }) {
 
     return (
         <>
-          <button className="nav-button" onClick={toggleMenu}>
-            <IoMdMenu />
-            <CgProfile />
-          </button>
-          <ul className={ulClassName} ref={ulRef}>
-            {user ? (
-              <>
-                <li>{user.username}</li>
-                <li>{user.firstName} {user.lastName}</li>
-                <li>{user.email}</li>
-                <li>
-                  <button onClick={logout}>Log Out</button>
-                </li>
-              </>
-            ) : (
-              <>
-              <div className="modal">
-                <li>
-                  <OpenModalMenuItem
-                  itemText="Log In"
-                  onItemClick={closeMenu}
-                  modalComponent={<LoginFormModal />}
-                  />
-                </li>
-                <li>
-                  <OpenModalMenuItem
-                  itemText="Sign Up"
-                  onItemClick={closeMenu}
-                  modalComponent={<SignupFormModal />}
-                  />
-                </li>
-              </div>
-              </>
-            )}
-          </ul>
+          <div className="drop-menu">
+            <button className="nav-button" onClick={toggleMenu}>
+              <IoMdMenu />
+              <CgProfile />
+            </button>
+            <ul className={ulClassName} ref={ulRef}>
+              {user ? (
+                <>
+                  <div className="logged-user">
+                    <li>{user.username}</li>
+                    <li>{user.firstName} {user.lastName}</li>
+                    <li>{user.email}</li>
+                    <li>
+                      <button onClick={logout}>Log Out</button>
+                    </li>
+                  </div>
+                </>
+              ) : (
+                <>
+                <div className="modal">
+                  <li>
+                    <OpenModalMenuItem
+                    itemText="Log In"
+                    onItemClick={closeMenu}
+                    modalComponent={<LoginFormModal />}
+                    />
+                  </li>
+                  <li>
+                    <OpenModalMenuItem
+                    itemText="Sign Up"
+                    onItemClick={closeMenu}
+                    modalComponent={<SignupFormModal />}
+                    />
+                  </li>
+                </div>
+                </>
+              )}
+            </ul>
+          </div>
         </>
       );
 } 

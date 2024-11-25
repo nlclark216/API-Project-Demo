@@ -6,6 +6,7 @@ import './SignupForm.css';
 
 export default function SignupFormModal() {
     const dispatch = useDispatch();
+
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -39,6 +40,7 @@ export default function SignupFormModal() {
     };
     return (
         <>
+            <div>
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
                 <label>
@@ -84,7 +86,7 @@ export default function SignupFormModal() {
                 <label>
                     Password
                     <input 
-                        type='new-password'
+                        type='password'
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         required
@@ -94,7 +96,7 @@ export default function SignupFormModal() {
                 <label>
                     Confirm Password
                     <input 
-                        type='new-password'
+                        type='password'
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
                         required
@@ -102,7 +104,8 @@ export default function SignupFormModal() {
                 </label>
                 {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
                 <button type='submit'>Sign Up</button>
-            </form>
+            </form> 
+            </div>
         </>
     );
 }
