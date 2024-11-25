@@ -45,7 +45,6 @@ export default function ProfileButton({ user }) {
 
     return (
         <>
-          <div className="drop-menu">
             <button className="nav-button" onClick={toggleMenu}>
               <IoMdMenu />
               <CgProfile />
@@ -64,7 +63,7 @@ export default function ProfileButton({ user }) {
                 </>
               ) : (
                 <>
-                <div className="modal">
+                <div className="in-modal">
                   <li>
                     <OpenModalMenuItem
                     itemText="Log In"
@@ -83,7 +82,6 @@ export default function ProfileButton({ user }) {
                 </>
               )}
             </ul>
-          </div>
         </>
       );
 } 

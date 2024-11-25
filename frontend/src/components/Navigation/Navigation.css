@@ -1,4 +1,5 @@
 nav {
+    display: grid;
     background-color: black;
     width: 100%;
     height: 80px;

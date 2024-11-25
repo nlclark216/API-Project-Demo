@@ -24,39 +24,43 @@ export default function LoginFormModal() {
         .catch(async (res) => {
         const data = await res.json();
         if(data?.message) setErrors(data)
-          // console.log(errors)
       }
     );
   };
 
   return (
     <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-         {errors.message && <p>The provided credentials were invalid</p>}
-        <label>
-          Username or Email
-          <input
-            type="text"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <button 
-        type="submit"
-        disabled={credential.length < 4 || password.length < 6}
-        >Log In</button>
-      </form>
+      <div className='login-modal'>
+        <h1>Log In</h1>
+        <form onSubmit={handleSubmit}>
+          {errors.message && <p>The provided credentials were invalid.</p>}
+          <label>
+            <input
+              type="text"
+              placeholder='Username or Email'
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            <input
+              type="password"
+              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          <button 
+          type="submit"
+          className='login-button'
+          disabled={credential.length < 4 || password.length < 6}
+          >Log In</button>
+          {<a>Demo User</a>}
+        </form>
+      </div>
+      
     </>
   );
 }

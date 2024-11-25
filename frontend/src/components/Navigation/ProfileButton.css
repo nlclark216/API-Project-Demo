@@ -1,20 +1,38 @@
+.profile-dropdown.hidden {
+    display: none;
+}
+
+
 .profile-dropdown {
     flex-direction: column;
-    align-items: stretch;
     position: absolute;
+    right: 30px;
     margin: 0px;
     padding: 0px;
     top: 80px; 
     background-color: black;
+    max-width: 200px;
+}
+
+.profile-dropdown div {
+    /* border: solid purple; */
+    padding: 5px;
+    max-width: 200px;
 }
 
 .profile-dropdown li {
-    padding: 5px 10px;
+    width: 100px;
+    padding: 10px 5px;
+    text-align: left;
 }
 
-.profile-dropdown.hidden {
-    display: none;
+.in-modal {
+    background-color: black;
+    border-radius: 10px;
+    box-shadow: 2px 2px 6px rgb(68, 64, 64);
 }
+
+
 
 .nav-button {
     width: 75px;
@@ -28,13 +46,6 @@
     border-width: 1px;
     background-color: black;
     color: white;
-}
-
-.modal {
-
-    width: 200px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 6px rgb(68, 64, 64);
 }
 
 .logged-user {
