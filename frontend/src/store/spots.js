@@ -29,7 +29,7 @@ const initialState = { allSpots: {}, isLoading: true };
 export default function spotsReducer(state = initialState, action) {
     switch(action.type){
         case LOAD_SPOTS:
-            return { ...state, allSpots: {...action.payload.Spots} };
+            return { ...state, allSpots: [...action.payload.Spots] };
         default:
             return state;
     }

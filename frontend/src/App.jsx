@@ -1,11 +1,12 @@
 // frontend/src/App.jsx
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Outlet, createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import AllSpots from './components/Spots/Spots';
-import SingleSpot from './components/SingleSpot/SingleSpot';
+// import SingleSpot from './components/SingleSpot/SingleSpot';
 import * as sessionActions from './store/session';
+import SingleSpot from './components/SingleSpot/SingleSpot';
 
 
 function Layout() {
@@ -32,20 +33,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <AllSpots />,
+        element: <AllSpots />
       },
       {
-        path: '/spots',
-        element: <AllSpots />,
-        children: [
-          {
-            path: '/new'
-          },
-          {
-            path: '/:id',
-            element: <SingleSpot />
-          }
-        ]
+        path: '/spots/:id',
+        element: <SingleSpot />
+      },
+      {
+        path: '*',
+        element: <Navigate to='/' replace={true} />
       }
     ]
   }
