@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import AllSpots from './components/Spots/Spots';
+import SingleSpot from './components/SingleSpot/SingleSpot';
 import * as sessionActions from './store/session';
 
 
@@ -31,7 +32,20 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <AllSpots />
+        element: <AllSpots />,
+      },
+      {
+        path: '/spots',
+        element: <AllSpots />,
+        children: [
+          {
+            path: '/new'
+          },
+          {
+            path: '/:id',
+            element: <SingleSpot />
+          }
+        ]
       }
     ]
   }
