@@ -2,7 +2,6 @@
     display: none;
 }
 
-
 .profile-dropdown {
     flex-direction: column;
     position: absolute;
@@ -44,6 +43,10 @@
     border-width: 1px;
     background-color: black;
     color: white;
+}
+
+.nav-button:hover {
+    cursor: pointer;
 }
 
 .logged-user {

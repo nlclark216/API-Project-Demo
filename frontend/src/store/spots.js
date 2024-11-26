@@ -1,4 +1,4 @@
-import { csrfFetch } from "./csrf";
+// import { csrfFetch } from "./csrf";
 
 // action creators
 
@@ -16,7 +16,7 @@ const loadSpots = (spots) => {
 // getAllSpots action
 
 export const fetchSpots = () => async dispatch => {
-    const res = await csrfFetch('/api/spots');
+    const res = await fetch('/api/spots');
     const spots = await res.json();
     dispatch(loadSpots(spots));
     return res;
@@ -24,10 +24,12 @@ export const fetchSpots = () => async dispatch => {
 
 // reducer
 
-export default function spotsReducer(state = {}, action) {
+const initialState = { allSpots: {}, isLoading: true };
+
+export default function spotsReducer(state = initialState, action) {
     switch(action.type){
         case LOAD_SPOTS:
-            return {...state, spots: action.payload};
+            return { ...state, allSpots: {...action.payload.Spots} };
         default:
             return state;
     }

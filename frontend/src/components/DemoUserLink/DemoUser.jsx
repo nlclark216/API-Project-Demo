@@ -10,11 +10,12 @@ export default function DemoUser() {
     const handleClick = () => {
         return dispatch(
             sessionActions.login({
-                credential: 'anonymous',
-                password: 'password1'
+                credential: 'Demo-lition',
+                password: 'password'
             }))
             .then(closeModal);
     };
+    
     return(
        <button
        type="submit"
