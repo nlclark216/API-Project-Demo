@@ -17,26 +17,23 @@ export default function AllSpots() {
     const SpotTiles = () => {
         return (
             <>
-            <ul key={spotArr.id} className="spot-tiles">
+            <div key={spotArr.id} className="spot-tiles">
                 {spotArr.map(s => (
-                    <>
-                        <Link to={`spots/${s.id}`} className="spot-tile">
-                            <div className="preview-img">
-                            <li key={s.previewImage}><img placeholder={s.previewImage}/></li> 
-                            </div>
-                            {/* <div className="tooltip">{s.name}</div> */}
-                            <div className="spot-info">
-                                <li key={s.city}>{`${s.city}, ${s.state}`}</li>    
-                                <li key={s.id}>{s.avgRating}</li>
-                            </div>
-                            <div className="price">
-                                <li key={s.price}><b>${s.price}</b>/night</li>
-                            </div>
-                        </Link>
-                        
-                    </>
+                <Link to={`spots/${s.id}`} key={s.id} className="spot-tile">
+                    <div className="preview-img">
+                    <p key={s.previewImage}><img placeholder={s.previewImage}/></p> 
+                    </div>
+                    {/* <div className="tooltip">{s.name}</div> */}
+                    <div className="spot-info">
+                        <p key={s.city}>{`${s.city}, ${s.state}`}</p>    
+                        <p key={s.avgRating}>{s.avgRating}</p>
+                    </div>
+                    <div className="price">
+                        <p key={s.price}><b>${s.price}</b>/night</p>
+                    </div>
+                </Link>
                 ))}
-            </ul>
+            </div>
             </>   
         )
     }

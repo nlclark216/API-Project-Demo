@@ -49,39 +49,39 @@ export default function ProfileButton({ user }) {
               <IoMdMenu />
               <CgProfile />
             </button>
-            <ul className={ulClassName} ref={ulRef}>
+            <div className={ulClassName} ref={ulRef}>
               {user ? (
                 <>
                   <div className="logged-user">
-                    <li>{user.username}</li>
-                    <li>{user.firstName} {user.lastName}</li>
-                    <li>{user.email}</li>
-                    <li>
+                    <p>{user.username}</p>
+                    <p>{user.firstName} {user.lastName}</p>
+                    <p>{user.email}</p>
+                    <p>
                       <button onClick={logout}>Log Out</button>
-                    </li>
+                    </p>
                   </div>
                 </>
               ) : (
                 <>
                 <div className="in-modal">
-                  <li>
+                  <p>
                     <OpenModalMenuItem
                     itemText="Log In"
                     onItemClick={closeMenu}
                     modalComponent={<LoginFormModal />}
                     />
-                  </li>
-                  <li>
+                  </p>
+                  <p>
                     <OpenModalMenuItem
                     itemText="Sign Up"
                     onItemClick={closeMenu}
                     modalComponent={<SignupFormModal />}
                     />
-                  </li>
+                  </p>
                 </div>
                 </>
               )}
-            </ul>
+            </div>
         </>
       );
 } 

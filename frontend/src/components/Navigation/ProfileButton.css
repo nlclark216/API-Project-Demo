@@ -18,11 +18,12 @@
     max-width: 200px;
 }
 
-.profile-dropdown li {
+.profile-dropdown p {
     width: 200px;
-    padding: 10px 5px;
+    padding: 1px 5px;
     text-align: left;
     font-size: 20px;
+    margin: 10px 0px;
 }
 
 .in-modal {
