@@ -23,6 +23,8 @@ function Layout() {
     <>
       <Navigation isLoaded={isLoaded}/>
       {isLoaded && <Outlet />}
+      <AllSpots />
+      <SingleSpot />
     </>
   );
 }

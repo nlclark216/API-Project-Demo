@@ -1,15 +1,25 @@
-// import { csrfFetch } from "./csrf";
-
 // action creators
 
-const LOAD_SPOTS = 'spots/loadSpots';
+import { useParams } from "react-router-dom";
 
-const loadSpots = (spots) => {
+const LOAD_SPOTS = 'spots/loadSpots';
+const ADD_SPOT = 'spots/addSpot';
+
+export const loadSpots = (spots) => {
     return {
         type: LOAD_SPOTS,
         payload: spots
     }
 }
+
+export const addSpot = (spot) => {
+    return {
+        type: ADD_SPOT,
+        payload: spot
+    }
+}
+
+
 
 // thunk action
 
@@ -20,6 +30,11 @@ export const fetchSpots = () => async dispatch => {
     const spots = await res.json();
     dispatch(loadSpots(spots));
     return res;
+}
+
+export const createSpot = (newSpot) => async dispatch => {
+    const { id } = useParams();
+    console.log(id)
 }
 
 // reducer

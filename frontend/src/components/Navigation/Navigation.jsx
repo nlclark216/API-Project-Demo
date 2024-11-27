@@ -10,19 +10,15 @@ function Navigation({ isLoaded }) {
 
   return (
     <nav className='navigation-bar'>
-        <ul>
-            <li>
-                <NavLink 
-                to="/"
-                className='home'
-                ><SiAirbnb className='home-link'/>demobnb</NavLink>
-            </li>
-            {isLoaded && (
-            <li className='profile'>
-            <ProfileButton user={sessionUser} />
-            </li>
-            )}
-        </ul> 
+      <div className='nav-contents'>
+        <NavLink 
+        to="/"
+        className='home'
+        ><SiAirbnb className='home-link'/>demobnb</NavLink>
+        {isLoaded && (
+        <ProfileButton className='profile' user={sessionUser} />
+        )}
+      </div>
     </nav>
   );
 }
