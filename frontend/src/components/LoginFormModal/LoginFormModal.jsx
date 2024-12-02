@@ -46,6 +46,7 @@ export default function LoginFormModal() {
           <label>
             <input
               type="password"
+              autoComplete='current-password'
               placeholder='Password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}

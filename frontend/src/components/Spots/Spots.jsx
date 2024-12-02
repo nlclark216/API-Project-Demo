@@ -19,22 +19,22 @@ export default function AllSpots() {
             <>
             <ul key={spotArr.id} className="spot-tiles">
                 {spotArr.map(s => (
-                    <>
+                    <div key={s.id}>
                         <Link to={`spots/${s.id}`} className="spot-tile">
                             <div className="preview-img">
                             <li key={s.previewImage}><img placeholder={s.previewImage}/></li> 
                             </div>
                             {/* <div className="tooltip">{s.name}</div> */}
                             <div className="spot-info">
-                                <li key={s.city}>{`${s.city}, ${s.state}`}</li>    
-                                <li key={s.id}>{s.avgRating}</li>
+                                <li>{`${s.city}, ${s.state}`}</li>    
+                                <li>{s.avgRating}</li>
                             </div>
                             <div className="price">
                                 <li key={s.price}><b>${s.price}</b>/night</li>
                             </div>
                         </Link>
                         
-                    </>
+                    </div>
                 ))}
             </ul>
             </>   

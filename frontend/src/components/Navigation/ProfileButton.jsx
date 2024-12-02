@@ -53,31 +53,31 @@ export default function ProfileButton({ user }) {
               {user ? (
                 <>
                   <div className="logged-user">
-                    <li>{user.username}</li>
-                    <li>{user.firstName} {user.lastName}</li>
-                    <li>{user.email}</li>
-                    <li>
+                    <span>{user.username}</span>
+                    <span>{user.firstName} {user.lastName}</span>
+                    <span>{user.email}</span>
+                    <span>
                       <button onClick={logout}>Log Out</button>
-                    </li>
+                    </span>
                   </div>
                 </>
               ) : (
                 <>
                 <div className="in-modal">
-                  <li>
+                  <span>
                     <OpenModalMenuItem
                     itemText="Log In"
                     onItemClick={closeMenu}
                     modalComponent={<LoginFormModal />}
                     />
-                  </li>
-                  <li>
+                  </span>
+                  <span>
                     <OpenModalMenuItem
                     itemText="Sign Up"
                     onItemClick={closeMenu}
                     modalComponent={<SignupFormModal />}
                     />
-                  </li>
+                  </span>
                 </div>
                 </>
               )}

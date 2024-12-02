@@ -15,7 +15,9 @@ function Navigation({ isLoaded }) {
                 <NavLink 
                 to="/"
                 className='home'
-                ><SiAirbnb className='home-link'/>demobnb</NavLink>
+                >
+                  <SiAirbnb className='home-link'/>
+                  demobnb</NavLink>
             </li>
             {isLoaded && (
             <li className='profile'>
