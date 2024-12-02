@@ -1,50 +1,42 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSpots } from "../../store/spots";
-import { useEffect } from "react";
-import './Spots.css';
+import * as spotActions from '../../store/spots';
+import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import './Spots.css';
+import { useState } from "react";
 
 export default function AllSpots() {
     const dispatch = useDispatch();
 
-    const spots = useSelector(state=>state.spots.allSpots);
-    const spotArr = Object.values(spots);
-
-    useEffect(() => {
-        dispatch(fetchSpots());
-    }, [dispatch]);
-
-    const SpotTiles = () => {
-        return (
-            <>
-            <ul key={spotArr.id} className="spot-tiles">
-                {spotArr.map(s => (
-                    <div key={s.id}>
-                        <Link to={`spots/${s.id}`} className="spot-tile">
-                            <div className="preview-img">
-                            <li key={s.previewImage}><img placeholder={s.previewImage}/></li> 
-                            </div>
-                            {/* <div className="tooltip">{s.name}</div> */}
-                            <div className="spot-info">
-                                <li>{`${s.city}, ${s.state}`}</li>    
-                                <li>{s.avgRating}</li>
-                            </div>
-                            <div className="price">
-                                <li key={s.price}><b>${s.price}</b>/night</li>
-                            </div>
-                        </Link>
-                        
-                    </div>
-                ))}
-            </ul>
-            </>   
-        )
-    }
+    dispatch(spotActions.fetchSpots());
     
 
+    let spots = JSON.parse(localStorage.getItem('spots'));
+    // let spotsAlt = useSelector(state=>state.spots.allSpots);
+
+    if(spots) {
+       let spotArr = spots.Spots || Object.values(spotsAlt); 
+
+  
     return(
         <>
-        <SpotTiles />
-        </>
-    )
+        {spots && spotArr.map(spot=>(
+            <div key={spot.id} className="spot-tiles">
+                <Link to={`spots/${spot.id}`} className="spot-tile">
+                    <div className="preview-img">
+                        <img src={spot.previewImg} />
+                    </div>
+                    <div className="spot-info">
+                        <span>{`${spot.city}, ${spot.state}`}</span>
+                        <span className="rating"><FaStar />{spot.avgRating}</span>
+                    </div>
+                    <div>
+                        <span className="price"><b>${spot.price}</b>/night</span>
+                    </div>
+                </Link>
+            </div>
+        ))}
+        </> 
+    ); 
+    } 
 }

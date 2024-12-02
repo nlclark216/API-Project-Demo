@@ -9,7 +9,6 @@ export default function SingleSpot() {
 
     const spot = useSelector(state=>{
         const spots = state.spots.allSpots;
-        return spots.find(spot=>spot.id===id)
     });
 
     console.log(spot)
