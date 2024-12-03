@@ -12,7 +12,7 @@ nav {
 .home {
     display: flex;
     align-items: center;
-    font-size: 25px;
+    font-size: 1.5rem;
     color: white;
 }
 
@@ -34,7 +34,7 @@ ul {
 
 
 .home-link {
-    font-size: 35px;
+    font-size: 2rem;
     margin: 10px 5px;
 }
 

@@ -37,6 +37,7 @@
 }
 
 .preview-img {
+    /* border: dashed; */
     max-height: 300px;
     max-width: 300px;
     box-shadow: 2px 2px 6px rgb(68, 64, 64);

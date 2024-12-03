@@ -3,23 +3,34 @@ import * as spotActions from '../../store/spots';
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import './Spots.css';
+import { useEffect } from "react";
 
 
 export default function AllSpots() {
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(spotActions.fetchSpots());
+    }, [dispatch]);
    
-    dispatch(spotActions.fetchSpots());
     
 
-    let spots = JSON.parse(localStorage.getItem('spots'));
-    let spotsAlt = useSelector(state=>state.spots.allSpots);
+    const spots = useSelector(state=>state.spots.allSpots);    
+    const spotsAlt = JSON.parse(localStorage.getItem('spots'));
+    let spotArr;
 
-    if(spots) {
-       let spotArr = spots.Spots || Object.values(spotsAlt); 
+
+
+    if(Object.keys(spots).length) {
+        spotArr = Object.values(spots); 
+    } else if (spotsAlt) {
+        spotArr = spotsAlt.Spots;
+    } else { 
+        return (<h3>Loading...please refresh browser...</h3>) 
+    }
 
   
     return(
-
         <div className="container">
             <div className="spot-tiles">
             {spots && spotArr.map(spot=>(
@@ -39,8 +50,6 @@ export default function AllSpots() {
                     </div>
                 ))} 
             </div>
-        </div>
-        
-    ); 
-    } 
+        </div>   
+    );  
 }

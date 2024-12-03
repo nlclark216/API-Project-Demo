@@ -44,3 +44,7 @@ a:hover {
 a:active {
     color: aqua;
 }
+
+img {
+    border: solid gray 0.5px;
+}
