@@ -18,6 +18,7 @@ function Layout() {
       setIsLoaded(true);
     });
   }, [dispatch]);
+  
 
 
   return (
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: '/spots/:id',
         element: <SingleSpot />
+      },
+      {
+        path: '/spots/new',
+        element: <h1>Create a new Spot</h1>
       },
       {
         path: '*',

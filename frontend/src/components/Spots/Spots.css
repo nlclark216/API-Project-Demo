@@ -1,16 +1,38 @@
+.container {
+    width: fit-content;
+    align-items: center;
+    margin: 0px 55px;
+    justify-content: center;
+}
+
+.container a {
+    color: white;
+}
+
+.container a:hover {
+    color: aqua;
+}
+
+.container a:active {
+    color: #00D199;
+}
+
 .spot-tiles {
     display: flex;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
+    flex-grow: 1;
     font-size: 14px;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
-    padding: 20px;
-    width: fit-content;
-    margin: 0px auto;
+    max-width: 100%;
+    min-width: none;
+    column-gap: 10px;
+    padding: auto;
+    margin: 0 auto;
 }
 
 .spot-tile {
-    margin: 10px 5px;
+    padding: 10px;
     color: white;
 }
 

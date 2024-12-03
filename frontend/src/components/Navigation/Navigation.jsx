@@ -1,5 +1,5 @@
 // frontend/src/components/Navigation/Navigation.jsx
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import { SiAirbnb } from "react-icons/si";
@@ -19,11 +19,15 @@ function Navigation({ isLoaded }) {
                   <SiAirbnb className='home-link'/>
                   demobnb</NavLink>
             </li>
-            {isLoaded && (
-            <li className='profile'>
-            <ProfileButton user={sessionUser} />
-            </li>
-            )}
+            <div className='disappearing-link'>
+              {sessionUser && <Link to='spots/new'>Create a New Spot</Link>}
+              {isLoaded && (
+              <li className='profile'>
+              <ProfileButton user={sessionUser} />
+              </li>
+              )}
+            </div>
+            
         </ul> 
     </nav>
   );

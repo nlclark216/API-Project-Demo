@@ -25,6 +25,13 @@
     font-size: 20px;
 }
 
+.profile-dropdown span {
+   display: block;
+   width: 200px;
+   padding: 10px 5px;
+   font-size: 20px;
+}
+
 .in-modal {
     background-color: black;
     border-radius: 10px;
