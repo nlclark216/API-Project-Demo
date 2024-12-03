@@ -8,6 +8,7 @@ html {
    background-color: black;
    color: white;
    font-family: 'Inter';
+   font-size: 16px;
 }
 
 body {
@@ -20,7 +21,7 @@ body {
 button {
     border: none;
     border-radius: 4px;
-    font-size: 18px;
+    font-size: 1.125rem;
     background-color: #00D199;
 }
 
@@ -29,7 +30,7 @@ button:hover:enabled{
 }
 
 label input {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 a {

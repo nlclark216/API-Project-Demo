@@ -21,7 +21,7 @@
     display: flex;
     flex-flow: row wrap;
     flex-grow: 1;
-    font-size: 14px;
+    font-size: 0.875rem;
     justify-content: flex-start;
     align-items: center;
     max-width: 100%;
@@ -37,10 +37,11 @@
 }
 
 .preview-img {
-    height: 300px;
-    width: 300px;
+    max-height: 300px;
+    max-width: 300px;
     box-shadow: 2px 2px 6px rgb(68, 64, 64);
     margin-bottom: 15px;
+    object-fit: cover;
 }
 
 

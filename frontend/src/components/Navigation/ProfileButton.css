@@ -14,7 +14,7 @@
 }
 
 .profile-dropdown div {
-    padding: 5px;
+    padding: 5px 20px;
     max-width: 200px;
 }
 
@@ -22,14 +22,14 @@
     width: 200px;
     padding: 10px 5px;
     text-align: left;
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .profile-dropdown span {
    display: block;
    width: 200px;
    padding: 10px 5px;
-   font-size: 20px;
+   font-size: 1.25rem;
 }
 
 .in-modal {
@@ -45,7 +45,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 25px;
+    border-radius: 1.5rem;
     border: solid gray;
     border-width: 1px;
     background-color: black;
@@ -56,18 +56,53 @@
     cursor: pointer;
 }
 
+.menu-item:hover {
+    cursor: pointer;
+}
+
 .logged-user {
+    /* border: dotted red; */
+    display: flex;
+    flex-direction: column;
     background-color: black;
     border-radius: 10px;
     box-shadow: 2px 2px 6px rgb(68, 64, 64);
+    min-width: fit-content;
+    padding: 5px 10px;
 }
 
 .profile-dropdown .logged-user button {
     width: 100px;
-    font-size: 18px;
+    font-size: 1.125rem;
     background-color: #00D199;
 }
 
 .profile-dropdown .logged-user {
-    font-size: 18px;
+    font-size: 1.125rem;
 }
+
+.button-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-button {
+    height: 40px;
+    border-radius: 20px;
+    background-color: aqua;
+    width: 100px;
+}
+
+.logout-button:hover {
+    cursor: pointer;
+}
+
+.manage-spots {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    margin: 10px 0px;
+    width: 100%;
+    align-self: center;
+}
+

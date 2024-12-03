@@ -7,6 +7,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import './ProfileButton.css';
+import { Link } from "react-router-dom";
 
 
 export default function ProfileButton({ user }) {
@@ -53,25 +54,27 @@ export default function ProfileButton({ user }) {
               {user ? (
                 <>
                   <div className="logged-user">
-                    <span>{user.username}</span>
-                    <span>{user.firstName} {user.lastName}</span>
+                    <span>Hello, {user.username}</span>
                     <span>{user.email}</span>
-                    <span>
-                      <button onClick={logout}>Log Out</button>
-                    </span>
+                    <div className="manage-spots">
+                      <Link className="manage-link">Manage Spots</Link>
+                    </div>
+                    <div className="button-div">
+                      <button onClick={logout} className="logout-button">Log Out</button>
+                    </div>
                   </div>
                 </>
               ) : (
                 <>
                 <div className="in-modal">
-                  <span>
+                  <span className='menu-item'>
                     <OpenModalMenuItem
                     itemText="Log In"
                     onItemClick={closeMenu}
                     modalComponent={<LoginFormModal />}
                     />
                   </span>
-                  <span>
+                  <span className='menu-item'>
                     <OpenModalMenuItem
                     itemText="Sign Up"
                     onItemClick={closeMenu}

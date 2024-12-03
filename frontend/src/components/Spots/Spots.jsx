@@ -26,7 +26,7 @@ export default function AllSpots() {
                     <div key={spot.id} className="spot-tile">
                         <Link to={`spots/${spot.id}`} >
                             <div className="preview-img">
-                                <img src={spot.previewImg} />
+                                <img src={`../../../images/preview${spot.id}.jpg`} height='300px' width='300px'  />
                             </div>
                             <div className="spot-info">
                                 <span>{`${spot.city}, ${spot.state}`}</span>
