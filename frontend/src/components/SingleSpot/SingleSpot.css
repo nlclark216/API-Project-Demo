@@ -2,6 +2,7 @@
     /* border: dashed; */
     max-width: 1000px;
     margin: 0 auto;
+    padding: 0px 10px;
 }
 
 .img-grid {
@@ -45,10 +46,87 @@
 .not-preview {
     /* border: dotted blue; */
     height: 100%;
-    min-width: 48%;
+    min-width: 49%;
     justify-content: space-between;
 }
 
 .not-preview img {
     width: 100%;
+}
+
+.host-info-and-price {
+    /* border: dashed maroon; */
+    display: flex;
+    margin-top: 20px;
+}
+
+.host-info {
+    /* border: dotted indianred; */
+    width: 60%;
+}
+
+.info {
+    /* border: solid pink; */
+    min-height: 200px;
+    max-height: fit-content;
+}
+
+.price-review-box {
+    border: solid white;
+    border-radius: 10px;
+    width: 40%;
+    max-height: fit-content;
+    margin-left: 20px;
+    padding: 10px 20px;
+}
+
+.price {
+    /* border: solid blue; */
+    max-height: fit-content;
+    display: inline-flex;
+    align-items: end;
+    column-gap: 4px;
+}
+
+.rating {
+    /* border: dotted red; */
+    max-width: fit-content;
+    max-height: fit-content;
+}
+
+.price h2 {
+    margin: 0px;
+}
+
+p.price {
+    margin: 0px;
+}
+
+.price-review {
+    /* border: dotted yellow; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    margin: 20px 0px;
+    padding: 0px;
+}
+
+.reserve {
+    /* border: dotted; */
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.review-header {
+    /* border: dotted; */
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.reviews {
+    /* border: dashed; */
+    min-height: fit-content;
 }

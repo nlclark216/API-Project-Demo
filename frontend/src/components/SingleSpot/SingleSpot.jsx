@@ -4,6 +4,7 @@ import * as spotActions from '../../store/spots';
 import { useEffect } from 'react';
 import { FaStar } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
+import GetSpotReviews from '../GetSpotReviews/GetSpotReviews';
 import './SingleSpot.css';
 
 
@@ -63,11 +64,11 @@ export default function SingleSpot() {
         <div className='host-info-and-price'>
             <div className='host-info'>
                 {targetSpot.Owner && <h2>Hosted By {targetSpot.Owner.firstName} {targetSpot.Owner.lastName}</h2>}
-                <span className='info'>Placeholder Text</span>
+                <p className='info'>Placeholder Text</p>
             </div>
             <div className='price-review-box'>
                 <div className='price-review'>
-                    <span className='price'><h2>${targetSpot.price}</h2>night</span>
+                    <p className='price'><h2>${targetSpot.price}</h2>night</p>
                     <div className='rating'>
                         <FaStar />
                         {targetSpot.avgStarRating}
@@ -75,17 +76,17 @@ export default function SingleSpot() {
                         {targetSpot.numReviews} reviews
                     </div>
                 </div>
-                <button>Reserve</button>
+                <button className='reserve'>Reserve</button>
             </div>
-            <div className='spot-reviews'>
-                <h2 className='review-header'>
-                    <FaStar />
-                    {targetSpot.avgStarRating}
-                    <LuDot />
-                    {targetSpot.numReviews} reviews
-                </h2>
-                <span>Reviews Placeholder</span>
-            </div>
+        </div>
+        <div className='spot-reviews'>
+            <h2 className='review-header'>
+                <FaStar />
+                {targetSpot.avgStarRating}
+                <LuDot />
+                {targetSpot.numReviews} reviews
+            </h2>
+            <GetSpotReviews />
         </div>
     </div>
     ); 
