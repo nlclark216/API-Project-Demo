@@ -14,20 +14,29 @@ export default function GetSpotReviews() {
     }, [dispatch, id]);
 
     const reviews = useSelector(state=>state.spots.spotReviews);
-    const reviewsAlt = JSON.parse(localStorage.getItem('reviews'));
+    const reviewsAlt = JSON.parse(localStorage.getItem(`reviews`));
+    let targetReviews;
     let reviewArr;
-    // console.log(reviewsAlt.Reviews)
+    // console.log(reviews)
 
-    if(Object.keys(reviews).length) {
-        reviewArr = Object.keys(reviews);
-    } else if (reviewsAlt) {
-        reviewArr = reviewsAlt.Reviews
-    } else { 
-        return (<h3>Loading...please refresh browser...</h3>) 
-    }
+    if(reviewsAlt) {targetReviews = reviewsAlt}
+    else if (reviews) {targetReviews = reviews}
 
+    if(targetReviews) reviewArr = Object.values(targetReviews);
+
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    console.log(reviewsAlt)
     return (
-        <h2>Spot Reviews</h2>
-        // {reviews && reviewArr.map(review=>)}
+        // <h2>Spot Reviews</h2>
+        <div className='all-spot-reviews'>{
+            targetReviews && reviewArr.map(review=>(
+                <div key={review.id} className='spot-review'>
+                    {review.User && <h4 className='reviewer-name'>{review.User.firstName}</h4>}
+                    {review.updatedAt && <p className='review-date'>{monthNames[review.updatedAt.slice(5,7)-1]} {review.updatedAt.slice(0,4)}</p>}
+                    {review.review && <p className='review-text'>{review.review}</p>}
+                </div>
+            ))
+        }</div>
     )
 }

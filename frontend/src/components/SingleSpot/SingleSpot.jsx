@@ -24,7 +24,7 @@ export default function SingleSpot() {
     if(spot) {targetSpot = spot;}
     else if (spotAlt) {targetSpot = spotAlt;}
     
-    console.log(targetSpot)
+
     const imgArr = [];
 
 
@@ -44,10 +44,10 @@ export default function SingleSpot() {
         <h4>{`${targetSpot.city}, ${targetSpot.state}, ${targetSpot.country}`}</h4>
         <div className='img-grid'>
             <div className='preview'>
-                <img src={imgArr.find(img=>{
+                <img src={/*imgArr.find(img=>{
                     img.preview===true;
                     return img.url
-                })} />
+                }) ||*/ `../../../images/preview${spot.id}.jpg`} />
             </div>
             <div className='not-preview-box'>
                <div className='row'>

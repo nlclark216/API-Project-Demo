@@ -7,13 +7,14 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import './ProfileButton.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function ProfileButton({ user }) {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
+    const navigate = useNavigate();
 
     const toggleMenu = (e) => {
         e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
@@ -40,6 +41,7 @@ export default function ProfileButton({ user }) {
         e.preventDefault();
         dispatch(sessionActions.logout());
         closeMenu();
+        navigate('/');
     };
 
     const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -71,7 +73,7 @@ export default function ProfileButton({ user }) {
                     <OpenModalMenuItem
                     itemText="Log In"
                     onItemClick={closeMenu}
-                    modalComponent={<LoginFormModal />}
+                    modalComponent={<LoginFormModal navigate={navigate} />}
                     />
                   </span>
                   <span className='menu-item'>

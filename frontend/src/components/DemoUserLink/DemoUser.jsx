@@ -3,17 +3,20 @@ import { useModal } from "../../context/Modal";
 import * as sessionActions from '../../store/session';
 import './DemoUser.css'
 
-export default function DemoUser() {
+
+export default function DemoUser({ navigate }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
 
     const handleClick = () => {
-        return dispatch(
+       dispatch(
             sessionActions.login({
                 credential: 'Demo-lition',
                 password: 'password'
-            }))
-            .then(closeModal);
+            })
+        )
+        closeModal();
+        navigate('/');
     };
     
     return(

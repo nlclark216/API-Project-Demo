@@ -50,7 +50,7 @@ export const findSpot = (id) => async dispatch => {
 export const fetchReviews = (id) => async dispatch => {
     const res = await csrfFetch(`/api/spots/${id}/reviews`);
     const reviews = await res.json();
-    localStorage.setItem('reviews', JSON.stringify(reviews));
+    localStorage.setItem(`reviews`, JSON.stringify(reviews.Reviews));
     dispatch(loadReviews(reviews));
     return reviews;
 }

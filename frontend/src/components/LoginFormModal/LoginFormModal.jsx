@@ -6,7 +6,7 @@ import DemoUser from '../DemoUserLink/DemoUser';
 import * as sessionActions from '../../store/session';
 import './LoginForm.css';
 
-export default function LoginFormModal() {
+export default function LoginFormModal({ navigate }) {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
@@ -16,16 +16,16 @@ export default function LoginFormModal() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(
-        sessionActions.login({ 
-            credential, 
-            password 
-        }))
-        .then(closeModal)
-        .catch(async (res) => {
+    dispatch(
+      sessionActions.login({ 
+          credential, 
+          password 
+      })).catch(async (res) => {
         const data = await res.json();
         if(data?.message) setErrors(data)
-      });
+      }); 
+    closeModal();
+    navigate('/');
   };
 
   return (
@@ -59,7 +59,7 @@ export default function LoginFormModal() {
           disabled={credential.length < 4 || password.length < 6}
           >Log In</button>
         </form>
-        {<DemoUser />}
+        {<DemoUser navigate={navigate} />}
       </div> 
     </>
   );

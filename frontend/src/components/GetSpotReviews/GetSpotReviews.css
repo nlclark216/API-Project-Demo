@@ -1,0 +1,23 @@
+.all-spot-reviews {
+    /* border: dotted green; */
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+}
+
+.reviewer-name {
+    /* border: dotted yellow; */
+    margin: 10px 0px;
+}
+
+.review-date {
+    /* border: dashed pink; */
+    color: gray;
+}
+
+.review-text {
+    /* border: solid maroon; */
+    min-height: 40px;
+    max-height: fit-content;
+}

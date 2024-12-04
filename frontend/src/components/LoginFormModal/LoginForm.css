@@ -46,8 +46,10 @@
     color: red;
 }
 
-.login-modal a {
+/* .login-modal a {
+    border: dotted white;
     text-decoration: underline;
     text-align: center;
     color: #00D199;
-}
+    margin: 20px 0px;
+} */
