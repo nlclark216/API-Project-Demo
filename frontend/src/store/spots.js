@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_SPOTS = 'spots/loadSpots';
 const FIND_BYID = 'spots/findById';
+const LOAD_REVIEWS = 'spots/loadReviews';
 
 const loadSpots = (spots) => {
     return {
@@ -16,6 +17,13 @@ const findById = spot => {
     return {
         type: FIND_BYID,
         spot
+    }
+}
+
+const loadReviews = reviews => {
+    return {
+        type: LOAD_REVIEWS,
+        reviews
     }
 }
 
@@ -39,9 +47,17 @@ export const findSpot = (id) => async dispatch => {
     return spot;
 }
 
+export const fetchReviews = (id) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${id}/reviews`);
+    const reviews = await res.json();
+    localStorage.setItem('reviews', JSON.stringify(reviews));
+    dispatch(loadReviews(reviews));
+    return reviews;
+}
+
 // reducer
 
-const initialState = { allSpots: {}, singleSpot: {}, isLoading: true };
+const initialState = { allSpots: {}, singleSpot: {}, spotReviews: {}, isLoading: true };
 
 export default function spotsReducer(state = initialState, action) {
     switch(action.type){
@@ -54,6 +70,13 @@ export default function spotsReducer(state = initialState, action) {
             }
         case FIND_BYID:
             return {...state, singleSpot: action.spot}
+        case LOAD_REVIEWS:
+            {
+                action.reviews.Reviews.map(review=>
+                    initialState.spotReviews[review.id] = review
+                )
+                return state
+            }
         default:
             return state;
     }

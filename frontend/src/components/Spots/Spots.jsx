@@ -33,7 +33,7 @@ export default function AllSpots() {
     return(
         <div className="container">
             <div className="spot-tiles">
-            {spots && spotArr.map(spot=>(
+            {spotArr && spotArr.map(spot=>(
                     <div key={spot.id} className="spot-tile">
                         <Link to={`spots/${spot.id}`} >
                             <div className="preview-img">

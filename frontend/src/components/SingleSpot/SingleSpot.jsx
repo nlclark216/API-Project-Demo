@@ -21,23 +21,22 @@ export default function SingleSpot() {
     const spotAlt = JSON.parse(localStorage.getItem('spot')); 
     let targetSpot;
 
-    if(spot) targetSpot = spot;
-    else targetSpot = spotAlt;
-
+    if(spot) {targetSpot = spot;}
+    else if (spotAlt) {targetSpot = spotAlt;}
+    
+    console.log(targetSpot)
     const imgArr = [];
 
-    console.log(imgArr)
-    if(spotAlt) {
-        Object.values(spotAlt.SpotImages).map(img=>imgArr.push(img));
-        for(let i = 0; i < 5; i++){
-            if(!imgArr[i]) imgArr.push({
-                id: `${i}`,
-                preview: false,
-                url: `url${i}`
-            })
-        } 
-    }
 
+    if(targetSpot.SpotImages) Object.values(targetSpot.SpotImages).map(img=>imgArr.push(img));
+
+    for(let i = 0; i < 5; i++){
+        if(!imgArr[i]) imgArr.push({
+            id: `${i}`,
+            preview: false,
+            url: `url${i}`
+        })
+    }
     
     return (
     <div className='single-spot'>
