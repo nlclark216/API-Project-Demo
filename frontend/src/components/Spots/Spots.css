@@ -1,7 +1,7 @@
 .container {
-    border: dashed;
+    /* border: dashed; */
     width: 100%;
-    align-items: center;
+    /* align-items: center; */
     padding-top: 40px;
     display: flex;
     justify-content: center;
@@ -20,7 +20,7 @@
 }
 
 .spot-tiles {
-    border: solid red 1px;
+    /* border: solid red 1px; */
     display: flex;
     flex-flow: row wrap;
     /* flex-wrap: wrap; */
@@ -32,7 +32,8 @@
     row-gap: 4px;
     overflow: hidden;
     /* padding: auto; */
-    /* margin: 0 auto; */
+    margin: 0 40px;
+    position: relative;
 }
 
 .spot-tile {
@@ -63,18 +64,15 @@
     column-gap: 4px;
 }
 
-.tooltip {
-    border: dotted yellow;
-    /* margin: 0 auto; */
-}
 
 #tooltip {
     font-family: var(--ff-headers);
-    background: #C8C8C8;
+    background: aqua;
+    color: black;
     position: absolute;
     white-space: nowrap;
     display: block;
-    padding: 10px;
+    padding: 5px;
     z-index: 1000;
 }
 

@@ -16,16 +16,14 @@ export default function LoginFormModal({ navigate }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    dispatch(
-      sessionActions.login({ 
+    return dispatch(sessionActions.login({ 
           credential, 
           password 
-      })).catch(async (res) => {
+      })).then(closeModal).catch(async (res) => {
         const data = await res.json();
         if(data?.message) setErrors(data)
-      }); 
-    closeModal();
-    navigate('/');
+          else setErrors({ message: `The provided credentials were invalid`})
+      })
   };
 
   return (
@@ -59,7 +57,7 @@ export default function LoginFormModal({ navigate }) {
           disabled={credential.length < 4 || password.length < 6}
           >Log In</button>
         </form>
-        {<DemoUser navigate={navigate} />}
+        {<DemoUser />}
       </div> 
     </>
   );

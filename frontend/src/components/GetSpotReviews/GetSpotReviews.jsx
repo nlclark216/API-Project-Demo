@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import './GetSpotReviews.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import * as spotActions from '../../store/spots';
+import * as reviewActions from '../../store/reviews'
 
 export default function GetSpotReviews() {
     const dispatch = useDispatch();
@@ -10,23 +10,22 @@ export default function GetSpotReviews() {
     const { id } = useParams();
 
     useEffect(() => {
-        dispatch(spotActions.fetchReviews(id));
+        dispatch(reviewActions.loadSpotReviews(id));
     }, [dispatch, id]);
 
-    const reviews = useSelector(state=>state.spots.spotReviews);
-    const reviewsAlt = JSON.parse(localStorage.getItem(`reviews`));
-    let targetReviews;
-    let reviewArr;
-    // console.log(reviews)
+    const spotReviews = useSelector(state=>state.reviews.reviews);
+    let targetReviews = spotReviews;
 
-    if(reviewsAlt) {targetReviews = reviewsAlt}
-    else if (reviews) {targetReviews = reviews}
+    // console.log(Object.values(spotReviews))
+
+    let reviewArr;
 
     if(targetReviews) reviewArr = Object.values(targetReviews);
 
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    // console.log(reviewsAlt)
+    // console.log(reviewArr)
+    
     return (
         // <h2>Spot Reviews</h2>
         <div className='all-spot-reviews'>{
