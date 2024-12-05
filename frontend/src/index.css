@@ -30,8 +30,15 @@ button:hover:enabled{
 }
 
 label input {
-    font-size: 1rem;
-    text-indent: 8px;
+    font-size: 0.9rem;
+    text-indent: 4px;
+    font-family: "Inter";
+}
+
+label textarea {
+    font-size: 0.9rem;
+    text-indent: 4px;
+    font-family: "Inter";
 }
 
 a {

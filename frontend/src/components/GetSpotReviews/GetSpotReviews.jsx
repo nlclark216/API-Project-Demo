@@ -26,7 +26,7 @@ export default function GetSpotReviews() {
 
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    console.log(reviewsAlt)
+    // console.log(reviewsAlt)
     return (
         // <h2>Spot Reviews</h2>
         <div className='all-spot-reviews'>{

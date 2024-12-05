@@ -1,7 +1,9 @@
 .container {
-    width: fit-content;
+    border: dashed;
+    width: 100%;
     align-items: center;
-    margin: 0px 55px;
+    padding-top: 40px;
+    display: flex;
     justify-content: center;
 }
 
@@ -18,17 +20,19 @@
 }
 
 .spot-tiles {
+    border: solid red 1px;
     display: flex;
     flex-flow: row wrap;
-    flex-grow: 1;
+    /* flex-wrap: wrap; */
     font-size: 0.875rem;
     justify-content: flex-start;
     align-items: center;
-    max-width: 100%;
-    min-width: none;
+    max-width: 90%;
     column-gap: 10px;
-    padding: auto;
-    margin: 0 auto;
+    row-gap: 4px;
+    overflow: hidden;
+    /* padding: auto; */
+    /* margin: 0 auto; */
 }
 
 .spot-tile {
@@ -59,4 +63,18 @@
     column-gap: 4px;
 }
 
+.tooltip {
+    border: dotted yellow;
+    /* margin: 0 auto; */
+}
+
+#tooltip {
+    font-family: var(--ff-headers);
+    background: #C8C8C8;
+    position: absolute;
+    white-space: nowrap;
+    display: block;
+    padding: 10px;
+    z-index: 1000;
+}
 

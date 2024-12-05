@@ -6,6 +6,8 @@ import Navigation from './components/Navigation';
 import AllSpots from './components/Spots/Spots';
 import * as sessionActions from './store/session';
 import SingleSpot from './components/SingleSpot/SingleSpot';
+import CreateSpotForm from './components/CreateNewSpot/CreateSpotForm';
+
 
 
 function Layout() {
@@ -44,7 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/spots/new',
-        element: <h1>Create a new Spot</h1>
+        element: <CreateSpotForm />
       },
       {
         path: '*',
