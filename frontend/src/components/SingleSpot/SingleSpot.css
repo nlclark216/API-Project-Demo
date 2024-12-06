@@ -15,6 +15,7 @@
 
 .preview {
     /* border: solid red 1px; */
+    border-radius: 12px 0% 0% 12px;
     width: 50%;
     min-height: 500px;
     max-height: 500px;
@@ -22,6 +23,7 @@
 
 .preview img {
     /* border: dashed green; */
+    border-radius: 12px 0% 0% 12px;
     width: 100%;
     height: 100%;
 }
@@ -53,6 +55,16 @@
 
 .not-preview img {
     width: 100%;
+}
+
+.not-preview#edge-top {
+    /* border: dotted; */
+    border-radius: 0px 12px 0px 0px;
+}
+
+.not-preview#edge-bottom {
+    /* border: dotted; */
+    border-radius: 0px 0px 12px 0px;
 }
 
 .host-info-and-price {

@@ -34,14 +34,17 @@ export default function SingleSpot() {
         if(!imgArr[i]) imgArr.push({
             id: `${i}`,
             preview: false,
-            url: "https://www.clker.com/cliparts/7/8/b/6/11949945022068797520checkedbox.svg.med.png"
+            url: "https://i0.wp.com/biosimilarsrr.com/wp-content/uploads/2018/09/placeholder-square.jpg"
         })
     }
 
     const checkRating = targetSpot.avgStarRating > 0;
     // console.log(checkRating)
 
+    const currentUser = useSelector(state=>state.session.user);
+
     console.log(targetSpot.Owner)
+    console.log(currentUser)
     
     return (
     <div className='single-spot'>
@@ -54,11 +57,11 @@ export default function SingleSpot() {
             <div className='not-preview-box'>
                <div className='row'>
                 <img className='not-preview' src={imgArr[1].url} />
-                <img className='not-preview' src={imgArr[2].url} />
+                <img className='not-preview' id='edge-top' src={imgArr[2].url} />
                </div>
                <div className='row'>
                 <img className='not-preview' src={imgArr[3].url} />
-                <img className='not-preview' src={imgArr[4].url} />
+                <img className='not-preview' id='edge-bottom' src={imgArr[4].url} />
                </div>
             </div>
         </div>
@@ -109,7 +112,7 @@ export default function SingleSpot() {
                 </>)
             }
             </h2>
-            <button></button>
+            <button className='review-button'>Post Your Review</button>
             <GetSpotReviews />
         </div>
     </div>
