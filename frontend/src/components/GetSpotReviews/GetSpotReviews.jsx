@@ -37,7 +37,7 @@ export default function GetSpotReviews() {
                     {review.review && <p className='review-text'>{review.review}</p>}
                 </div>
             ))
-        }</div>) : (<p>Be the frst to post a review!</p>)}
+        }</div>) : (<p>Be the first to post a review!</p>)}
         </>
     )
 }

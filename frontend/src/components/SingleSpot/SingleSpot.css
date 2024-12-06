@@ -5,6 +5,12 @@
     padding: 0px 10px;
 }
 
+.single-spot li {
+    list-style: none;
+    text-align: center;
+    max-width: fit-content;
+}
+
 .img-grid {
     /* border: dotted pink; */
     display: flex;
@@ -156,4 +162,5 @@ p.price {
     margin: 20px 0px;
     height: 32px;
     background-color: aqua;
+    max-width: fit-content;
 }

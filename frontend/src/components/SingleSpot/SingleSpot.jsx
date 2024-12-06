@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import GetSpotReviews from '../GetSpotReviews/GetSpotReviews';
+import PostReviewModal from '../PostReviewModal/PostReviewModal';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import { FaStar } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import './SingleSpot.css';
@@ -11,6 +13,30 @@ import './SingleSpot.css';
 export default function SingleSpot() {
     let { id } = useParams();
     const dispatch = useDispatch();
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
+    // const navigate = useNavigate();
+
+    const toggleMenu = (e) => {
+        e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
+        setShowMenu(!showMenu);
+    };
+
+    useEffect(() => {
+        if(!showMenu) return;
+
+        const closeMenu = (e) => { 
+            if(!ulRef.current.contains(e.target)) {
+                setShowMenu(false);
+            }
+        };
+
+        document.addEventListener('click', closeMenu);
+
+        return () => document.removeEventListener('click', closeMenu);
+    }, [showMenu]);
+
+    const closeMenu = () => setShowMenu(false);
     
     id = +id;
 
@@ -121,7 +147,15 @@ export default function SingleSpot() {
                 </>)
             }
             </h2>
-            {Object.values(currentUser).length>0 && !isOwner && !findExistingReview && <button className='review-button'>Post Your Review</button>}
+            {Object.values(currentUser).length>0 
+            && !isOwner && !findExistingReview 
+            && <button className='review-button'>
+                <OpenModalMenuItem
+                itemText="Post Your Review"
+                onItemClick={closeMenu}
+                modalComponent={<PostReviewModal />}
+                />
+                </button>}
             <GetSpotReviews />
         </div>
     </div>

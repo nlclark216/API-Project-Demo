@@ -72,9 +72,15 @@
 }
 
 .profile-dropdown .logged-user button {
+    /* border: dotted; */
     width: 100px;
     font-size: 1.125rem;
-    background-color: #00D199;
+    color: white;
+    background-color: gray;
+}
+
+.profile-dropdown .logged-user button:hover {
+    color: aqua;
 }
 
 .profile-dropdown .logged-user {

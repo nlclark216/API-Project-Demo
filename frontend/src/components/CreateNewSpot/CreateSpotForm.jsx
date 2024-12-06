@@ -101,7 +101,7 @@ export default function CreateSpotForm() {
 
     // 33.7626° N, 84.3924° W
     // This is the greatest spot in the whole world!
-    // World of Coke
+    // Fortress of Serenity
     // https://a0.muscache.com/im/pictures/miso/Hosting-788677501749872896/original/ac54836d-9522-44c8-8e13-dae7b46bf080.jpeg
 
     // return (
