@@ -22,7 +22,6 @@ export default function LoginFormModal({ navigate }) {
       })).then(closeModal).catch(async (res) => {
         const data = await res.json();
         if(data?.message) setErrors(data)
-          else setErrors({ message: `The provided credentials were invalid`})
       }).then(navigate('/'));
   };
 
@@ -31,7 +30,7 @@ export default function LoginFormModal({ navigate }) {
       <div className='login-modal'>
         <h1>Log In</h1>
         <form onSubmit={handleSubmit}>
-          {errors.message && <p>The provided credentials were invalid.</p>}
+          {errors.message && <p>{errors.message}</p>}
           <label>
             <input
               type="text"

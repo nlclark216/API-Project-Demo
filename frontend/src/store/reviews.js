@@ -65,7 +65,8 @@ export const deleteTargetReview = reviewId => async dispatch => {
         method: 'DELETE',
     })
     if(res.ok){
-        dispatch(deleteReview(reviewId))
+        dispatch(deleteReview(reviewId));
+        window.location.reload();
     }
 }
 

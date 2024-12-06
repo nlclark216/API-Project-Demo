@@ -2,7 +2,8 @@ import { useParams } from 'react-router-dom';
 import './GetSpotReviews.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import * as reviewActions from '../../store/reviews'
+import * as reviewActions from '../../store/reviews';
+
 
 export default function GetSpotReviews() {
     const dispatch = useDispatch();
@@ -16,18 +17,16 @@ export default function GetSpotReviews() {
     const spotReviews = useSelector(state=>state.reviews.reviews);
     let targetReviews = spotReviews;
 
-    // console.log(Object.values(spotReviews))
-
+    const currentUser = useSelector(state=>state.session)
+    const targetUserId = {...currentUser}.user.id;
     let reviewArr;
 
     if(targetReviews) reviewArr = Object.values(targetReviews);
 
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    console.log(reviewArr.length)
     
     return (
-        // <h2>Spot Reviews</h2>
         <>
         {reviewArr.length ? (<div className='all-spot-reviews'>{
             targetReviews && reviewArr.map(review=>(
@@ -35,6 +34,7 @@ export default function GetSpotReviews() {
                     {review.User && <h4 className='reviewer-name'>{review.User.firstName}</h4>}
                     {review.updatedAt && <p className='review-date'>{monthNames[review.updatedAt.slice(5,7)-1]} {review.updatedAt.slice(0,4)}</p>}
                     {review.review && <p className='review-text'>{review.review}</p>}
+                    {review.userId===targetUserId && <button onClick={() => dispatch(reviewActions.deleteTargetReview(`${review.id}`))}>Delete</button> }
                 </div>
             ))
         }</div>) : (<p>Be the first to post a review!</p>)}

@@ -8,7 +8,8 @@ export default function DemoUser({ navigate }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault();
        dispatch(
             sessionActions.login({
                 credential: 'Demo-lition',

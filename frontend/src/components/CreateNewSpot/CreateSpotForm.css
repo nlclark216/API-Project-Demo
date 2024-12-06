@@ -60,12 +60,6 @@ input#lat {
     width: 90%;
 }
 
-.form-textarea {
-    width: 99%;
-    height: 200px;
-    
-}
-
 .lat-lon {
     padding-bottom: 20px;
     border-bottom: solid gray 1px;

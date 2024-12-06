@@ -1,0 +1,9 @@
+.star {
+    font-size: 24px;
+    color: gray;
+    cursor: pointer;
+  }
+  
+  .filled {
+    color: orange; /* Or your desired color */
+  }

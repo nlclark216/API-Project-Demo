@@ -53,3 +53,10 @@ a:active {
     color: aqua;
 }
 
+textarea {
+    font-family: 'Inter';
+    width: 99%;
+    height: 200px;
+    text-indent: 4px;
+}
+

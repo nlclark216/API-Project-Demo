@@ -76,9 +76,6 @@ export default function CreateSpotForm() {
 
         setSubmitted(true);
 
-        // if(Object.values(errors).length) {
-        //     return;
-        // }
         let spotImages = [
             { url: previewImage, preview: true },
             { url: img1, preview: false },
@@ -86,27 +83,18 @@ export default function CreateSpotForm() {
             { url: img3, preview: false },
             { url: img4, preview: false },
         ].filter((img) => img.url); 
-        console.log(spotImages)
 
         if(Object.values(newErrors).length) return;
 
  
-        dispatch(spotActions.createNewSpot(newSpot, spotImages, navigate));
+        return dispatch(spotActions.createNewSpot(newSpot, spotImages, navigate))
+            .then().catch(async (res) => {
+                const data = await res.json();
+                if(data?.errors) setErrors(data.errors)
+            })
 
     }
 
-    console.log(errors)
-
-// .dispatch(spotActions.addPreviewImg(id, previewImage))
-
-    // 33.7626° N, 84.3924° W
-    // This is the greatest spot in the whole world!
-    // Fortress of Serenity
-    // https://a0.muscache.com/im/pictures/miso/Hosting-788677501749872896/original/ac54836d-9522-44c8-8e13-dae7b46bf080.jpeg
-
-    // return (
-    //     <h1>Create a new Spot</h1>
-    // )
 
 return (
     <div className='create-spot-form'>
@@ -274,7 +262,7 @@ return (
                     onChange={e=>setImg1(e.target.value)}
                     />
                 </label>
-                {submitted && errors.img1 && (<p className="error">{errors.img1}</p>)}
+                {submitted && errors.img1 && (<h5 className="error">{errors.img1}</h5>)}
                 <label>
                     <input
                     placeholder="Image URL"
@@ -284,7 +272,7 @@ return (
                     onChange={e=>setImg2(e.target.value)}
                     />
                 </label>
-                {submitted && errors.img2 && (<p className="error">{errors.img2}</p>)}
+                {submitted && errors.img2 && (<h5 className="error">{errors.img2}</h5>)}
                 <label>
                     <input
                     placeholder="Image URL"
@@ -294,7 +282,7 @@ return (
                     onChange={e=>setImg3(e.target.value)} 
                     />
                 </label>
-                {submitted && errors.img3 && (<p className="error">{errors.img3}</p>)}
+                {submitted && errors.img3 && (<h5 className="error">{errors.img3}</h5>)}
                 <label>
                     <input
                     placeholder="Image URL"
@@ -304,10 +292,11 @@ return (
                     onChange={e=>setImg4(e.target.value)}
                     /> 
                 </label>
-                {submitted && errors.img5 && (<p className="error">{errors.img5}</p>)}
+                {submitted && errors.img5 && (<h5 className="error">{errors.img5}</h5>)}
             </div>
         </div>
         <div className='create-spot-button'>
+            {errors.message && <h5 className='error'>{errors.message}</h5>}
             <button
             type='submit'
             >Create Spot</button>

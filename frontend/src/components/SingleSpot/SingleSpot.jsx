@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import GetSpotReviews from '../GetSpotReviews/GetSpotReviews';
 import PostReviewModal from '../PostReviewModal/PostReviewModal';
@@ -15,7 +15,7 @@ export default function SingleSpot() {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const toggleMenu = (e) => {
         e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
@@ -69,13 +69,13 @@ export default function SingleSpot() {
 
     const sessionUser = useSelector(state=>state.session.user);
     const currentUser = {...sessionUser};
-    const isOwner = targetSpot.ownerId === currentUser.id;
+    const isSpotOwner = targetSpot.ownerId === currentUser.id;
     const findExistingReview = useSelector(state=>state.reviews.reviews.find(review=>review.userId===currentUser.id))
 
     // console.log(targetSpot)
-    console.log(currentUser)
-    console.log(findExistingReview)
-    console.log(isOwner)
+    // console.log(currentUser)
+    // console.log(findExistingReview)
+    // console.log(isSpotOwner)
 
     // if(currentUser && currentUser.id !== targetSpot.Owner.id) {}
 
@@ -120,7 +120,7 @@ export default function SingleSpot() {
                         <FaStar />
                         {spot && targetSpot.avgStarRating}
                         <LuDot />
-                        {spot && targetSpot.numReviews} reviews
+                        {spot && targetSpot.numReviews} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
                         </div>
                         </>)
                     } 
@@ -142,18 +142,18 @@ export default function SingleSpot() {
                 <FaStar />
                 {spot && targetSpot.avgStarRating}
                 <LuDot />
-                {spot && targetSpot.numReviews} reviews
+                {spot && targetSpot.numReviews} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
                 </div>
                 </>)
             }
             </h2>
             {Object.values(currentUser).length>0 
-            && !isOwner && !findExistingReview 
-            && <button className='review-button'>
+            && !isSpotOwner && !findExistingReview 
+            && <button className='review-button' onClick={toggleMenu}>
                 <OpenModalMenuItem
                 itemText="Post Your Review"
                 onItemClick={closeMenu}
-                modalComponent={<PostReviewModal />}
+                modalComponent={<PostReviewModal navigate={navigate} />}
                 />
                 </button>}
             <GetSpotReviews />
