@@ -70,7 +70,7 @@ export default function SingleSpot() {
                     {spot && <p className='price'><h2>${targetSpot.price}</h2>night</p>}
                     {checkRating===false ? 
                         (<>
-                        <div className=''>
+                        <div className='new-user-rating'>
                             <FaStar />
                              New
                         </div>
@@ -92,7 +92,7 @@ export default function SingleSpot() {
             <h2 className='review-header'>
             {checkRating===false ? 
                 (<>
-                <div>
+                <div className='new-user-rating'>
                     <FaStar />
                         New
                 </div>

@@ -11,9 +11,9 @@ export default function AllSpots() {
     const dispatch = useDispatch();
 
     const spots = useSelector(state=>state.spots.allSpots);
-    let spotArr = Object.values(spots);
+    let spotArr = Object.values({...spots});
 
-    console.log(spotArr)
+    // console.log(spotArr)
     
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export default function AllSpots() {
                     </div>
                     <div className="spot-info">
                         <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span className="rating"><FaStar />{spot.avgRating}</span>
+                        <span className="rating"><FaStar />{spot.avgRating ? spot.avgRating : "New"}</span>
                     </div>
                     <div>
                         <span className="price"><b>${spot.price}</b>/night</span>

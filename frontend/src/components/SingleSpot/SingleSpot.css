@@ -62,7 +62,7 @@
 }
 
 .host-info {
-    border: dotted indianred;
+    /* border: dotted indianred; */
     width: 60%;
 }
 
@@ -130,4 +130,11 @@ p.price {
 .reviews {
     /* border: dashed; */
     min-height: fit-content;
+}
+
+.new-user-rating {
+    /* border: dotted indianred; */
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
 }

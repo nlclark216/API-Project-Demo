@@ -64,7 +64,7 @@
 
 #tooltip {
     font-family: var(--ff-headers);
-    background: aqua;
+    background: lightgray;
     color: black;
 }
 
