@@ -1,0 +1,161 @@
+.create-spot-form {
+    /* border: dotted yellow; */
+    max-width: 45%;
+    margin: 0 auto;
+}
+
+@media only screen and (max-width: 800px){
+    .create-spot-form {
+        max-width: 65%;
+    }
+}
+
+.new-spot-form {
+    font-size: large;
+    display: flex;
+    flex-direction: column;
+}
+
+.new-spot-inputs {
+    /* border: dotted red; */
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.new-spot-inputs label {
+    /* border: dashed indianred; */
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+}
+
+.city-state, .lat-lon {
+    /* border: solid orange 1px; */
+    display: flex;
+}
+
+.city-state .city {
+    /* border: dotted; */
+    width: 70%;
+}
+
+input#city {
+    /* border: solid blue; */
+    width: 92%;
+    flex: 2;
+}
+
+.lat-lon label {
+    /* border: dotted aquamarine; */
+    flex: 1;
+}
+
+input#lat {
+    width: 90%;
+}
+
+.form-textarea {
+    width: 99%;
+    height: 200px;
+    
+}
+
+.lat-lon {
+    padding-bottom: 20px;
+    border-bottom: solid gray 1px;
+}
+
+.spot-description {
+    padding-bottom: 20px;
+    border-bottom: solid gray 1px;
+}
+
+.input-title {
+    max-width: 99%;
+    min-width: 99%;
+}
+
+.spot-title {
+    padding-bottom: 20px;
+    border-bottom: solid gray 1px;
+}
+
+.spot-price {
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: solid gray 1px;
+}
+
+
+.price-symbol {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+input#price {
+    /* border: dotted; */
+    width: 100%;
+    flex: 3;
+}
+
+.price-symbol .dollar-sign {
+    flex: 0;
+}
+
+.price-box {
+    /* border: dotted; */
+    width: 100%
+}
+
+.price-box input#price {
+    width: 98%;
+}
+
+.spot-photos input {
+    /* border: dashed pink; */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.spot-photos {
+    padding-bottom: 20px;
+    border-bottom: solid gray 1px;
+}
+
+.create-spot-button {
+    padding: 20px;
+    text-align: center;
+}
+
+.create-spot-button button {
+    min-height: 40px;
+    min-width: 120px;
+}
+
+.err-div {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.create-spot-form h5 {
+    margin: 0;
+    color: red;
+}
+
+.img-labels {
+    /* border: dotted yellow; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 20px;
+}
+
+.img-labels input{
+    /* border: solid orange; */
+    margin: 0;
+    width: 98%;
+}

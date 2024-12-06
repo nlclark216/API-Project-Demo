@@ -20,13 +20,15 @@ export default function SingleSpot() {
 
     const spot = useSelector(state=>state.spots.spotDetails[id]);
 
-    let targetSpot = spot;
+    // console.log(spot)
 
-    // console.log(targetSpot.SpotImages)
+    let targetSpot = {...spot};
+
+    // console.log(targetSpot.avgStarRating)
 
     let imgArr = [];
 
-    if (spot) Object.values(targetSpot.SpotImages).map(img=>imgArr.push(img));
+    if (spot) if(spot.SpotImages) Object.values(targetSpot.SpotImages).map(img=>imgArr.push(img));
 
     for(let i = 0; i < 5; i++){
         if(!imgArr[i]) imgArr.push({
@@ -36,7 +38,8 @@ export default function SingleSpot() {
         })
     }
 
-    // return (<h1>Brokey</h1>)
+    const checkRating = targetSpot.avgStarRating > 0;
+    console.log(checkRating)
     
     return (
     <div className='single-spot'>
@@ -60,27 +63,49 @@ export default function SingleSpot() {
         <div className='host-info-and-price'>
             <div className='host-info'>
                 {spot && targetSpot.Owner && <h2>Hosted By {targetSpot.Owner.firstName} {targetSpot.Owner.lastName}</h2>}
-                <p className='info'>Placeholder Text</p>
+                <p className='info'>Lorem ipsum odor amet, consectetuer adipiscing elit. Augue suscipit ornare litora congue eget. Phasellus duis netus per sapien suscipit class vitae. Potenti magnis vehicula nullam cubilia feugiat. Turpis efficitur pellentesque massa enim morbi accumsan velit dictumst tempor. </p><p className='info'>Velit gravida risus; in libero ultricies senectus. Finibus accumsan mus mauris convallis integer a ut. Facilisi cursus elit vivamus elementum porttitor; luctus per. Auctor aliquet curae eget auctor; sociosqu nibh consectetur magnis.</p>
             </div>
             <div className='price-review-box'>
                 <div className='price-review'>
                     {spot && <p className='price'><h2>${targetSpot.price}</h2>night</p>}
-                    <div className='rating'>
+                    {checkRating===false ? 
+                        (<>
+                        <div className=''>
+                            <FaStar />
+                             New
+                        </div>
+                        </>) : 
+                        (<>
+                        <div className='rating'>
                         <FaStar />
                         {spot && targetSpot.avgStarRating}
                         <LuDot />
                         {spot && targetSpot.numReviews} reviews
-                    </div>
+                        </div>
+                        </>)
+                    } 
                 </div>
                 <button className='reserve'>Reserve</button>
             </div>
         </div>
         <div className='spot-reviews'>
             <h2 className='review-header'>
+            {checkRating===false ? 
+                (<>
+                <div>
+                    <FaStar />
+                        New
+                </div>
+                </>) : 
+                (<>
+                <div className='rating'>
                 <FaStar />
                 {spot && targetSpot.avgStarRating}
                 <LuDot />
                 {spot && targetSpot.numReviews} reviews
+                </div>
+                </>)
+            }
             </h2>
             <GetSpotReviews />
         </div>

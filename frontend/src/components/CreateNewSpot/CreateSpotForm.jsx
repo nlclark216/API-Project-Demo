@@ -56,7 +56,7 @@ export default function CreateSpotForm() {
             newErrors.description = 'Description needs a minimum of 30 characters';
         if (!name) newErrors.name = 'Name is required';
         if (!price) newErrors.price = 'Price is required';
-        if (!previewImage) newErrors.previewImage = 'Preview Image URL is required';
+        if (!previewImage) newErrors.previewImage = 'Preview image is required.';
         if(img1 && (!img1.endsWith('.jpg') 
             || !img1.endsWith('.jpeg') 
             || !img1.endsWith('.png'))) newErrors.img1 = 'Image URL must end in .png, .jpg, or .jpeg';
@@ -117,13 +117,13 @@ return (
         <div className='create-spot-intro'>
             <h2>Create a new Spot</h2>
             <h3>Where&apos;s your place located?</h3>
-            <h5>Guests will only get your exact address once they booked a
-            reservation.</h5>
+            <p>Guests will only get your exact address once they book a
+            reservation.</p>
         </div>
         
         <div className='new-spot-inputs'>
             <label>
-                Country
+                <div className='err-div'>Country {submitted && errors.country && (<h5 className="error">{errors.country}</h5>)}</div>
                 <input 
                 id="country"
                 placeholder="Country"
@@ -132,9 +132,9 @@ return (
                 onChange={e=>setCountry(e.target.value)}
                 />
             </label>
-            {submitted && errors.country && (<p className="error">{errors.country}</p>)}
+            
             <label>
-                Street Address
+                <div className='err-div'>Street Address {submitted && errors.address && (<h5 className="error">{errors.address}</h5>)}</div>
                 <input 
                 id="address"
                 placeholder="Street Address"
@@ -143,44 +143,49 @@ return (
                 onChange={e=>setAddress(e.target.value)}
                 />
             </label>
-            {submitted && errors.address && (<p className="error">{errors.address}</p>)}
+            
             <div className='city-state'>
-                <label>
-                    City
-                    <input
-                    id="city"
-                    placeholder="City"
-                    type="text"
-                    value={city}
-                    onChange={e=>setCity(e.target.value)}
-                    />
+                <label className='city'>
+                    <div className='err-div'>City {submitted && errors.city && (<h5 className="error">{errors.city}</h5>)}</div>
+                    <span className='add-comma'>
+                       <input
+                        id="city"
+                        className=''
+                        placeholder="City"
+                        type="text"
+                        value={city}
+                        onChange={e=>setCity(e.target.value)}
+                        />,
+                    </span>
                 </label>
-                {submitted && errors.city && (<p className="error">{errors.city}</p>)}
-                <label>
-                    State
+                
+                <label className='state'>
+                    <div className='err-div'>State {submitted && errors.state && (<h5 className="error">{errors.state}</h5>)}</div>
                     <input
                     id="state"
-                    placeholder="State"
+                    placeholder="STATE"
                     type="text"
                     value={state}
                     onChange={e=>setState(e.target.value)}
                     />
                 </label>
-                {submitted && errors.state && (<p className="error">{errors.state}</p>)}
+                
             </div>
             <div className='lat-lon'>
-                <label>
-                    Latitude
-                    <input 
-                    type='decimal'
-                    id='lat'
-                    placeholder='Latitude'
-                    onChange={e=>setLatitude(parseFloat(e.target.value))}
-                    />
+                <label className='lat'>
+                    <div className='err-div'>Latitude {submitted && errors.lat && (<h5 className='error'>{errors.lat}</h5>)}</div>
+                    <div className='add-comma'>
+                       <input 
+                        type='decimal'
+                        id='lat'
+                        placeholder='Latitude'
+                        onChange={e=>setLatitude(parseFloat(e.target.value))}
+                        />,
+                    </div>  
                 </label>
-                {submitted && errors.lat && (<p className='error'>{errors.lat}</p>)}
+                
                 <label>
-                    Longitude
+                    <div className='err-div'>Longitude {submitted && errors.lng && <h5 className='error'>{errors.lng}</h5>}</div>
                     <input 
                     type='decimal'
                     id='lng'
@@ -188,14 +193,14 @@ return (
                     onChange={e=>setLongitude(parseFloat(e.target.value))}
                     />
                 </label>
-                {submitted && errors.lng && <p className='error'>{errors.lng}</p>}
+                
             </div>
         </div>
 
         <div className='spot-description'>
             <h3>Describe your place to guests</h3>
-            <h5>Mention the best features of your space, any special amentities like
-            fast wi-fi or parking, and what you love about the neighborhood.</h5>
+            <p>Mention the best features of your space, any special amentities like
+            fast wi-fi or parking, and what you love about the neighborhood.</p>
             <label>
                 <textarea
                 className='form-textarea'
@@ -205,14 +210,14 @@ return (
                 onChange={e=>setDescription(e.target.value)}
                 />  
             </label>
-            {submitted && errors.description && <p className="error">{errors.description}</p>}
+            {submitted && errors.description && <h5 className="error">{errors.description}</h5>}
         </div>
         
 
         <div className='spot-title'>
             <h3>Create a title for your spot</h3>
-            <h5>Catch guests&apos; attention with a spot title that highlights what makes
-            your place special.</h5>
+            <p>Catch guests&apos; attention with a spot title that highlights what makes
+            your place special.</p>
             <label>
                 <input
                 className="input-title"
@@ -223,16 +228,16 @@ return (
                 onChange={e=>setName(e.target.value)}
                 /> 
             </label>
-            {submitted && errors.name && <p className="error">{errors.name}</p>}
+            {submitted && errors.name && <h5 className="error">{errors.name}</h5>}
         </div>
 
         <div className='spot-price'>
             <h3>Set a base price for your spot</h3>
-            <h5>Competitive pricing can help your listing stand out and rank higher
-            in search results.</h5>
+            <p>Competitive pricing can help your listing stand out and rank higher
+            in search results.</p>
             <div className='price-symbol'>
-                <p className='price'><b>$</b></p>
-                <label>
+                <p className='dollar-sign'><b>$</b></p>
+                <label className='price-box'>
                     <input 
                     placeholder="Price per night (USD)"
                     type="number"
@@ -242,62 +247,64 @@ return (
                 </label>
                 
             </div>
-            {submitted && errors.price && <p className="error">{errors.price}</p>}
+            {submitted && errors.price && <h5 className="error">{errors.price}</h5>}
         </div>
 
         <div className='spot-photos'>
             <h3>Liven up your spot with photos</h3>
             <p>Submit a link to at least one photo to publish your spot.</p>
-            <label>
-                <input 
-                placeholder="Image URL"
-                type="url"
-                id="previewImg"
-                value={previewImage}
-                onChange={e=>setPreviewImage(e.target.value)}
-                />
-            </label>
-            {submitted && errors.previewImage && (<p className="error">{errors.previewImage}</p>)}
-            <label>
-                <input
-                placeholder="Image URL"
-                type="text"
-                id="img1"
-                value={img1}
-                onChange={e=>setImg1(e.target.value)}
-                />
-            </label>
-            {submitted && errors.img1 && (<p className="error">{errors.img1}</p>)}
-            <label>
-                <input
-                placeholder="Image URL"
-                type="text"
-                id="img2"
-                value={img2}
-                onChange={e=>setImg2(e.target.value)}
-                />
-            </label>
-            {submitted && errors.img2 && (<p className="error">{errors.img2}</p>)}
-            <label>
-                <input
-                placeholder="Image URL"
-                type="url"
-                id="img3"
-                value={img3}
-                onChange={e=>setImg3(e.target.value)} 
-                />
-            </label>
-            {submitted && errors.img3 && (<p className="error">{errors.img3}</p>)}
-            <label>
-                <input
-                placeholder="Image URL"
-                type="url"
-                id="img4"
-                value={img4}
-                onChange={e=>setImg4(e.target.value)}
-                /> 
-            </label>
-            {submitted && errors.img5 && (<p className="error">{errors.img5}</p>)}
+            <div className='img-labels'>
+                <label>
+                    <input 
+                    placeholder="Preview Image URL"
+                    type="url"
+                    id="previewImg"
+                    value={previewImage}
+                    onChange={e=>setPreviewImage(e.target.value)}
+                    />
+                </label>
+                {submitted && errors.previewImage && (<h5 className="error">{errors.previewImage}</h5>)}
+                <label>
+                    <input
+                    placeholder="Image URL"
+                    type="text"
+                    id="img1"
+                    value={img1}
+                    onChange={e=>setImg1(e.target.value)}
+                    />
+                </label>
+                {submitted && errors.img1 && (<p className="error">{errors.img1}</p>)}
+                <label>
+                    <input
+                    placeholder="Image URL"
+                    type="text"
+                    id="img2"
+                    value={img2}
+                    onChange={e=>setImg2(e.target.value)}
+                    />
+                </label>
+                {submitted && errors.img2 && (<p className="error">{errors.img2}</p>)}
+                <label>
+                    <input
+                    placeholder="Image URL"
+                    type="url"
+                    id="img3"
+                    value={img3}
+                    onChange={e=>setImg3(e.target.value)} 
+                    />
+                </label>
+                {submitted && errors.img3 && (<p className="error">{errors.img3}</p>)}
+                <label>
+                    <input
+                    placeholder="Image URL"
+                    type="url"
+                    id="img4"
+                    value={img4}
+                    onChange={e=>setImg4(e.target.value)}
+                    /> 
+                </label>
+                {submitted && errors.img5 && (<p className="error">{errors.img5}</p>)}
+            </div>
         </div>
         <div className='create-spot-button'>
             <button

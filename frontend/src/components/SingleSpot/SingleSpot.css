@@ -62,13 +62,13 @@
 }
 
 .host-info {
-    /* border: dotted indianred; */
+    border: dotted indianred;
     width: 60%;
 }
 
 .info {
     /* border: solid pink; */
-    min-height: 200px;
+    /* min-height: 200px; */
     max-height: fit-content;
 }
 

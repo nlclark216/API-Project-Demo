@@ -33,8 +33,6 @@
     overflow: hidden;
     /* padding: auto; */
     /* margin: 0 40px; */
-    position: relative;
-    z-index: 10;
 }
 
 .preview-img {
