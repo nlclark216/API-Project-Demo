@@ -5,5 +5,51 @@
   }
   
   .filled {
-    color: orange; /* Or your desired color */
+    color: orange;
   }
+
+  .post-review-modal {
+    /* border: dotted; */
+    min-width: fit-content;
+    text-align: center;
+  }
+
+  .post-review-modal textarea {
+    /* border: dotted red; */
+    width: 99%;
+    font-size: large;
+  }
+
+  .review-form {
+    /* border: dashed orange; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 600px;
+  }
+
+  .select-stars {
+    /* border: solid yellow; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 8px;
+    padding-top: 20px;
+  }
+
+  .review-form button {
+    /* border: dashed purple; */
+    height: 40px;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .post-review-modal {
+        padding: 0;
+    }
+    .review-form {
+        max-width: fit-content;
+    }
+  }
+
+  
+  

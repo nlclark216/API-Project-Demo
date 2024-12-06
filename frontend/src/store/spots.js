@@ -129,9 +129,7 @@ export const deleteTargetSpot = (spotId) => async dispatch => {
 export const addImgToSpot = (spotId, img) => async dispatch => {
   const res = await csrfFetch(`/api/spots/${spotId}/images`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(img),
   });
 
@@ -146,9 +144,7 @@ export const addImgToSpot = (spotId, img) => async dispatch => {
 export const updateASpot = (spotId, spotInfo) => async dispatch => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
-    headers: {
-      // 'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(spotInfo),
   });
   if (res.ok) {

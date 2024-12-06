@@ -60,10 +60,6 @@ export default function PostReviewModal({ navigate }) {
         .then(navigate(`spots/${id}`))
     }
 
-    console.log(stars)
-    console.log(errors)
-    console.log(typeof id)
-
     return (
         <div className="post-review-modal">
         <form className="review-form" onSubmit={handleSubmit}>
@@ -84,4 +80,5 @@ export default function PostReviewModal({ navigate }) {
         </form>
         </div>
     )
+
 }

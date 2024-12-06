@@ -72,12 +72,6 @@ export default function SingleSpot() {
     const isSpotOwner = targetSpot.ownerId === currentUser.id;
     const findExistingReview = useSelector(state=>state.reviews.reviews.find(review=>review.userId===currentUser.id))
 
-    // console.log(targetSpot)
-    // console.log(currentUser)
-    // console.log(findExistingReview)
-    // console.log(isSpotOwner)
-
-    // if(currentUser && currentUser.id !== targetSpot.Owner.id) {}
 
     const handleClick = () => { alert("Feature Coming Soon..."); };
     
@@ -108,7 +102,7 @@ export default function SingleSpot() {
             <div className='price-review-box'>
                 <div className='price-review'>
                     {spot && <span className='price'><h2 >${targetSpot.price}</h2>night</span>}
-                    {checkRating===false ? 
+                    {!checkRating ? 
                         (<>
                         <div className='new-user-rating'>
                             <FaStar />
@@ -130,7 +124,7 @@ export default function SingleSpot() {
         </div>
         <div className='spot-reviews'>
             <h2 className='review-header'>
-            {checkRating===false ? 
+            {!checkRating ? 
                 (<>
                 <div className='new-user-rating'>
                     <FaStar />
