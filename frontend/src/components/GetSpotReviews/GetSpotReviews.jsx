@@ -24,11 +24,12 @@ export default function GetSpotReviews() {
 
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    // console.log(reviewArr)
+    console.log(reviewArr.length)
     
     return (
         // <h2>Spot Reviews</h2>
-        <div className='all-spot-reviews'>{
+        <>
+        {reviewArr.length ? (<div className='all-spot-reviews'>{
             targetReviews && reviewArr.map(review=>(
                 <div key={review.id} className='spot-review'>
                     {review.User && <h4 className='reviewer-name'>{review.User.firstName}</h4>}
@@ -36,6 +37,7 @@ export default function GetSpotReviews() {
                     {review.review && <p className='review-text'>{review.review}</p>}
                 </div>
             ))
-        }</div>
+        }</div>) : (<p>Be the frst to post a review!</p>)}
+        </>
     )
 }

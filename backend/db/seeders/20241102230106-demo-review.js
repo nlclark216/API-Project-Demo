@@ -8,12 +8,12 @@ if (process.env.NODE_ENV === 'production') {
 };
 
 const reviews = [
-  {
-    userId: 2,
-    spotId: 1,
-    review: "This was an awesome spot!",
-    stars: 5,
-  },
+  // {
+  //   userId: 2,
+  //   spotId: 1,
+  //   review: "This was an awesome spot!",
+  //   stars: 5,
+  // },
   {
     userId: 3,
     spotId: 1,
@@ -26,30 +26,30 @@ const reviews = [
     review: "Really liked this spot!",
     stars: 5,
   },
-  {
-    userId: 3,
-    spotId: 2,
-    review: "Great spot!",
-    stars: 4,
-  },
+  // {
+  //   userId: 3,
+  //   spotId: 2,
+  //   review: "Great spot!",
+  //   stars: 4,
+  // },
   {
     userId: 1,
     spotId: 3,
     review: "What a fantastic spot!",
     stars: 4,
   },
-  {
-    userId: 3,
-    spotId: 3,
-    review: "Enjoyed this spot!",
-    stars: 5,
-  },
-  {
-    userId: 1,
-    spotId: 4,
-    review: "Can't wait to return to this spot!",
-    stars: 5,
-  },
+  // {
+  //   userId: 3,
+  //   spotId: 3,
+  //   review: "Enjoyed this spot!",
+  //   stars: 5,
+  // },
+  // {
+  //   userId: 1,
+  //   spotId: 4,
+  //   review: "Can't wait to return to this spot!",
+  //   stars: 5,
+  // },
   {
     userId: 3,
     spotId: 4,
@@ -62,24 +62,24 @@ const reviews = [
     review: "Really liked the scenery at this spot!",
     stars: 5,
   },
-  {
-    userId: 2,
-    spotId: 5,
-    review: "Truly recommend this spot!",
-    stars: 4,
-  },
+  // {
+  //   userId: 2,
+  //   spotId: 5,
+  //   review: "Truly recommend this spot!",
+  //   stars: 4,
+  // },
   {
     userId: 2,
     spotId: 6,
     review: "What a nice spot!",
     stars: 4,
   },
-  {
-    userId: 1,
-    spotId: 6,
-    review: "Greatly enjoyed this spot!",
-    stars: 5,
-  },
+  // {
+  //   userId: 1,
+  //   spotId: 6,
+  //   review: "Greatly enjoyed this spot!",
+  //   stars: 5,
+  // },
 ];
 
 

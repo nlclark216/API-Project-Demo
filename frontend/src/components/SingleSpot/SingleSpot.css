@@ -150,3 +150,10 @@ p.price {
     align-items: center;
     column-gap: 4px;
 }
+
+.review-button {
+    /* border: dashed; */
+    margin: 20px 0px;
+    height: 32px;
+    background-color: aqua;
+}

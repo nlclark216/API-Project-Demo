@@ -41,10 +41,19 @@ export default function SingleSpot() {
     const checkRating = targetSpot.avgStarRating > 0;
     // console.log(checkRating)
 
-    const currentUser = useSelector(state=>state.session.user);
+    const sessionUser = useSelector(state=>state.session.user);
+    const currentUser = {...sessionUser};
+    const isOwner = targetSpot.ownerId === currentUser.id;
+    const findExistingReview = useSelector(state=>state.reviews.reviews.find(review=>review.userId===currentUser.id))
 
-    console.log(targetSpot.Owner)
+    // console.log(targetSpot)
     console.log(currentUser)
+    console.log(findExistingReview)
+    console.log(isOwner)
+
+    // if(currentUser && currentUser.id !== targetSpot.Owner.id) {}
+
+    const handleClick = () => { alert("Feature Coming Soon..."); };
     
     return (
     <div className='single-spot'>
@@ -72,7 +81,7 @@ export default function SingleSpot() {
             </div>
             <div className='price-review-box'>
                 <div className='price-review'>
-                    {spot && <p className='price'><h2>${targetSpot.price}</h2>night</p>}
+                    {spot && <span className='price'><h2 >${targetSpot.price}</h2>night</span>}
                     {checkRating===false ? 
                         (<>
                         <div className='new-user-rating'>
@@ -90,7 +99,7 @@ export default function SingleSpot() {
                         </>)
                     } 
                 </div>
-                <button className='reserve'>Reserve</button>
+                <button onClick={handleClick} className='reserve'>Reserve</button>
             </div>
         </div>
         <div className='spot-reviews'>
@@ -112,7 +121,7 @@ export default function SingleSpot() {
                 </>)
             }
             </h2>
-            <button className='review-button'>Post Your Review</button>
+            {Object.values(currentUser).length>0 && !isOwner && !findExistingReview && <button className='review-button'>Post Your Review</button>}
             <GetSpotReviews />
         </div>
     </div>
