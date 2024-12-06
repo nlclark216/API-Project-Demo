@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as spotActions from '../../store/spots';
 import { FaStar } from "react-icons/fa";
 import './Spots.css';
+import { Tooltip } from 'react-tooltip'
 
 import { Link } from "react-router-dom";
 
@@ -12,7 +13,7 @@ export default function AllSpots() {
     const spots = useSelector(state=>state.spots.allSpots);
     let spotArr = Object.values(spots);
 
-    const [toolTip, setToolTip] = useState(null);
+    console.log(spotArr)
     
 
     useEffect(() => {
@@ -25,15 +26,16 @@ export default function AllSpots() {
         {spotArr && spotArr.map(spot=>(
             <div
              key={spot.id}
-             className="tooltip"
-             value={toolTip}
-             onMouseOut={() => setToolTip(null)}
-             onMouseOver={() => setToolTip(spot.id)}
+             data-tooltip-class-name="img-info"
+             data-tooltip-id="tooltip"
+             data-tooltip-float={true}
+             data-tooltip-place="bottom"
+             data-tooltip-content={spot.name}
              >
-                {toolTip === spot.id && <span id="tooltip">{spot.name}</span>}
                 <Link to={`spots/${spot.id}`} >
                     <div className="preview-img">
-                        <img src={`../../../images/preview${spot.id}.jpg`} height='300px' width='300px'  />
+                        <Tooltip id="tooltip" followCursor></Tooltip>
+                            <img src={spot.previewImage} height='300px' width='300px' />
                     </div>
                     <div className="spot-info">
                         <span>{`${spot.city}, ${spot.state}`}</span>

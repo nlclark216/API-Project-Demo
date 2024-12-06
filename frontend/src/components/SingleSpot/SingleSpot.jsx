@@ -26,19 +26,15 @@ export default function SingleSpot() {
 
     let imgArr = [];
 
-    if(!spot) { imgArr = ['url', 'url', 'url', 'url', 'url']; }
-
-
     if (spot) Object.values(targetSpot.SpotImages).map(img=>imgArr.push(img));
+
     for(let i = 0; i < 5; i++){
         if(!imgArr[i]) imgArr.push({
             id: `${i}`,
             preview: false,
-            url: `url${i}`
+            url: "https://www.clker.com/cliparts/7/8/b/6/11949945022068797520checkedbox.svg.med.png"
         })
     }
-
-    // console.log(imgArr)
 
     // return (<h1>Brokey</h1>)
     
@@ -48,10 +44,7 @@ export default function SingleSpot() {
         {spot && <h4>{`${targetSpot.city}, ${targetSpot.state}, ${targetSpot.country}`}</h4>}
         <div className='img-grid'>
             <div className='preview'>
-                {spot && <img src={/*imgArr.find(img=>{
-                    img.preview===true;
-                    return img.url
-                }) ||*/ `../../../images/preview${id}.jpg`} />}
+                {spot && <img src={imgArr[0].url} />}
             </div>
             <div className='not-preview-box'>
                <div className='row'>
