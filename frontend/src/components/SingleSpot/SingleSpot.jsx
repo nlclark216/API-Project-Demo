@@ -39,7 +39,9 @@ export default function SingleSpot() {
     }
 
     const checkRating = targetSpot.avgStarRating > 0;
-    console.log(checkRating)
+    // console.log(checkRating)
+
+    console.log(targetSpot.Owner)
     
     return (
     <div className='single-spot'>
@@ -107,6 +109,7 @@ export default function SingleSpot() {
                 </>)
             }
             </h2>
+            <button></button>
             <GetSpotReviews />
         </div>
     </div>

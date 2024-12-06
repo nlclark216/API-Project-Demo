@@ -23,7 +23,7 @@ export default function LoginFormModal({ navigate }) {
         const data = await res.json();
         if(data?.message) setErrors(data)
           else setErrors({ message: `The provided credentials were invalid`})
-      })
+      }).then(navigate('/'));
   };
 
   return (
@@ -57,7 +57,7 @@ export default function LoginFormModal({ navigate }) {
           disabled={credential.length < 4 || password.length < 6}
           >Log In</button>
         </form>
-        {<DemoUser />}
+        {<DemoUser navigate={navigate}/>}
       </div> 
     </>
   );
