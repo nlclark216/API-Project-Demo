@@ -57,13 +57,14 @@ export default function PostReviewModal({ navigate }) {
             const data = res.json();
             if(data?.errors) setErrors(data)
         }).then(window.location.reload())
-        .then(navigate(`spots/${id}`))
+        .then(navigate(`spots/${id}`));
     }
 
     return (
         <div className="post-review-modal">
         <form className="review-form" onSubmit={handleSubmit}>
             <h2 className="modal-title">How was your stay?</h2>
+            {errors & <h5>{errors.message}</h5>}
             <textarea 
             className="post-review-contents" 
             placeholder="Leave your review here..."
@@ -79,6 +80,6 @@ export default function PostReviewModal({ navigate }) {
             >Submit Your Review</button>
         </form>
         </div>
-    )
+    );
 
 }

@@ -42,15 +42,15 @@ label textarea {
 }
 
 a {
-    color: #00D199;
+    color: lightgray;
 }
 
 a:hover {
-    color: white;
+    color: aqua;
 }
 
 a:active {
-    color: aqua;
+    color: #00D199;
 }
 
 textarea {
