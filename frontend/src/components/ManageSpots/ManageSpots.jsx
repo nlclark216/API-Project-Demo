@@ -15,15 +15,14 @@ export default function ManageSpots() {
 
     const spots = useSelector(state=>state.spots.userSpots);
     const spotArr = Object.values({...spots});
-    console.log(spotArr)
-
+    
     return (
-        <>
+        <div className='manage-current-spots'>
         <h1>Manage Your Spots</h1>
         <button onClick={() => navigate('/spots/new')}>Create a New Spot</button>
         <div className='spot-tiles'>
             {spotArr && spotArr.map(spot=>(
-                <div key={spot.id}>
+                <div className='spot-container' key={spot.id}>
                     <div className='preview-img'>
                         <img src={spot.previewImage} height='300px' width='300px' />
                     </div>
@@ -39,11 +38,14 @@ export default function ManageSpots() {
                         className='update'
                         onClick={()=>navigate(`/spots/${spot.id}/edit`)}
                         >Update</button>
-                        <button className='delete'>Delete</button>
+                        <button 
+                        className='delete'
+                        onClick={()=>dispatch(spotActions.deleteTargetSpot(`${spot.id}`))}
+                        >Delete</button>
                     </div>
                 </div>
             ))}
         </div>
-        </>
+        </div>
     );
 }

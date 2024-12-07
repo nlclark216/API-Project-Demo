@@ -124,6 +124,7 @@ export const deleteTargetSpot = (spotId) => async dispatch => {
     });
     if (res.ok) {
       dispatch(deleteSpot(spotId));
+      window.location.reload();
     } else {
       const error = await res.json();
       throw error;
