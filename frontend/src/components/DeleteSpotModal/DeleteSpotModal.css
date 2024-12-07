@@ -21,3 +21,9 @@
     background-color: black;
     color: #00D199;
 }
+
+@media only screen and (max-width: 800px) {
+    .delete-modal {
+        min-width: 220px;
+    }
+}

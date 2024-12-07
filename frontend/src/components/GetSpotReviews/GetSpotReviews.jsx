@@ -57,7 +57,7 @@ export default function GetSpotReviews({id, sessionUser}) {
                 <OpenModalMenuItem
                 itemText="Delete"
                 onItemClick={closeMenu}
-                modalComponent={<DeleteReviewModal navigate={navigate} id={id} />}
+                modalComponent={<DeleteReviewModal navigate={navigate} reviewId={review.id} spotId={id} />}
                 /></button>}
         </div>))}
         </>
