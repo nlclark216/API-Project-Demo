@@ -42,14 +42,16 @@
     height: 40px;
   }
 
+
   @media only screen and (max-width: 800px) {
     .post-review-modal {
         padding: 0;
     }
     .review-form {
-        max-width: fit-content;
+        max-width: 320px;
     }
   }
+
 
   
   

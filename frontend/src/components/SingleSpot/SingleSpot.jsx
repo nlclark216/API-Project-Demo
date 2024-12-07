@@ -47,6 +47,7 @@ export default function SingleSpot() {
     const spot = useSelector(state=>state.spots.spotDetails[id]);
     let targetSpot;
     let checkRating;
+    let isOwner = false;
 
     // console.log(spot)
 
@@ -73,12 +74,18 @@ export default function SingleSpot() {
     // console.log(checkRating)
 
     const sessionUser = useSelector(state=>state.session.user);
-    const reviews = useSelector(state=>state.reviews.reviews)
+    const reviews = useSelector(state=>state.reviews.reviews);
+    // console.log(sessionUser.id)
+    // console.log(spot.Owner.id)
     
     let findExistingReview
 
     if(sessionUser && reviews) {
         findExistingReview = reviews.find(review=>review.userId===sessionUser.id);
+    }
+
+    if(sessionUser && spot) {
+        if(sessionUser.id === spot.Owner.id) isOwner = true;
     }
 
 
@@ -151,8 +158,8 @@ export default function SingleSpot() {
             }
             </h2>
             {sessionUser && Object.values(sessionUser).length>0 
-             && !findExistingReview 
-            && <button className='review-button' onClick={toggleMenu}>
+             && !findExistingReview && !isOwner
+             && <button className='review-button' onClick={toggleMenu}>
                 <OpenModalMenuItem
                 itemText="Post Your Review"
                 onItemClick={closeMenu}

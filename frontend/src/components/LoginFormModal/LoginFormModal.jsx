@@ -30,7 +30,7 @@ export default function LoginFormModal({ navigate }) {
       <div className='login-modal'>
         <h1>Log In</h1>
         <form onSubmit={handleSubmit}>
-          {errors.message && <p>{errors.message}</p>}
+          {errors.message && <h5>{errors.message}</h5>}
           <label>
             <input
               type="text"

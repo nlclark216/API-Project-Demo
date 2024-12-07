@@ -42,14 +42,8 @@
     padding: 5px 0px;
 }
 
-.login-modal p {
+.login-modal h5 {
     color: red;
+    font-size: medium;
+    margin: 8px 0px;
 }
-
-/* .login-modal a {
-    border: dotted white;
-    text-decoration: underline;
-    text-align: center;
-    color: #00D199;
-    margin: 20px 0px;
-} */

@@ -25,3 +25,9 @@
     height: 40px;
     margin-top: 10px;
 }
+
+.errors {
+    color: red;
+    font-size: medium;
+    margin: 8px 0px;
+}

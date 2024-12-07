@@ -52,7 +52,7 @@ export default function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.email && <p>{errors.email}</p>}
+                {errors.email && <h5 className='errors'>{errors.email}</h5>}
                 <label>
                     <input 
                         type='text'
@@ -62,7 +62,7 @@ export default function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.username && <p>{errors.username}</p>}
+                {errors.username && <h5 className='errors'>{errors.username}</h5>}
                 <label>
                     <input 
                         type='text'
@@ -72,7 +72,7 @@ export default function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.firstName && <p>{errors.firstName}</p>}
+                {errors.firstName && <h5 className='errors'>{errors.firstName}</h5>}
                 <label>
                     <input 
                         type='text'
@@ -82,7 +82,7 @@ export default function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.lastName && <p>{errors.lastName}</p>}
+                {errors.lastName && <h5 className='errors'>{errors.lastName}</h5>}
                 <label>
                     <input 
                         type='password'
@@ -92,7 +92,7 @@ export default function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.password && <p>{errors.password}</p>}
+                {errors.password && <h5 className='errors'>{errors.password}</h5>}
                 <label>
                     <input 
                         type='password'
@@ -102,7 +102,7 @@ export default function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+                {errors.confirmPassword && <h5 className='errors'>{errors.confirmPassword}</h5>}
                 <button type='submit'>Sign Up</button>
             </form> 
             </div>
