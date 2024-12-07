@@ -1,0 +1,23 @@
+.delete-modal {
+    /* border: dotted; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-modal button {
+    width: 100%;
+    margin: 10px 0px;
+    height: 36px;
+}
+
+.delete-modal h4 {
+    margin: 0;
+}
+
+.delete-modal button#no {
+    border: solid 2px #00D199;
+    background-color: black;
+    color: #00D199;
+}

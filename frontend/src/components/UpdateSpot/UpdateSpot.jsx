@@ -8,8 +8,8 @@ import './UpdateSpot.css';
 export default function UpdateSpot() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { spotId } = useParams();
-    const spot = useSelector((state) => state.spots.spotDetails[spotId]);
+    const { id } = useParams();
+    
 
     const [formInfo, setFormInfo] = useState({
         country: "",
@@ -27,8 +27,13 @@ export default function UpdateSpot() {
     const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
-        dispatch(spotActions.getSpotById(spotId))
-    }, [dispatch, spotId])
+        dispatch(spotActions.getSpotById(+id))
+    }, [dispatch, id])
+
+    const spot = useSelector((state) => state.spots.spotDetails[id]);
+  
+    let targetUrl;
+    console.log(targetUrl)
 
     useEffect(() => {
         if(spot) setFormInfo({
@@ -40,9 +45,16 @@ export default function UpdateSpot() {
             lng: spot.lng || "",
             description: spot.description || "",
             name: spot.name || "",
-            price: spot.price || ""
+            price: spot.price || "",
+            SpotImages: spot.SpotImages || []
             })
-        }, [spot])
+    }, [spot])
+
+    const imgArr = formInfo.SpotImages;
+    if(imgArr) {
+        const findPreviewUrl = imgArr.find(img=>img.preview===true) 
+         targetUrl = findPreviewUrl.url;
+     }
 
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
@@ -61,8 +73,6 @@ export default function UpdateSpot() {
         setErrors(newErrors);
 
     }, [formInfo]);
-
-    
     
     const handleSubmit = async e => {
         e.preventDefault();
@@ -80,7 +90,7 @@ export default function UpdateSpot() {
             price: parseFloat(formInfo.price),
         };
 
-        return dispatch(spotActions.updateTargetSpot(spotId, updateSpot, spotImages, navigate))
+        return dispatch(spotActions.updateTargetSpot(id, imgArr, updateSpot, navigate))
             .then().catch(async (res) => {
                 const data = await res.json();
                 if(data?.errors) setErrors(data.errors)
@@ -245,7 +255,7 @@ export default function UpdateSpot() {
                         placeholder="Preview Image URL"
                         type="url"
                         id="previewImg"
-                        // value={previewImage}
+                        value={targetUrl}
                         onChange={handleChange}
                         />
                     </label>
@@ -255,27 +265,27 @@ export default function UpdateSpot() {
                         placeholder="Image URL"
                         type="text"
                         id="img1"
-                        value={img1}
+                        // value={img1}
                         // onChange={e=>setImg1(e.target.value)}
                         />
                     </label>
-                    {submitted && errors.img1 && (<h5 className="error">{errors.img1}</h5>)}
+                    {/* {submitted && errors.img1 && (<h5 className="error">{errors.img1}</h5>)} */}
                     <label>
                         <input
                         placeholder="Image URL"
                         type="text"
                         id="img2"
-                        value={img2}
+                        // value={img2}
                         // onChange={e=>setImg2(e.target.value)}
                         />
                     </label>
-                    {submitted && errors.img2 && (<h5 className="error">{errors.img2}</h5>)}
+                    {/* {submitted && errors.img2 && (<h5 className="error">{errors.img2}</h5>)} */}
                     <label>
                         <input
                         placeholder="Image URL"
                         type="url"
                         id="img3"
-                        value={img3}
+                        // value={img3}
                         // onChangke={e=>setImg3(e.target.value)} 
                         />
                     </label>
@@ -286,14 +296,14 @@ export default function UpdateSpot() {
                         type="url"
                         id="img4"
                         // value={img4}
-                        onChange={e=>setImg4(e.target.value)}
+                        // onChange={e=>setImg4(e.target.value)}
                         /> 
                     </label>
                     {/* {submitted && errors.img5 && (<h5 className="error">{errors.img5}</h5>)} */}
                 </div>
             </div>
             <div className='create-spot-button'>
-                {errors.message && <h5 className='error'>{errors.message}</h5>}
+                {/* {errors.message && <h5 className='error'>{errors.message}</h5>} */}
                 <button
                 type='submit'
                 >Update Spot</button>

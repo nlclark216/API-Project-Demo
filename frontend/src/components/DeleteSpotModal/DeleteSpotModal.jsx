@@ -24,7 +24,8 @@ export default function DeleteSpotModal({ navigate, spotId }) {
     <h1>Confirm Delete</h1>
     <h4>Are you sure you want to remove this spot
     from the listings?</h4>
-    <button onClick={handleClick}>Yes (Delete Spot)</button>
-    <button onClick={closeModal}>No (Keep Spot)</button>
+    {errors && <p>{errors.message}</p>}
+    <button onClick={handleClick} id='yes' >Yes (Delete Spot)</button>
+    <button onClick={closeModal} id='no' >No (Keep Spot)</button>
     </div>);
 }

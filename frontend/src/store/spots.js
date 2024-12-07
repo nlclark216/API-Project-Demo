@@ -152,7 +152,7 @@ export const addImgToSpot = (spotId, img) => async dispatch => {
 
 // Update spot
 // delete all ratings and reviews on update
-export const updateTargetSpot = (spotId, spotInfo, imgArr, navigate) => async dispatch => {
+export const updateTargetSpot = (spotId, imgArr, spotInfo, navigate) => async dispatch => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: { 'Content-Type': 'application/json'},
