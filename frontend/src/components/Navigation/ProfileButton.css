@@ -69,6 +69,7 @@
     box-shadow: 2px 2px 6px rgb(68, 64, 64);
     min-width: fit-content;
     padding: 5px 10px;
+    justify-content: left;
 }
 
 .profile-dropdown .logged-user button {
@@ -108,9 +109,7 @@
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
     margin: 10px 0px;
+    height: fit-content;
     width: 100%;
-    align-self: center;
+    padding: none;
 }
-
-
-

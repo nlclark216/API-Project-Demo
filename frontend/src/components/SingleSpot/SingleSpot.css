@@ -111,6 +111,19 @@
     /* border: dotted red; */
     max-width: fit-content;
     max-height: fit-content;
+    display: inline-flex;
+    align-items: center;
+    column-gap: 12px;
+}
+
+
+.rating#in-box {
+    /* border: dotted red; */
+    max-width: fit-content;
+    max-height: fit-content;
+    display: inline-flex;
+    align-items: center;
+    column-gap: 4px;
 }
 
 .price h2 {

@@ -45,10 +45,15 @@ export default function SingleSpot() {
     }, [dispatch, id]);
 
     const spot = useSelector(state=>state.spots.spotDetails[id]);
+    let targetSpot;
+    let checkRating;
 
     // console.log(spot)
 
-    let targetSpot = {...spot};
+    if(spot) { 
+        targetSpot = {...spot}; 
+        checkRating = targetSpot.avgStarRating > 0;
+    }
 
     // console.log(targetSpot.avgStarRating)
 
@@ -64,13 +69,17 @@ export default function SingleSpot() {
         })
     }
 
-    const checkRating = targetSpot.avgStarRating > 0;
+    
     // console.log(checkRating)
 
     const sessionUser = useSelector(state=>state.session.user);
-    const currentUser = {...sessionUser};
-    const isSpotOwner = targetSpot.ownerId === currentUser.id;
-    const findExistingReview = useSelector(state=>state.reviews.reviews.find(review=>review.userId===currentUser.id))
+    const reviews = useSelector(state=>state.reviews.reviews)
+    
+    let findExistingReview
+
+    if(sessionUser && reviews) {
+        findExistingReview = reviews.find(review=>review.userId===sessionUser.id);
+    }
 
 
     const handleClick = () => { alert("Feature Coming Soon..."); };
@@ -110,7 +119,7 @@ export default function SingleSpot() {
                         </div>
                         </>) : 
                         (<>
-                        <div className='rating'>
+                        <div className='rating' id='in-box'>
                         <FaStar />
                         {spot && targetSpot.avgStarRating}
                         <LuDot />
@@ -136,13 +145,13 @@ export default function SingleSpot() {
                 <FaStar />
                 {spot && targetSpot.avgStarRating}
                 <LuDot />
-                {spot && targetSpot.numReviews} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
+                {spot && <span>{targetSpot.numReviews}</span>} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
                 </div>
                 </>)
             }
             </h2>
-            {Object.values(currentUser).length>0 
-            && !isSpotOwner && !findExistingReview 
+            {sessionUser && Object.values(sessionUser).length>0 
+             && !findExistingReview 
             && <button className='review-button' onClick={toggleMenu}>
                 <OpenModalMenuItem
                 itemText="Post Your Review"
@@ -150,7 +159,7 @@ export default function SingleSpot() {
                 modalComponent={<PostReviewModal navigate={navigate} />}
                 />
                 </button>}
-            <GetSpotReviews />
+             <GetSpotReviews id={id} sessionUser={sessionUser} />
         </div>
     </div>
     ); 

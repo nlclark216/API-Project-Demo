@@ -10,16 +10,19 @@ import { Link } from "react-router-dom";
 export default function AllSpots() {
     const dispatch = useDispatch();
 
-    const spots = useSelector(state=>state.spots.allSpots);
-    const spotArr = Object.values({...spots});
+    
 
     // console.log(spotArr)
     
-
     useEffect(() => {
         dispatch(spotActions.loadAllSpots());
     }, [dispatch]);
 
+    const spots = useSelector(state=>state.spots.allSpots);
+    let spotArr;
+
+    if(spots){spotArr = Object.values({...spots});}
+    
     return(
         <div className="container">
         <div className="spot-tiles">
