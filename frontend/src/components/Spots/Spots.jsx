@@ -11,7 +11,7 @@ export default function AllSpots() {
     const dispatch = useDispatch();
 
     const spots = useSelector(state=>state.spots.allSpots);
-    let spotArr = Object.values({...spots});
+    const spotArr = Object.values({...spots});
 
     // console.log(spotArr)
     

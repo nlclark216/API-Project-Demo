@@ -7,6 +7,8 @@ import AllSpots from './components/Spots/Spots';
 import * as sessionActions from './store/session';
 import SingleSpot from './components/SingleSpot/SingleSpot';
 import CreateSpotForm from './components/CreateNewSpot/CreateSpotForm';
+import ManageSpots from './components/ManageSpots/ManageSpots';
+import UpdateSpot from './components/UpdateSpot/UpdateSpot';
 
 
 
@@ -50,7 +52,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/spots/current',
-        element: <h1>Manage Spots</h1>
+        element: <ManageSpots />
+      },
+      {
+        path: '/spots/:id/edit',
+        element: <UpdateSpot />
       },
       {
         path: '*',

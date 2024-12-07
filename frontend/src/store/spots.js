@@ -99,7 +99,6 @@ export const createNewSpot = (spot, imgArr, navigate) => async dispatch => {
     );
     dispatch(getSpotById(addSpot.id));
     navigate(`/spots/${addSpot.id}`);
-    console.log(res)
     return addSpot;
   } else {
     const error = await res.json();
@@ -112,6 +111,9 @@ export const getCurrentUserSpots = () => async dispatch => {
   if (res.ok) {
     const spots = await res.json();
     dispatch(getUserSpots(spots));
+  } else {
+    const error = await res.json();
+    throw error;
   }
 };
 
@@ -122,6 +124,9 @@ export const deleteTargetSpot = (spotId) => async dispatch => {
     });
     if (res.ok) {
       dispatch(deleteSpot(spotId));
+    } else {
+      const error = await res.json();
+      throw error;
     }
   };
 
@@ -137,11 +142,14 @@ export const addImgToSpot = (spotId, img) => async dispatch => {
     const newImg = await res.json();
     dispatch(addImg(newImg));
     return newImg;
+  } else {
+    const error = await res.json();
+    throw error;
   }
 };
 
 // Update spot
-export const updateASpot = (spotId, spotInfo) => async dispatch => {
+export const updateTargetSpot = (spotId, spotInfo, imgArr, navigate) => async dispatch => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: { 'Content-Type': 'application/json'},
@@ -149,11 +157,16 @@ export const updateASpot = (spotId, spotInfo) => async dispatch => {
   });
   if (res.ok) {
     const updatedSpot = await res.json();
+    dispatch(loadAllSpots());
     dispatch(updateSpot(updatedSpot));
+    await Promise.all(imgArr.map((img) => 
+      dispatch(addImgToSpot(updatedSpot.id, img)))
+    );
+    navigate(`/spots/${updatedSpot.id}`);
     return updatedSpot;
-  } else if (!res.ok) {
-    
-    return res;
+  } else {
+    const error = await res.json();
+    throw error;
   }
 };
 
