@@ -1,91 +1,86 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import './UpdateSpot.css';
 
+
 export default function UpdateSpot() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { spotId } = useParams();
+    const spot = useSelector((state) => state.spots.spotDetails[spotId]);
+
+    const [formInfo, setFormInfo] = useState({
+        country: "",
+        address: "",
+        city: "",
+        state: "",
+        lat: "",
+        lng: "",
+        description: "",
+        name: "",
+        price: "",
+    });
     
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [country, setCountry] = useState("");
-    const [lat, setLatitude] = useState(0);
-    const [lng, setLongitude] = useState(0);
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState(0)
-    const [description, setDescription] = useState('');
-    const [previewImage, setPreviewImage] = useState('');
-    const [img1, setImg1] = useState('');
-    const [img2, setImg2] = useState('');
-    const [img3, setImg3] = useState('');
-    const [img4, setImg4] = useState('');
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
 
-    
-    const updateSpot = {
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price
-    }
+    useEffect(() => {
+        dispatch(spotActions.getSpotById(spotId))
+    }, [dispatch, spotId])
 
-    const { id } = useParams();
+    useEffect(() => {
+        if(spot) setFormInfo({
+            country: spot.country || "",
+            address: spot.address || "",
+            city: spot.city || "",
+            state: spot.state || "",
+            lat: spot.lat || "",
+            lng: spot.lng || "",
+            description: spot.description || "",
+            name: spot.name || "",
+            price: spot.price || ""
+            })
+        }, [spot])
+
+    const handleChange = (e) => {
+        setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
+    };
+
+    useEffect(() => {
+        const newErrors = {};
+        if (!formInfo.country) newErrors.country = "Country is required";
+        if (!formInfo.address) newErrors.address = "Address is required";
+        if (!formInfo.city) newErrors.city = "City is required";
+        if (!formInfo.state) newErrors.state = "State is required";
+        if (formInfo.description < 30)
+          newErrors.description = "Description needs 30 or more characters";
+        if (!formInfo.name) newErrors.name = "Name is required";
+        if (!formInfo.price) newErrors.price = "Price is required";
+        setErrors(newErrors);
+
+    }, [formInfo]);
+
     
     
     const handleSubmit = async e => {
         e.preventDefault();
-
-        const newErrors = {};
-        if (!country) newErrors.country = 'Country is required';
-        if (!address) newErrors.address = 'Address is required';
-        if (!city) newErrors.city = 'City is required';
-        if (!state) newErrors.state = 'State is required';
-        if (description < 30)
-            newErrors.description = 'Description needs a minimum of 30 characters';
-        if (!name) newErrors.name = 'Name is required';
-        if (!price) newErrors.price = 'Price is required';
-        if (!previewImage) newErrors.previewImage = 'Preview image is required.';
-        if(img1 && (!img1.endsWith('.jpg') 
-            || !img1.endsWith('.jpeg') 
-            || !img1.endsWith('.png'))) newErrors.img1 = 'Image URL must end in .png, .jpg, or .jpeg';
-        if(img2 && (!img2.endsWith('.jpg') 
-            || !img2.endsWith('.jpeg') 
-            || !img2.endsWith('.png'))) newErrors.img2 = 'Image URL must end in .png, .jpg, or .jpeg';
-        if(img3 && (!img3.endsWith('.jpg') 
-            || !img3.endsWith('.jpeg') 
-            || !img3.endsWith('.png'))) newErrors.img3 = 'Image URL must end in .png, .jpg, or .jpeg';
-        if(img4 && (!img4.endsWith('.jpg') 
-            || !img4.endsWith('.jpeg') 
-            || !img4.endsWith('.png'))) newErrors.img4 = 'Image URL must end in .png, .jpg, or .jpeg';
-        if(!lat) newErrors.lat = 'Latitude is required';
-        if(!lng) newErrors.lng = 'Longitude is required';
-
-        setErrors(newErrors);
-
         setSubmitted(true);
 
+        if(Object.values(errors).length) return;
 
-        let spotImages = [
-            { url: previewImage, preview: true },
-            { url: img1, preview: false },
-            { url: img2, preview: false },
-            { url: img3, preview: false },
-            { url: img4, preview: false },
-        ].filter((img) => img.url); 
+        const updateSpot = {
+            address: formInfo.address,
+            city: formInfo.city,
+            state: formInfo.state,
+            country: formInfo.country,
+            name: formInfo.name,                                                                                           
+            description: formInfo.description,
+            price: parseFloat(formInfo.price),
+        };
 
-        if(Object.values(newErrors).length) return;
-
-    
-        return dispatch(spotActions.updateTargetSpot(id, updateSpot, spotImages, navigate))
+        return dispatch(spotActions.updateTargetSpot(spotId, updateSpot, spotImages, navigate))
             .then().catch(async (res) => {
                 const data = await res.json();
                 if(data?.errors) setErrors(data.errors)
@@ -116,8 +111,8 @@ export default function UpdateSpot() {
                     id="country"
                     placeholder="Country"
                     type="text"
-                    value={country}
-                    onChange={e=>setCountry(e.target.value)}
+                    value={formInfo.country}
+                    onChange={handleChange}
                     />
                 </label>
                 
@@ -127,8 +122,8 @@ export default function UpdateSpot() {
                     id="address"
                     placeholder="Street Address"
                     type="text"
-                    value={address}
-                    onChange={e=>setAddress(e.target.value)}
+                    value={formInfo.address}
+                    onChange={handleChange}
                     />
                 </label>
                 
@@ -141,8 +136,8 @@ export default function UpdateSpot() {
                             className=''
                             placeholder="City"
                             type="text"
-                            value={city}
-                            onChange={e=>setCity(e.target.value)}
+                            value={formInfo.city}
+                            onChange={handleChange}
                             />,
                         </span>
                     </label>
@@ -153,8 +148,8 @@ export default function UpdateSpot() {
                         id="state"
                         placeholder="STATE"
                         type="text"
-                        value={state}
-                        onChange={e=>setState(e.target.value)}
+                        value={formInfo.state}
+                        onChange={handleChange}
                         />
                     </label>
                     
@@ -167,7 +162,8 @@ export default function UpdateSpot() {
                             type='decimal'
                             id='lat'
                             placeholder='Latitude'
-                            onChange={e=>setLatitude(parseFloat(e.target.value))}
+                            value={formInfo.lat}
+                            onChange={handleChange}
                             />,
                         </div>  
                     </label>
@@ -178,7 +174,8 @@ export default function UpdateSpot() {
                         type='decimal'
                         id='lng'
                         placeholder='Longitude'
-                        onChange={e=>setLongitude(parseFloat(e.target.value))}
+                        value={formInfo.lng}
+                        onChange={handleChange}
                         />
                     </label>
                     
@@ -194,8 +191,8 @@ export default function UpdateSpot() {
                     className='form-textarea'
                     placeholder="Please describe your spot using at least 30 characters"
                     id="description"
-                    value={description}
-                    onChange={e=>setDescription(e.target.value)}
+                    value={formInfo.description}
+                    onChange={handleChange}
                     />  
                 </label>
                 {submitted && errors.description && <h5 className="error">{errors.description}</h5>}
@@ -212,8 +209,8 @@ export default function UpdateSpot() {
                     placeholder="Name of your spot"
                     type="text"
                     id="name"
-                    value={name}
-                    onChange={e=>setName(e.target.value)}
+                    value={formInfo.name}
+                    onChange={handleChange}
                     /> 
                 </label>
                 {submitted && errors.name && <h5 className="error">{errors.name}</h5>}
@@ -230,7 +227,8 @@ export default function UpdateSpot() {
                         placeholder="Price per night (USD)"
                         type="number"
                         id="price"
-                        onChange={e=>setPrice(parseInt(e.target.value))}
+                        value={formInfo.price}
+                        onChange={handleChange}
                         />  
                     </label>
                     
@@ -247,8 +245,8 @@ export default function UpdateSpot() {
                         placeholder="Preview Image URL"
                         type="url"
                         id="previewImg"
-                        value={previewImage}
-                        onChange={e=>setPreviewImage(e.target.value)}
+                        // value={previewImage}
+                        onChange={handleChange}
                         />
                     </label>
                     {submitted && errors.previewImage && (<h5 className="error">{errors.previewImage}</h5>)}
@@ -258,7 +256,7 @@ export default function UpdateSpot() {
                         type="text"
                         id="img1"
                         value={img1}
-                        onChange={e=>setImg1(e.target.value)}
+                        // onChange={e=>setImg1(e.target.value)}
                         />
                     </label>
                     {submitted && errors.img1 && (<h5 className="error">{errors.img1}</h5>)}
@@ -268,7 +266,7 @@ export default function UpdateSpot() {
                         type="text"
                         id="img2"
                         value={img2}
-                        onChange={e=>setImg2(e.target.value)}
+                        // onChange={e=>setImg2(e.target.value)}
                         />
                     </label>
                     {submitted && errors.img2 && (<h5 className="error">{errors.img2}</h5>)}
@@ -278,27 +276,27 @@ export default function UpdateSpot() {
                         type="url"
                         id="img3"
                         value={img3}
-                        onChange={e=>setImg3(e.target.value)} 
+                        // onChangke={e=>setImg3(e.target.value)} 
                         />
                     </label>
-                    {submitted && errors.img3 && (<h5 className="error">{errors.img3}</h5>)}
+                    {/* {submitted && errors.img3 && (<h5 className="error">{errors.img3}</h5>)} */}
                     <label>
                         <input
                         placeholder="Image URL"
                         type="url"
                         id="img4"
-                        value={img4}
+                        // value={img4}
                         onChange={e=>setImg4(e.target.value)}
                         /> 
                     </label>
-                    {submitted && errors.img5 && (<h5 className="error">{errors.img5}</h5>)}
+                    {/* {submitted && errors.img5 && (<h5 className="error">{errors.img5}</h5>)} */}
                 </div>
             </div>
             <div className='create-spot-button'>
                 {errors.message && <h5 className='error'>{errors.message}</h5>}
                 <button
                 type='submit'
-                >Create Spot</button>
+                >Update Spot</button>
             </div>
         </form>
         </div>

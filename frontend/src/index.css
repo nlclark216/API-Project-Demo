@@ -27,6 +27,7 @@ button {
 
 button:hover:enabled{
     color: white;
+    cursor: pointer;
 }
 
 label input {
@@ -58,5 +59,14 @@ textarea {
     width: 99%;
     height: 200px;
     text-indent: 4px;
+}
+
+input {
+    min-height: 28px;
+    font-family: 'Inter';
+}
+
+ul, li {
+    list-style-type: none;
 }
 

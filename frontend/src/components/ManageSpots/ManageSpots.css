@@ -27,13 +27,13 @@
 }
 
 .buttons .update {
-    background-color: #00D199;
+    background-color: #FF5A5E;
 }
 
 .buttons .delete {
-    border: solid 1.5px #00D199;
+    border: solid 1.5px #FF5A5E;
     background-color: black;
-    color: #00D199;
+    color: #FF5A5E;
 }
 
 .spot-container {

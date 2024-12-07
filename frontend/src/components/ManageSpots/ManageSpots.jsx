@@ -1,17 +1,42 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './ManageSpots.css';
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import * as spotActions from '../../store/spots';
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
     const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(spotActions.getCurrentUserSpots())
     }, [dispatch]);
+
+    const toggleMenu = (e) => {
+        e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
+        setShowMenu(!showMenu);
+    };
+
+    useEffect(() => {
+        if(!showMenu) return;
+
+        const closeMenu = (e) => { 
+            if(!ulRef.current.contains(e.target)) {
+                setShowMenu(false);
+            }
+        };
+
+        document.addEventListener('click', closeMenu);
+
+        return () => document.removeEventListener('click', closeMenu);
+    }, [showMenu]);
+
+    const closeMenu = () => setShowMenu(false);
 
     const spots = useSelector(state=>state.spots.userSpots);
     const spotArr = Object.values({...spots});
@@ -40,8 +65,12 @@ export default function ManageSpots() {
                         >Update</button>
                         <button 
                         className='delete'
-                        onClick={()=>dispatch(spotActions.deleteTargetSpot(`${spot.id}`))}
-                        >Delete</button>
+                        onClick={toggleMenu}
+                        ><OpenModalMenuItem 
+                        itemText="Delete"
+                        onItemClick={closeMenu}
+                        modalComponent={<DeleteSpotModal navigate={navigate} spotId={spot.id} />} 
+                        /></button>
                     </div>
                 </div>
             ))}

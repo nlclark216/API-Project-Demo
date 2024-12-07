@@ -21,7 +21,7 @@ export default function LoginFormModal({ navigate }) {
           password 
       })).then(closeModal).catch(async (res) => {
         const data = await res.json();
-        if(data?.message) setErrors(data)
+        if(data?.message) setErrors(data);
       }).then(navigate('/'));
   };
 

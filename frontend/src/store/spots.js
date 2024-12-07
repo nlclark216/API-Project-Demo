@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import * as reviewActions from './reviews';
 
 const LOAD_SPOTS = "spots/loadSpots";
 const SPOT_BYID = "spots/spotById";
@@ -150,6 +151,7 @@ export const addImgToSpot = (spotId, img) => async dispatch => {
 };
 
 // Update spot
+// delete all ratings and reviews on update
 export const updateTargetSpot = (spotId, spotInfo, imgArr, navigate) => async dispatch => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
@@ -160,10 +162,12 @@ export const updateTargetSpot = (spotId, spotInfo, imgArr, navigate) => async di
     const updatedSpot = await res.json();
     dispatch(loadAllSpots());
     dispatch(updateSpot(updatedSpot));
+    dispatch(reviewActions.findBySpotId(spotId));
     await Promise.all(imgArr.map((img) => 
       dispatch(addImgToSpot(updatedSpot.id, img)))
     );
     navigate(`/spots/${updatedSpot.id}`);
+    window.location.reload();
     return updatedSpot;
   } else {
     const error = await res.json();
