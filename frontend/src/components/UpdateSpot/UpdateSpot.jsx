@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
+// import * as reviewActions from '../../store/reviews';
 import './UpdateSpot.css';
 
 
 export default function UpdateSpot() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { id } = useParams();
-    
+    let { id } = useParams();
 
     const [formInfo, setFormInfo] = useState({
         country: "",
@@ -22,43 +22,34 @@ export default function UpdateSpot() {
         name: "",
         price: "",
     });
+
+    // const [imgArr, setImgArr] = useState([])
+    
+    id = +id
+    // console.log(id)
     
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
-        dispatch(spotActions.getSpotById(+id))
-    }, [dispatch, id])
+        const fetchSpot = async () => {
+            try {
+                const res = await fetch(`/api/spots/${id}`);
+                const data = await res.json();
+                setFormInfo(data);
+            } catch (error) {
+                console.error('Error fetching data')
+            }
+        }
+        return fetchSpot
+    }, [id])
 
-    const spot = useSelector((state) => state.spots.spotDetails[id]);
   
-    let targetUrl;
-    console.log(targetUrl)
-
-    useEffect(() => {
-        if(spot) setFormInfo({
-            country: spot.country || "",
-            address: spot.address || "",
-            city: spot.city || "",
-            state: spot.state || "",
-            lat: spot.lat || "",
-            lng: spot.lng || "",
-            description: spot.description || "",
-            name: spot.name || "",
-            price: spot.price || "",
-            SpotImages: spot.SpotImages || []
-            })
-    }, [spot])
-
-    const imgArr = formInfo.SpotImages;
-    if(imgArr) {
-        const findPreviewUrl = imgArr.find(img=>img.preview===true) 
-         targetUrl = findPreviewUrl.url;
-     }
-
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
     };
+
+    // console.log(formInfo)
 
     useEffect(() => {
         const newErrors = {};
@@ -73,12 +64,14 @@ export default function UpdateSpot() {
         setErrors(newErrors);
 
     }, [formInfo]);
+
+
     
     const handleSubmit = async e => {
         e.preventDefault();
         setSubmitted(true);
 
-        if(Object.values(errors).length) return;
+        if(!errors.message) {
 
         const updateSpot = {
             address: formInfo.address,
@@ -88,18 +81,18 @@ export default function UpdateSpot() {
             name: formInfo.name,                                                                                           
             description: formInfo.description,
             price: parseFloat(formInfo.price),
+            lat: parseFloat(formInfo.lat),
+            lng: parseFloat(formInfo.lng)
         };
 
-        return dispatch(spotActions.updateTargetSpot(id, imgArr, updateSpot, navigate))
-            .then().catch(async (res) => {
+        return dispatch(spotActions.updateTargetSpot(id, updateSpot, navigate))
+            .catch(async (res) => {
                 const data = await res.json();
-                if(data?.errors) setErrors(data.errors)
-            })
+                if(data?.errors) {setErrors(data);}
+            }).then(navigate(`/spots/${id}`)).then(window.location.reload())}
 
     }
-    
 
-    
     return (
         <div className='update-spot-form'>
         <form 
@@ -136,7 +129,7 @@ export default function UpdateSpot() {
                     onChange={handleChange}
                     />
                 </label>
-                
+                {errors.address && <h5>{errors.address}</h5>}
                 <div className='city-state'>
                     <label className='city'>
                         <div className='err-div'>City {submitted && errors.city && (<h5 className="error">{errors.city}</h5>)}</div>
@@ -245,65 +238,8 @@ export default function UpdateSpot() {
                 </div>
                 {submitted && errors.price && <h5 className="error">{errors.price}</h5>}
             </div>
-    
-            <div className='spot-photos'>
-                <h3>Liven up your spot with photos</h3>
-                <p>Submit a link to at least one photo to publish your spot.</p>
-                <div className='img-labels'>
-                    <label>
-                        <input 
-                        placeholder="Preview Image URL"
-                        type="url"
-                        id="previewImg"
-                        value={targetUrl}
-                        onChange={handleChange}
-                        />
-                    </label>
-                    {submitted && errors.previewImage && (<h5 className="error">{errors.previewImage}</h5>)}
-                    <label>
-                        <input
-                        placeholder="Image URL"
-                        type="text"
-                        id="img1"
-                        // value={img1}
-                        // onChange={e=>setImg1(e.target.value)}
-                        />
-                    </label>
-                    {/* {submitted && errors.img1 && (<h5 className="error">{errors.img1}</h5>)} */}
-                    <label>
-                        <input
-                        placeholder="Image URL"
-                        type="text"
-                        id="img2"
-                        // value={img2}
-                        // onChange={e=>setImg2(e.target.value)}
-                        />
-                    </label>
-                    {/* {submitted && errors.img2 && (<h5 className="error">{errors.img2}</h5>)} */}
-                    <label>
-                        <input
-                        placeholder="Image URL"
-                        type="url"
-                        id="img3"
-                        // value={img3}
-                        // onChangke={e=>setImg3(e.target.value)} 
-                        />
-                    </label>
-                    {/* {submitted && errors.img3 && (<h5 className="error">{errors.img3}</h5>)} */}
-                    <label>
-                        <input
-                        placeholder="Image URL"
-                        type="url"
-                        id="img4"
-                        // value={img4}
-                        // onChange={e=>setImg4(e.target.value)}
-                        /> 
-                    </label>
-                    {/* {submitted && errors.img5 && (<h5 className="error">{errors.img5}</h5>)} */}
-                </div>
-            </div>
-            <div className='create-spot-button'>
-                {/* {errors.message && <h5 className='error'>{errors.message}</h5>} */}
+            <div className='update-spot-button'>
+                {errors && <h5 className='error'>{errors.message}</h5>}
                 <button
                 type='submit'
                 >Update Spot</button>

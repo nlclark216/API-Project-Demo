@@ -13,7 +13,7 @@ nav {
     display: flex;
     align-items: center;
     font-size: 1.5rem;
-    color: white;
+    color: #00B69F;
 }
 
 .home:hover {

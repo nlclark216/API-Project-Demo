@@ -11,7 +11,7 @@ function Navigation({ isLoaded }) {
   return (
     <nav className='navigation-bar'>
         <ul>
-            <li>
+            <li className='home'>
                 <NavLink 
                 to="/"
                 className='home'

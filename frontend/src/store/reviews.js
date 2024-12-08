@@ -1,10 +1,8 @@
 import { csrfFetch } from "./csrf";
-import { useSelector } from "react-redux";
 
 const LOAD_REVIEWS = 'reviews/loadReviews';
 const ADD_REVIEW = 'reviews/addReview';
 const DELETE_REVIEW = 'reviews/deleteReview';
-const FINDBY_SPOTID = 'reviews/findBySpotId';
 
 
 // Actions
@@ -32,12 +30,6 @@ export const deleteReview = reviewId => {
     }
 }
 
-export const findBySpotId = spotId => {
-    return {
-        type: FINDBY_SPOTID,
-        payload: spotId
-    }
-}
 
 
 
@@ -80,15 +72,6 @@ export const deleteTargetReview = reviewId => async dispatch => {
     }
 }
 
-// find review by spot id thunk
-
-export const findReviewBySpot = spotId => async dispatch => {
-    dispatch(loadSpotReviews(spotId));
-    dispatch(findBySpotId(spotId));
-    const reviews = useSelector(state=>state.reviews);
-    return reviews.forEach(review=>dispatch(deleteTargetReview(review.id)));
-}
-
 
 
 // reducer
@@ -104,10 +87,6 @@ export default function reviewReducer(state = initialState, action) {
         case DELETE_REVIEW:
             return {
                 ...state, reviews: state.reviews.filter(review=>review.id!==action.payload.reviewId)
-            }
-        case FINDBY_SPOTID:
-            return {
-                ...state, reviews: state.reviews.filter(review=>review.spotId!==action.payload)
             }
         default:
             return state;

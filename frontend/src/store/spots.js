@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { csrfFetch } from "./csrf";
 import * as reviewActions from './reviews';
 
@@ -9,6 +10,7 @@ const UPDATE_SPOT = "spots/updateSpot";
 const DELETE_SPOT = "spots/deleteSpot";
 const ADD_SPOT_IMG = "spots/addSpotImg";
 const RESET_STATE = "spots/resetState";
+const GET_REVIEWS = "spots/getReviews";
 
 // Actions
 
@@ -56,12 +58,20 @@ export const addImg = (img) => ({
   img,
 });
 
+
 // Clear Spot State
 export const clearState = () => {
   return {
     type: RESET_STATE,
   };
 };
+
+export const getReviews = (spotId) => {
+  return {
+    type: GET_REVIEWS,
+    payload: spotId
+  }
+}
 
 // Thunks
 
@@ -150,9 +160,11 @@ export const addImgToSpot = (spotId, img) => async dispatch => {
   }
 };
 
+
+
 // Update spot
 // delete all ratings and reviews on update
-export const updateTargetSpot = (spotId, imgArr, spotInfo, navigate) => async dispatch => {
+export const updateTargetSpot = (spotId, spotInfo, navigate) => async dispatch => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: { 'Content-Type': 'application/json'},
@@ -162,10 +174,9 @@ export const updateTargetSpot = (spotId, imgArr, spotInfo, navigate) => async di
     const updatedSpot = await res.json();
     dispatch(loadAllSpots());
     dispatch(updateSpot(updatedSpot));
-    dispatch(reviewActions.findBySpotId(spotId));
-    await Promise.all(imgArr.map((img) => 
-      dispatch(addImgToSpot(updatedSpot.id, img)))
-    );
+    dispatch(reviewActions.findReviewBySpot(spotId));
+    const reviews = useSelector(state=>state.reviews.reviews);
+    reviews.forEach(review=>dispatch(reviewActions.deleteTargetReview(review.id)));
     navigate(`/spots/${updatedSpot.id}`);
     window.location.reload();
     return updatedSpot;
@@ -175,11 +186,20 @@ export const updateTargetSpot = (spotId, imgArr, spotInfo, navigate) => async di
   }
 };
 
+// find review by spot Id
+export const findReviewBySpot = spotId => async dispatch => {
+  const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
+  if(res.ok) {
+      dispatch(getReviews(spotId));
+  }
+}
+
 
 // Initital State
 const initialState = {
   allSpots: {},
   spotDetails: {},
+  spotReviews: [],
   userSpots: [],
 };
 
@@ -253,10 +273,12 @@ export default function spotsReducer(state = initialState, action) {
       const spot = newState.spotDetails[action.img.spotId];
       if (spot) {
         spot.images = spot.images || [];
-        spot.images.push(action.img);
+        if(spot.images.length < 10) {spot.images.push(action.img);}
       }
       return newState;
     }
+    case GET_REVIEWS:
+      return {...state, spotReviews: action.payload.Reviews}
     case RESET_STATE:
       return { ...initialState };
     default:
