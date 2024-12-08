@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
@@ -11,29 +11,51 @@ export default function UpdateSpot() {
     let { id } = useParams();
     id = +id
 
+    let dataInputs;
+
     useEffect(() => {
         dispatch(spotActions.getSpotById(`${id}`))
     }, [dispatch, id])
 
-    // const spot = useSelector(state=>state.spots.spotDetails[`${id}`]);
-    // localStorage.setItem('spot', JSON.stringify(spot));
+    const spot = useSelector(state=>state.spots.spotDetails[`${id}`]);
+    const spotCopy = JSON.parse(localStorage.getItem('spot'));
 
-    const spot = JSON.parse(localStorage.getItem('spot'));
+    if(spot) {dataInputs = spot}
+    else if (!spot) { dataInputs = spotCopy;}
+    else {
+        dataInputs = {country: '',
+            address: '',
+            city: '',
+            state: '',
+            lat: '',
+            lng: '',
+            description: '',
+            name: '',
+            price: '',}
+    }
+ 
+    if(!spot) {alert('Double check spot info, refresh page if incorrect')}
+
+//    useEffect(() => {
+//         window.location.reload(spot === undefined);
+//     }, [])
 
     // console.log('SPOT', spot, 'COPYSPOT', copySpot)
 
 
-    const [formInfo, setFormInfo] = useState({
-        country: spot.country,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        lat: spot.lat,
-        lng: spot.lng,
-        description: spot.description,
-        name: spot.name,
-        price: spot.price,
-    });
+    // const [formInfo, setFormInfo] = useState({
+    //     country: spot.country,
+    //     address: spot.address,
+    //     city: spot.city,
+    //     state: spot.state,
+    //     lat: spot.lat,
+    //     lng: spot.lng,
+    //     description: spot.description,
+    //     name: spot.name,
+    //     price: spot.price,
+    // });
+
+     const [formInfo, setFormInfo] = useState(dataInputs);
 
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
@@ -88,7 +110,7 @@ export default function UpdateSpot() {
                 console.log(data)
                 if(data?.errors) {
                     setErrors(data);
-                    return 'Fixing errors, please reload';
+                    return data.json('Fixing errors, please reload');
                 }
             }).then(navigate(`/spots/${id}`))
         }
