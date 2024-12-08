@@ -22,6 +22,7 @@ export default function UpdateSpot() {
         name: '',
         price: '',
     });
+    
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
 
@@ -75,7 +76,7 @@ export default function UpdateSpot() {
             .catch(async (res) => {
                 const data = await res.json();
                 if(data?.errors) {setErrors(data);}
-            }).then(navigate(`/spots/${id}`)).then(window.location.reload())}
+            }).then(navigate(`/spots/${id}`))}
 
     }
 
