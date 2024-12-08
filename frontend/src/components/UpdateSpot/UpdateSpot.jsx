@@ -46,7 +46,7 @@ export default function UpdateSpot() {
                 price: spot.price
             })
         }
-    }, [spot])
+    }, [spot, setFormInfo])
   
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });

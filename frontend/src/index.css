@@ -73,3 +73,16 @@ ul, li {
 .star {
     color: yellow;
 }
+
+p {
+    color: lightgray;
+}
+
+label {
+    color: darkgray;
+    font-size: medium;
+}
+
+h1 {
+    color: aquamarine;
+}

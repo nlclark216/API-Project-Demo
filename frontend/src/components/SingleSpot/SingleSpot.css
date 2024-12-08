@@ -181,3 +181,8 @@ p.price {
     background-color: aqua;
     max-width: fit-content;
 }
+
+.star#home {
+    /* border: dotted; */
+    font-size: 16px;
+}

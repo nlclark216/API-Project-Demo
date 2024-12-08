@@ -38,7 +38,7 @@ export default function AllSpots() {
                     </div>
                     <div className="spot-info">
                         <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span className="rating"><FaStar className="star" />{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span>
+                        <span className="rating"><FaStar className="star" id="home" />{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span>
                     </div>
                     <div>
                         <span className="price"><b>${spot.price}</b>night</span>

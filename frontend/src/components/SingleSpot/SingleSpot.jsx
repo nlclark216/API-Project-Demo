@@ -143,7 +143,7 @@ export default function SingleSpot() {
                 </>) : 
                 (<>
                 <div className='rating'>
-                <FaStar className='star'/>
+                <FaStar className='star' />
                 {spot && targetSpot.avgStarRating.toFixed(1)}
                 <LuDot />
                 {spot && <span>{targetSpot.numReviews}</span>} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
