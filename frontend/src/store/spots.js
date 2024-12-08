@@ -1,6 +1,4 @@
-import { useSelector } from "react-redux";
 import { csrfFetch } from "./csrf";
-import * as reviewActions from './reviews';
 
 const LOAD_SPOTS = "spots/loadSpots";
 const SPOT_BYID = "spots/spotById";
@@ -175,9 +173,6 @@ export const updateTargetSpot = (spotId, spotInfo, navigate) => async dispatch =
     const updatedSpot = await res.json();
     dispatch(loadAllSpots());
     dispatch(updateSpot(updatedSpot));
-    dispatch(reviewActions.findReviewBySpot(spotId));
-    const reviews = useSelector(state=>state.reviews.reviews);
-    reviews.forEach(review=>dispatch(reviewActions.deleteTargetReview(review.id)));
     navigate(`/spots/${updatedSpot.id}`);
     window.location.reload();
     return updatedSpot;

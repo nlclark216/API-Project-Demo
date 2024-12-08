@@ -48,8 +48,8 @@ export default function ManageSpots() {
         <button onClick={() => navigate('/spots/new')}>Create a New Spot</button>
         <div className='spot-tiles'>
             {spotArr && spotArr.map(spot=>(
-                <div className='manage-spot-container'>
-                <Link to={`/spots/${spot.id}`} className='spot-container' key={spot.id}>
+                <div className='manage-spot-container' key={spot.id}>
+                <Link to={`/spots/${spot.id}`} className='spot-container'>
                     <div className='preview-img'>
                         <img src={spot.previewImage} height='300px' width='300px' />
                     </div>
