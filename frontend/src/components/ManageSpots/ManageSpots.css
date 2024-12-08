@@ -3,11 +3,12 @@
     max-width: 1000px;
     min-width: fit-content;
     margin: 0 auto;
+    padding: 20px;
 }
 
 .manage-current-spots h1 {
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin: 0px;
+    padding-bottom: 20px;
 }
 
 .manage-current-spots button {
@@ -44,4 +45,9 @@
 .spot-tiles {
     /* border: dotted; */
     margin-top: 20px;
+}
+
+.manage-spot-container {
+    /* border: dotted; */
+    margin: 10px 0px;
 }

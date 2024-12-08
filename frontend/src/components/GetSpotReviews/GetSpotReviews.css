@@ -25,4 +25,9 @@
 .delete-review {
     background-color: aqua;
     margin-bottom: 20px;
+    padding: 5px;
+}
+
+.date {
+    color: darkgray;
 }

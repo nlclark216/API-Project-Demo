@@ -13,3 +13,9 @@
     padding: 20px;
     text-align: center;
 }
+
+@media only screen and (max-width: 800px){
+    .update-spot-form {
+        max-width: 90%;
+    }
+}

@@ -53,7 +53,7 @@ export default function PostReviewModal({ navigate }) {
         return dispatch(reviewActions.addSpotReview({
             review: review,
             stars: stars
-        }, id)).then(closeModal).catch(async res => {
+        }, id, navigate)).then(closeModal).catch(async res => {
             const data = res.json();
             if(data?.errors) setErrors(data)
         }).then(navigate(`/spots/${id}`));

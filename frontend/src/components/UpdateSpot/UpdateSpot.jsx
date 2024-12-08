@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
-import { csrfFetch } from '../../store/csrf';
 import './UpdateSpot.css';
 
 
@@ -10,60 +9,48 @@ export default function UpdateSpot() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     let { id } = useParams();
+    id = +id
 
     const [formInfo, setFormInfo] = useState({
-        country: "",
-        address: "",
-        city: "",
-        state: "",
-        lat: "",
-        lng: "",
-        description: "",
-        name: "",
-        price: "",
+        country: '',
+        address: '',
+        city: '',
+        state: '',
+        lat: '',
+        lng: '',
+        description: '',
+        name: '',
+        price: '',
     });
-    
-    id = +id
-    
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
 
+
     useEffect(() => {
-        dispatch(spotActions.getSpotById(id))
+        dispatch(spotActions.getSpotById(`${id}`))
     }, [dispatch, id])
 
-    useEffect(() => {
-        const fetchSpot = async () => {
-            try {
-                const res = await csrfFetch(`/api/spots/${id}`);
-                const data = await res.json();
-                setFormInfo(data);
-            } catch (error) {
-                console.error('Error fetching data')
-            }
-        }
-        return fetchSpot
-    }, [id])
+    const spot = useSelector(state=>state.spots.spotDetails[`${id}`]);
 
+    useEffect(() => {
+        if(spot) {
+            setFormInfo({
+                country: spot.country,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                lat: spot.lat,
+                lng: spot.lng,
+                description: spot.description,
+                name: spot.name,
+                price: spot.price
+            })
+        }
+    }, [spot])
   
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
     };
-
-    useEffect(() => {
-        const newErrors = {};
-        if (!formInfo.country) newErrors.country = "Country is required";
-        if (!formInfo.address) newErrors.address = "Address is required";
-        if (!formInfo.city) newErrors.city = "City is required";
-        if (!formInfo.state) newErrors.state = "State is required";
-        if (formInfo.description < 30)
-          newErrors.description = "Description needs 30 or more characters";
-        if (!formInfo.name) newErrors.name = "Name is required";
-        if (!formInfo.price) newErrors.price = "Price is required";
-        setErrors(newErrors);
-
-    }, [formInfo]);
-
 
     
     const handleSubmit = async e => {

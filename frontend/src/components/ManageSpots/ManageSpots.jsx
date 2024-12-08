@@ -6,7 +6,6 @@ import { FaStar } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
-import UpdateSpot from '../UpdateSpot/UpdateSpot';
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
@@ -64,7 +63,7 @@ export default function ManageSpots() {
                 <div className='buttons'>
                         <button 
                         className='update'
-                        onClick={() => {navigate(`/spots/${spot.id}/edit`); return (<UpdateSpot dispatch={dispatch} />)}}
+                        onClick={() => {navigate(`/spots/${spot.id}/edit`) }}
                         >Update</button>
                         <button 
                         className='delete'

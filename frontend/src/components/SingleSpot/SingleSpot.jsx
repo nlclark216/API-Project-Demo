@@ -115,13 +115,13 @@ export default function SingleSpot() {
                     {!checkRating ? 
                         (<>
                         <div className='new-user-rating'>
-                            <FaStar />
+                            <FaStar className='star' />
                              New
                         </div>
                         </>) : 
                         (<>
                         <div className='rating' id='in-box'>
-                        <FaStar />
+                        <FaStar className='star' />
                         {spot && targetSpot.avgStarRating.toFixed(1)}
                         <LuDot />
                         {spot && targetSpot.numReviews} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
@@ -137,13 +137,13 @@ export default function SingleSpot() {
             {!checkRating ? 
                 (<>
                 <div className='new-user-rating'>
-                    <FaStar />
+                    <FaStar className='star'/>
                         New
                 </div>
                 </>) : 
                 (<>
                 <div className='rating'>
-                <FaStar />
+                <FaStar className='star'/>
                 {spot && targetSpot.avgStarRating.toFixed(1)}
                 <LuDot />
                 {spot && <span>{targetSpot.numReviews}</span>} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}

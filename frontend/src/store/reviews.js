@@ -46,7 +46,7 @@ export const loadSpotReviews = spotId => async dispatch => {
 }
 
 // Add spot review thunk
-export const addSpotReview = (review, spotId) => async dispatch => {
+export const addSpotReview = (review, spotId, navigate) => async dispatch => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -55,6 +55,7 @@ export const addSpotReview = (review, spotId) => async dispatch => {
     if(res.ok) {
         const review = await res.json();
         dispatch(addReview(review));
+        navigate(`/spots/${spotId}`)
         window.location.reload();
         return review;
     }
@@ -83,7 +84,7 @@ export default function reviewReducer(state = initialState, action) {
         case LOAD_REVIEWS:
             return { ...state, reviews: action.payload };
         case ADD_REVIEW:
-            return { ...state, reviews: [...state.reviews]};
+            return { ...state, reviews: [...state.reviews, action.payload]};
         case DELETE_REVIEW:
             return {
                 ...state, reviews: state.reviews.filter(review=>review.id!==action.payload.reviewId)

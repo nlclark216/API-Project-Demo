@@ -126,6 +126,10 @@
     column-gap: 4px;
 }
 
+.rating#in-box .star {
+    font-size: 20px;
+}
+
 .price h2 {
     margin: 0px;
 }
