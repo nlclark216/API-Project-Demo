@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
-// import * as reviewActions from '../../store/reviews';
+import { csrfFetch } from '../../store/csrf';
 import './UpdateSpot.css';
 
 
@@ -29,9 +29,13 @@ export default function UpdateSpot() {
     const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
+        dispatch(spotActions.getSpotById(id))
+    }, [dispatch, id])
+
+    useEffect(() => {
         const fetchSpot = async () => {
             try {
-                const res = await fetch(`/api/spots/${id}`);
+                const res = await csrfFetch(`/api/spots/${id}`);
                 const data = await res.json();
                 setFormInfo(data);
             } catch (error) {
