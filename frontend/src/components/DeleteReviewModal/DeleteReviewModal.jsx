@@ -9,8 +9,6 @@ export default function DeleteReviewModal({navigate, reviewId, spotId}) {
     const { closeModal } = useModal();
     const [errors, setErrors] = useState({});
 
-    console.log(spotId)
-
     const handleClick = e => {
         e.preventDefault();
         setErrors({});

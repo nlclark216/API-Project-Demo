@@ -110,6 +110,7 @@ export const createNewSpot = (spot, imgArr, navigate) => async dispatch => {
     );
     dispatch(getSpotById(addSpot.id));
     navigate(`/spots/${addSpot.id}`);
+    window.location.reload();
     return addSpot;
   } else {
     const error = await res.json();

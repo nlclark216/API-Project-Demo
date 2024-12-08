@@ -56,8 +56,7 @@ export default function PostReviewModal({ navigate }) {
         }, id)).then(closeModal).catch(async res => {
             const data = res.json();
             if(data?.errors) setErrors(data)
-        }).then(window.location.reload())
-        .then(navigate(`spots/${id}`));
+        }).then(navigate(`/spots/${id}`));
     }
 
 

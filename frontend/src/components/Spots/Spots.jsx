@@ -9,10 +9,6 @@ import { Link } from "react-router-dom";
 
 export default function AllSpots() {
     const dispatch = useDispatch();
-
-    
-
-    // console.log(spotArr)
     
     useEffect(() => {
         dispatch(spotActions.loadAllSpots());
@@ -35,17 +31,17 @@ export default function AllSpots() {
              data-tooltip-place="bottom"
              data-tooltip-content={spot.name}
              >
-                <Link to={`spots/${spot.id}`} >
+                <Link to={`/spots/${spot.id}`} >
                     <div className="preview-img">
                         <Tooltip id="tooltip" followCursor></Tooltip>
                             <img src={spot.previewImage} height='300px' width='300px' />
                     </div>
                     <div className="spot-info">
                         <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span className="rating"><FaStar />{spot.avgRating ? spot.avgRating : "New"}</span>
+                        <span className="rating"><FaStar />{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span>
                     </div>
                     <div>
-                        <span className="price"><b>${spot.price}</b>/night</span>
+                        <span className="price"><b>${spot.price}</b>night</span>
                     </div>
                 </Link>
             </div>

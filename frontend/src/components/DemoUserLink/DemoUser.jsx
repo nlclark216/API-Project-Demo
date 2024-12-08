@@ -24,6 +24,6 @@ export default function DemoUser({ navigate }) {
        <button
        type="submit"
        onClick={handleClick}
-       className="demo-user">Demo User</button>
+       className="demo-user">Log in as Demo User</button>
     );
 }

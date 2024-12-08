@@ -19,8 +19,6 @@ export default function GetSpotReviews({id, sessionUser}) {
 
     const spotReviews = useSelector(state=>state.reviews.reviews);
 
-    // console.log(spotReviews)
-
     const monthNames = ['January', 'February', 'March', 'April', 'May',
          'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -47,13 +45,15 @@ export default function GetSpotReviews({id, sessionUser}) {
     
     return (
         <>
-        {spotReviews && spotReviews.map(review=>(<div key={review.id}>
+        {spotReviews && spotReviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(review=>(<div key={review.id}>
             <h3>{review.User.firstName}</h3>
             <p className='date'>{monthNames[review.updatedAt.slice(5,7)-1]} {review.updatedAt.slice(0,4)}</p>
             <p className='review-text'>{review.review}</p>
             {sessionUser && sessionUser.id===review.User.id && 
             <button 
-            onClick={toggleMenu}>
+            onClick={toggleMenu}
+            className='delete-review'
+            >
                 <OpenModalMenuItem
                 itemText="Delete"
                 onItemClick={closeMenu}

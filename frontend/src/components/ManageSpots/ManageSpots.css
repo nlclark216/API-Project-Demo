@@ -27,16 +27,21 @@
 }
 
 .buttons .update {
-    background-color: #FF5A5E;
+    background-color: aqua;
 }
 
 .buttons .delete {
-    border: solid 1.5px #FF5A5E;
+    border: solid 1.5px aqua;
     background-color: black;
-    color: #FF5A5E;
+    color: aqua;
 }
 
 .spot-container {
     /* border: dotted; */
     margin-top: 40px;
+}
+
+.spot-tiles {
+    /* border: dotted; */
+    margin-top: 20px;
 }

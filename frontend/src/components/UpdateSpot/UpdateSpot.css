@@ -3,3 +3,13 @@
     max-width: 45%;
     margin: 0 auto;
 }
+
+.update-spot-button button {
+    min-height: 40px;
+    min-width: 120px;
+}
+
+.update-spot-button {
+    padding: 20px;
+    text-align: center;
+}

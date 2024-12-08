@@ -26,9 +26,6 @@ export default function CreateSpotForm() {
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
 
-
-    // console.log(errors)
-
     const newSpot = {
         address,
         city,
@@ -44,8 +41,6 @@ export default function CreateSpotForm() {
 
     const handleSubmit = async e => {
         e.preventDefault();
-
-        console.log(newSpot)
        
         const newErrors = {};
         if (!country) newErrors.country = 'Country is required';
@@ -53,7 +48,7 @@ export default function CreateSpotForm() {
         if (!city) newErrors.city = 'City is required';
         if (!state) newErrors.state = 'State is required';
         if (description < 30)
-            newErrors.description = 'Description needs a minimum of 30 characters';
+            newErrors.description = 'Description needs 30 or more characters';
         if (!name) newErrors.name = 'Name is required';
         if (!price) newErrors.price = 'Price is required';
         if (!previewImage) newErrors.previewImage = 'Preview image is required.';
@@ -88,7 +83,7 @@ export default function CreateSpotForm() {
 
  
         return dispatch(spotActions.createNewSpot(newSpot, spotImages, navigate))
-            .then().catch(async (res) => {
+            .catch(async (res) => {
                 const data = await res.json();
                 if(data?.errors) setErrors(data.errors)
             })
@@ -106,7 +101,7 @@ return (
         <div className='create-spot-intro'>
             <h2>Create a new Spot</h2>
             <h3>Where&apos;s your place located?</h3>
-            <p>Guests will only get your exact address once they book a
+            <p>Guests will only get your exact address once they booked a
             reservation.</p>
         </div>
         
@@ -193,7 +188,7 @@ return (
             <label>
                 <textarea
                 className='form-textarea'
-                placeholder="Please describe your spot using at least 30 characters"
+                placeholder="Please write at least 30 characters"
                 id="description"
                 value={description}
                 onChange={e=>setDescription(e.target.value)}

@@ -16,10 +16,13 @@
     margin: 0;
 }
 
+.delete-modal button#yes {
+    /* background-color: #FF5A5E; */
+    background-color: red;
+}
+
 .delete-modal button#no {
-    border: solid 2px #00D199;
-    background-color: black;
-    color: #00D199;
+    background-color: darkgray;
 }
 
 @media only screen and (max-width: 800px) {

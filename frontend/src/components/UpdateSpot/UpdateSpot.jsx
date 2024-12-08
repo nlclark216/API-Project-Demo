@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 // import * as reviewActions from '../../store/reviews';
@@ -22,11 +22,8 @@ export default function UpdateSpot() {
         name: "",
         price: "",
     });
-
-    // const [imgArr, setImgArr] = useState([])
     
     id = +id
-    // console.log(id)
     
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
@@ -48,8 +45,6 @@ export default function UpdateSpot() {
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
     };
-
-    // console.log(formInfo)
 
     useEffect(() => {
         const newErrors = {};
@@ -242,7 +237,7 @@ export default function UpdateSpot() {
                 {errors && <h5 className='error'>{errors.message}</h5>}
                 <button
                 type='submit'
-                >Update Spot</button>
+                >Update your Spot</button>
             </div>
         </form>
         </div>

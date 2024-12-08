@@ -49,14 +49,12 @@ export default function SingleSpot() {
     let checkRating;
     let isOwner = false;
 
-    // console.log(spot)
 
     if(spot) { 
         targetSpot = {...spot}; 
         checkRating = targetSpot.avgStarRating > 0;
     }
 
-    // console.log(targetSpot.avgStarRating)
 
     let imgArr = [];
 
@@ -70,13 +68,9 @@ export default function SingleSpot() {
         })
     }
 
-    
-    // console.log(checkRating)
 
     const sessionUser = useSelector(state=>state.session.user);
     const reviews = useSelector(state=>state.reviews.reviews);
-    // console.log(sessionUser.id)
-    // console.log(spot.Owner.id)
     
     let findExistingReview
 
@@ -128,7 +122,7 @@ export default function SingleSpot() {
                         (<>
                         <div className='rating' id='in-box'>
                         <FaStar />
-                        {spot && targetSpot.avgStarRating}
+                        {spot && targetSpot.avgStarRating.toFixed(1)}
                         <LuDot />
                         {spot && targetSpot.numReviews} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
                         </div>
@@ -150,7 +144,7 @@ export default function SingleSpot() {
                 (<>
                 <div className='rating'>
                 <FaStar />
-                {spot && targetSpot.avgStarRating}
+                {spot && targetSpot.avgStarRating.toFixed(1)}
                 <LuDot />
                 {spot && <span>{targetSpot.numReviews}</span>} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
                 </div>
@@ -166,6 +160,7 @@ export default function SingleSpot() {
                 modalComponent={<PostReviewModal navigate={navigate} />}
                 />
                 </button>}
+            {!checkRating && sessionUser && !isOwner && <p>Be the first to post a review!</p>}
              <GetSpotReviews id={id} sessionUser={sessionUser} />
         </div>
     </div>

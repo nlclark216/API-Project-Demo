@@ -56,7 +56,7 @@ export default function ProfileButton({ user }) {
               {user ? (
                 <>
                   <div className="logged-user">
-                    <span>Hello, {user.username}</span>
+                    <span>Hello, {user.firstName}</span>
                     <span>{user.email}</span>
                     <span className="manage-spots">
                       <Link to='spots/current' onClick={closeMenu} className="manage-link" >Manage Spots</Link>

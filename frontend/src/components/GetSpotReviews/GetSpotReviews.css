@@ -21,3 +21,8 @@
     min-height: 40px;
     max-height: fit-content;
 }
+
+.delete-review {
+    background-color: aqua;
+    margin-bottom: 20px;
+}

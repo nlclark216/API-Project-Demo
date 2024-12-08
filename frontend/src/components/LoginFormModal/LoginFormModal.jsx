@@ -30,7 +30,7 @@ export default function LoginFormModal({ navigate }) {
       <div className='login-modal'>
         <h1>Log In</h1>
         <form onSubmit={handleSubmit}>
-          {errors.message && <h5>{errors.message}</h5>}
+          {errors.message && <h5>{'The provided credentials were invalid'}</h5>}
           <label>
             <input
               type="text"

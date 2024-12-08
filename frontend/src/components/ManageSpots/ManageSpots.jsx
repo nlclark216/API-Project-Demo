@@ -3,7 +3,7 @@ import './ManageSpots.css';
 import { useEffect, useState, useRef } from 'react';
 import * as spotActions from '../../store/spots';
 import { FaStar } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 import UpdateSpot from '../UpdateSpot/UpdateSpot';
@@ -44,22 +44,24 @@ export default function ManageSpots() {
     
     return (
         <div className='manage-current-spots'>
-        <h1>Manage Your Spots</h1>
+        <h1>Manage Spots</h1>
         <button onClick={() => navigate('/spots/new')}>Create a New Spot</button>
         <div className='spot-tiles'>
             {spotArr && spotArr.map(spot=>(
-                <div className='spot-container' key={spot.id}>
+                <div className='manage-spot-container'>
+                <Link to={`/spots/${spot.id}`} className='spot-container' key={spot.id}>
                     <div className='preview-img'>
                         <img src={spot.previewImage} height='300px' width='300px' />
                     </div>
                     <div className='spot-info'>
                         <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span className="rating"><FaStar />{spot.avgRating ? spot.avgRating : "New"}</span>
+                        <span className="rating"><FaStar />{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span>
                     </div>
                     <div>
                         <span className="price"><b>${spot.price}</b>/night</span>
                     </div>
-                    <div className='buttons'>
+                </Link>
+                <div className='buttons'>
                         <button 
                         className='update'
                         onClick={() => {navigate(`/spots/${spot.id}/edit`); return (<UpdateSpot dispatch={dispatch} />)}}
@@ -72,7 +74,7 @@ export default function ManageSpots() {
                         onItemClick={closeMenu}
                         modalComponent={<DeleteSpotModal navigate={navigate} spotId={spot.id} />} 
                         /></button>
-                    </div>
+                </div>
                 </div>
             ))}
         </div>
