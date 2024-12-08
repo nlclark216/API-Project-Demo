@@ -36,50 +36,12 @@ export default function UpdateSpot() {
  
     if(!spot) {alert('Double check spot info, refresh page if incorrect')}
 
-//    useEffect(() => {
-//         window.location.reload(spot === undefined);
-//     }, [])
-
-    // console.log('SPOT', spot, 'COPYSPOT', copySpot)
-
-
-    // const [formInfo, setFormInfo] = useState({
-    //     country: spot.country,
-    //     address: spot.address,
-    //     city: spot.city,
-    //     state: spot.state,
-    //     lat: spot.lat,
-    //     lng: spot.lng,
-    //     description: spot.description,
-    //     name: spot.name,
-    //     price: spot.price,
-    // });
 
      const [formInfo, setFormInfo] = useState(dataInputs);
 
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
 
-
-   
-
-    
-
-    // useEffect(() => {
-    //     if(spot) {
-    //         setFormInfo({
-    //             country: spot.country,
-    //             address: spot.address,
-    //             city: spot.city,
-    //             state: spot.state,
-    //             lat: spot.lat,
-    //             lng: spot.lng,
-    //             description: spot.description,
-    //             name: spot.name,
-    //             price: spot.price
-    //         })
-    //     }
-    // }, [spot, setFormInfo])
   
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
@@ -138,6 +100,7 @@ export default function UpdateSpot() {
                     <div className='err-div'>Country {submitted && errors.country && (<h5 className="error">{errors.country}</h5>)}</div>
                     <input 
                     id="country"
+                    autoComplete='on'
                     placeholder="Country"
                     type="text"
                     value={formInfo.country}
@@ -150,6 +113,7 @@ export default function UpdateSpot() {
                     <input 
                     id="address"
                     placeholder="Street Address"
+                    autoComplete='on'
                     type="text"
                     value={formInfo.address}
                     onChange={handleChange}
@@ -164,6 +128,7 @@ export default function UpdateSpot() {
                             id="city"
                             className=''
                             placeholder="City"
+                            autoComplete='on'
                             type="text"
                             value={formInfo.city}
                             onChange={handleChange}
@@ -177,6 +142,8 @@ export default function UpdateSpot() {
                         id="state"
                         placeholder="STATE"
                         type="text"
+                        autoCapitalize='on'
+                        autoComplete='on'
                         value={formInfo.state}
                         onChange={handleChange}
                         />
@@ -191,6 +158,7 @@ export default function UpdateSpot() {
                             type='decimal'
                             id='lat'
                             placeholder='Latitude'
+                            autoComplete='on'
                             value={formInfo.lat}
                             onChange={handleChange}
                             />,
@@ -203,6 +171,7 @@ export default function UpdateSpot() {
                         type='decimal'
                         id='lng'
                         placeholder='Longitude'
+                        autoComplete='on'
                         value={formInfo.lng}
                         onChange={handleChange}
                         />
@@ -238,6 +207,7 @@ export default function UpdateSpot() {
                     placeholder="Name of your spot"
                     type="text"
                     id="name"
+                    autoComplete='on'
                     value={formInfo.name}
                     onChange={handleChange}
                     /> 
@@ -256,6 +226,7 @@ export default function UpdateSpot() {
                         placeholder="Price per night (USD)"
                         type="number"
                         id="price"
+                        autoComplete='on'
                         value={formInfo.price}
                         onChange={handleChange}
                         />  
