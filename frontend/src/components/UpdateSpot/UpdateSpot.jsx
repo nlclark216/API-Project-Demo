@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
@@ -11,43 +11,53 @@ export default function UpdateSpot() {
     let { id } = useParams();
     id = +id
 
-    const [formInfo, setFormInfo] = useState({
-        country: '',
-        address: '',
-        city: '',
-        state: '',
-        lat: '',
-        lng: '',
-        description: '',
-        name: '',
-        price: '',
-    });
-    
-    const [errors, setErrors] = useState({});
-    const [submitted, setSubmitted] = useState(false);
-
-
     useEffect(() => {
         dispatch(spotActions.getSpotById(`${id}`))
     }, [dispatch, id])
 
-    const spot = useSelector(state=>state.spots.spotDetails[`${id}`]);
+    // const spot = useSelector(state=>state.spots.spotDetails[`${id}`]);
+    // localStorage.setItem('spot', JSON.stringify(spot));
 
-    useEffect(() => {
-        if(spot) {
-            setFormInfo({
-                country: spot.country,
-                address: spot.address,
-                city: spot.city,
-                state: spot.state,
-                lat: spot.lat,
-                lng: spot.lng,
-                description: spot.description,
-                name: spot.name,
-                price: spot.price
-            })
-        }
-    }, [spot, setFormInfo])
+    const spot = JSON.parse(localStorage.getItem('spot'));
+
+    // console.log('SPOT', spot, 'COPYSPOT', copySpot)
+
+
+    const [formInfo, setFormInfo] = useState({
+        country: spot.country,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        lat: spot.lat,
+        lng: spot.lng,
+        description: spot.description,
+        name: spot.name,
+        price: spot.price,
+    });
+
+    const [errors, setErrors] = useState({});
+    const [submitted, setSubmitted] = useState(false);
+
+
+   
+
+    
+
+    // useEffect(() => {
+    //     if(spot) {
+    //         setFormInfo({
+    //             country: spot.country,
+    //             address: spot.address,
+    //             city: spot.city,
+    //             state: spot.state,
+    //             lat: spot.lat,
+    //             lng: spot.lng,
+    //             description: spot.description,
+    //             name: spot.name,
+    //             price: spot.price
+    //         })
+    //     }
+    // }, [spot, setFormInfo])
   
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
@@ -75,8 +85,15 @@ export default function UpdateSpot() {
         return dispatch(spotActions.updateTargetSpot(id, updateSpot, navigate))
             .catch(async (res) => {
                 const data = await res.json();
-                if(data?.errors) {setErrors(data);}
-            }).then(navigate(`/spots/${id}`))}
+                console.log(data)
+                if(data?.errors) {
+                    setErrors(data);
+                    return 'Fixing errors, please reload';
+                }
+            }).then(navigate(`/spots/${id}`))
+        }
+
+        console.log(errors)
 
     }
 

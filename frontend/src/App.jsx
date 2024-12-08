@@ -7,6 +7,7 @@ import AllSpots from './components/Spots/Spots';
 import * as sessionActions from './store/session';
 import SingleSpot from './components/SingleSpot/SingleSpot';
 import CreateSpotForm from './components/CreateNewSpot/CreateSpotForm';
+// import CreateNewSpotForm from './components/CreateNewSpotForm/CreateNewSpotForm';
 import ManageSpots from './components/ManageSpots/ManageSpots';
 import UpdateSpot from './components/UpdateSpot/UpdateSpot';
 

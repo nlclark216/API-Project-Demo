@@ -89,6 +89,7 @@ export const getSpotById = (spotId) => async dispatch => {
   if (res.ok) {
     const spot = await res.json();
     dispatch(spotById(spot));
+    localStorage.setItem('spot', JSON.stringify(spot));
     return spot;
   }
 };
