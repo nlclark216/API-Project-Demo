@@ -63,7 +63,7 @@ export default function ManageSpots() {
                 <div className='buttons'>
                         <button 
                         className='update'
-                        onClick={() => {navigate(`/spots/${spot.id}/edit`) }}
+                        onClick={() => {navigate(`/spots/${spot.id}/edit`).then(window.location.reload()) }}
                         >Update</button>
                         <button 
                         className='delete'

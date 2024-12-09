@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import './UpdateSpot.css';
@@ -12,23 +12,38 @@ export default function UpdateSpot() {
     id = +id
 
     useEffect(() => {
-        dispatch(spotActions.getSpotById(`${id}`))
+        dispatch(spotActions.getSpotById(id))
     }, [dispatch, id])
-
-
-    const spot = JSON.parse(localStorage.getItem('spot'));
+    
+    const spot = useSelector(state=>state.spots.spotDetails);
+    
 
     const [formInfo, setFormInfo] = useState({
-        country: spot.country,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        lat: spot.lat,
-        lng: spot.lng,
-        description: spot.description,
-        name: spot.name,
-        price: spot.price,
+        country: '',
+        address: '',
+        city: '',
+        state: '',
+        lat: '',
+        lng: '',
+        description: '',
+        name: '',
+        price: '',
     });
+
+    useEffect(() => {
+        if(spot) {
+            Object.values(spot).map(spot=>{
+                const { address, city, state, country, lat, lng,
+                    description, price, name, previewImage
+                 } = spot
+                setFormInfo({address: address, city: city, state: state,
+                    country: country, lat: lat, lng: lng, description: description,
+                    price: price, name: name, previewImage: previewImage
+                })
+            });
+        }
+    }, [spot, setFormInfo])
+
 
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
@@ -42,8 +57,8 @@ export default function UpdateSpot() {
     const handleSubmit = async e => {
         e.preventDefault();
         setSubmitted(true);
-
-        if(!errors.message) {
+    
+        setErrors({})
 
         const updateSpot = {
             address: formInfo.address,
@@ -60,15 +75,12 @@ export default function UpdateSpot() {
         return dispatch(spotActions.updateTargetSpot(id, updateSpot, navigate))
             .catch(async (res) => {
                 const data = await res.json();
-                console.log(data)
                 if(data?.errors) {
-                    setErrors(data);
-                    return 'Fixing errors, please reload';
+                    setErrors(data.errors.message);
+                    console.log(errors)
                 }
             }).then(navigate(`/spots/${id}`))
-        }
-
-        console.log(errors)
+    
 
     }
 
