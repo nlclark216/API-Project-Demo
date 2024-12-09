@@ -116,7 +116,7 @@ router.post('/:reviewId/images', restoreUser, requireAuth, reviewAuth, async (re
 });
 
 // Edit a Review
-router.put('/:reviewId', restoreUser, requireAuth, reviewAuth, validateReview, async (req, res, next) => {
+router.put('/:reviewId', restoreUser, requireAuth, reviewAuth, validateUpdateReview, async (req, res, next) => {
     
 
     try {
