@@ -60,34 +60,15 @@ export default function UpdateSpot() {
         setSubmitted(true);
     
         setErrors({});
-
-        const updateSpot = {
-            address: formInfo.address,
-            city: formInfo.city,
-            state: formInfo.state,
-            country: formInfo.country,
-            name: formInfo.name,                                                                                           
-            description: formInfo.description,
-            price: parseFloat(formInfo.price),
-            lat: parseFloat(formInfo.lat),
-            lng: parseFloat(formInfo.lng)
-        };
-
-        if(spot) {
-            if(spot[id].address === updateSpot.address) {
-                setErrors({address: 'Spot with same address already in system'})
-            }
-        }
-
-       if(spot[id].address !== updateSpot.address) {
-        return dispatch(spotActions.updateTargetSpot(id, updateSpot, navigate))
+      
+        return dispatch(spotActions.updateTargetSpot(id, formInfo, navigate))
             .catch(async (res) => {
                 const data = await res.json();
                 if(data?.errors) {
-                    setErrors(data.errors.message);
+                    setErrors(data.errors);
+                    alert('Error! Please look over the form and make necessary edits')
                 }
-            }).then(navigate(`/spots/${id}`))
-        }
+        }).then();
     }
 
     return (
