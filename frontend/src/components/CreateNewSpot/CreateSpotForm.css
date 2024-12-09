@@ -133,12 +133,12 @@ input#price {
     min-height: 40px;
     min-width: 120px;
 }
-
+/* 
 .err-div {
     display: inline-flex;
     align-items: center;
     column-gap: 8px;
-}
+} */
 
 .create-spot-form h5 {
     margin: 0;

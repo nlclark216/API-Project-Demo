@@ -99,7 +99,7 @@ return (
     onSubmit={handleSubmit}
     >
         <div className='create-spot-intro'>
-            <h2>Create a new Spot</h2>
+            <h1>Create a new Spot</h1>
             <h3>Where&apos;s your place located?</h3>
             <p>Guests will only get your exact address once they booked a
             reservation.</p>
@@ -107,7 +107,7 @@ return (
         
         <div className='new-spot-inputs'>
             <label>
-                <div className='err-div'>Country {submitted && errors.country && (<h5 className="error">{errors.country}</h5>)}</div>
+                Country {submitted && errors.country && (<h5 className="error">{errors.country}</h5>)}
                 <input 
                 id="country"
                 placeholder="Country"
@@ -118,7 +118,7 @@ return (
             </label>
             
             <label>
-                <div className='err-div'>Street Address {submitted && errors.address && (<h5 className="error">{errors.address}</h5>)}</div>
+                Street Address {submitted && errors.address && (<h5 className="error">{errors.address}</h5>)}
                 <input 
                 id="address"
                 placeholder="Street Address"
@@ -130,7 +130,7 @@ return (
             
             <div className='city-state'>
                 <label className='city'>
-                    <div className='err-div'>City {submitted && errors.city && (<h5 className="error">{errors.city}</h5>)}</div>
+                    City {submitted && errors.city && (<h5 className="error">{errors.city}</h5>)}
                     <span className='add-comma'>
                        <input
                         id="city"
@@ -144,7 +144,7 @@ return (
                 </label>
                 
                 <label className='state'>
-                    <div className='err-div'>State {submitted && errors.state && (<h5 className="error">{errors.state}</h5>)}</div>
+                    State {submitted && errors.state && (<h5 className="error">{errors.state}</h5>)}
                     <input
                     id="state"
                     placeholder="STATE"
@@ -157,7 +157,7 @@ return (
             </div>
             <div className='lat-lon'>
                 <label className='lat'>
-                    <div className='err-div'>Latitude {submitted && errors.lat && (<h5 className='error'>{errors.lat}</h5>)}</div>
+                    Latitude {submitted && errors.lat && (<h5 className='error'>{errors.lat}</h5>)}
                     <div className='add-comma'>
                        <input 
                         type='decimal'
@@ -169,7 +169,7 @@ return (
                 </label>
                 
                 <label>
-                    <div className='err-div'>Longitude {submitted && errors.lng && <h5 className='error'>{errors.lng}</h5>}</div>
+                    Longitude {submitted && errors.lng && <h5 className='error'>{errors.lng}</h5>}
                     <input 
                     type='decimal'
                     id='lng'
@@ -291,7 +291,6 @@ return (
             </div>
         </div>
         <div className='create-spot-button'>
-            {errors.message && <h5 className='error'>{errors.message}</h5>}
             <button
             type='submit'
             >Create Spot</button>

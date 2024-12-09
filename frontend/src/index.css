@@ -86,3 +86,7 @@ label {
 h1 {
     color: aquamarine;
 }
+
+.error {
+    color: red;
+}

@@ -13,6 +13,7 @@
 
 .manage-current-spots button {
     height: 28px;
+    background-color: lightgray;
 }
 
 .buttons {
@@ -32,9 +33,9 @@
 }
 
 .buttons .delete {
-    border: solid 1.5px aqua;
+    border: solid 1.5px lightgray;
     background-color: black;
-    color: aqua;
+    color: lightgray;
 }
 
 .spot-container {

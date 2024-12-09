@@ -163,17 +163,16 @@ export const addImgToSpot = (spotId, img) => async dispatch => {
 
 // Update spot
 // delete all ratings and reviews on update
-export const updateTargetSpot = (spotId, spotInfo, navigate) => async dispatch => {
-  const res = await csrfFetch(`/api/spots/${spotId}`, {
+export const updateTargetSpot = (id, spotInfo, navigate) => async dispatch => {
+  const res = await csrfFetch(`/api/spots/${id}`, {
     method: "PUT",
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(spotInfo),
   });
   if (res.ok) {
     const updatedSpot = await res.json();
-    dispatch(loadAllSpots());
     dispatch(updateSpot(updatedSpot));
-    navigate(`/spots/${updatedSpot.id}`);
+    navigate(`/spots/${id}`);
     window.location.reload();
     return updatedSpot;
   } else {

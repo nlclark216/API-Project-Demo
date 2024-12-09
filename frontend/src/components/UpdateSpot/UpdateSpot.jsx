@@ -47,7 +47,7 @@ export default function UpdateSpot() {
 
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
-
+    let errObj = {};
 
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
@@ -55,10 +55,11 @@ export default function UpdateSpot() {
 
     
     const handleSubmit = async e => {
+        
         e.preventDefault();
         setSubmitted(true);
     
-        setErrors({})
+        setErrors({});
 
         const updateSpot = {
             address: formInfo.address,
@@ -72,16 +73,21 @@ export default function UpdateSpot() {
             lng: parseFloat(formInfo.lng)
         };
 
+        if(spot) {
+            if(spot[id].address === updateSpot.address) {
+                setErrors({address: 'Spot with same address already in system'})
+            }
+        }
+
+       if(spot[id].address !== updateSpot.address) {
         return dispatch(spotActions.updateTargetSpot(id, updateSpot, navigate))
             .catch(async (res) => {
                 const data = await res.json();
                 if(data?.errors) {
                     setErrors(data.errors.message);
-                    console.log(errors)
                 }
             }).then(navigate(`/spots/${id}`))
-    
-
+        }
     }
 
     return (
@@ -92,7 +98,7 @@ export default function UpdateSpot() {
         onSubmit={handleSubmit}
         >
             <div className='create-spot-intro'>
-                <h2>Update Your Spot</h2>
+                <h1>Update Your Spot</h1>
                 <h3>Where&apos;s your place located?</h3>
                 <p>Guests will only get your exact address once they book a
                 reservation.</p>
@@ -111,7 +117,7 @@ export default function UpdateSpot() {
                 </label>
                 
                 <label>
-                    <div className='err-div'>Street Address {submitted && errors.address && (<h5 className="error">{errors.address}</h5>)}</div>
+                    Street Address
                     <input 
                     id="address"
                     placeholder="Street Address"
@@ -120,7 +126,7 @@ export default function UpdateSpot() {
                     onChange={handleChange}
                     />
                 </label>
-                {errors.address && <h5>{errors.address}</h5>}
+                {errors.address && <h5 className='error'>{errors.address}</h5>}
                 <div className='city-state'>
                     <label className='city'>
                         <div className='err-div'>City {submitted && errors.city && (<h5 className="error">{errors.city}</h5>)}</div>
@@ -227,10 +233,12 @@ export default function UpdateSpot() {
                     </label>
                     
                 </div>
-                {submitted && errors.price && <h5 className="error">{errors.price}</h5>}
+                {submitted && errors.price && <h5 className="err-div">{errors.price}</h5>}
             </div>
-            <div className='update-spot-button'>
-                {errors && <h5 className='error'>{errors.message}</h5>}
+            {submitted && errObj.error && <h5>Spot already exists</h5>}
+            <div 
+            className='update-spot-button'
+            >
                 <button
                 type='submit'
                 >Update your Spot</button>
