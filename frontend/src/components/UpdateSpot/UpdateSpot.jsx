@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import './UpdateSpot.css';
@@ -15,13 +15,8 @@ export default function UpdateSpot() {
         dispatch(spotActions.getSpotById(`${id}`))
     }, [dispatch, id])
 
-    // const spot = useSelector(state=>state.spots.spotDetails[`${id}`]);
-    // localStorage.setItem('spot', JSON.stringify(spot));
 
     const spot = JSON.parse(localStorage.getItem('spot'));
-
-    // console.log('SPOT', spot, 'COPYSPOT', copySpot)
-
 
     const [formInfo, setFormInfo] = useState({
         country: spot.country,
@@ -39,26 +34,6 @@ export default function UpdateSpot() {
     const [submitted, setSubmitted] = useState(false);
 
 
-   
-
-    
-
-    // useEffect(() => {
-    //     if(spot) {
-    //         setFormInfo({
-    //             country: spot.country,
-    //             address: spot.address,
-    //             city: spot.city,
-    //             state: spot.state,
-    //             lat: spot.lat,
-    //             lng: spot.lng,
-    //             description: spot.description,
-    //             name: spot.name,
-    //             price: spot.price
-    //         })
-    //     }
-    // }, [spot, setFormInfo])
-  
     const handleChange = (e) => {
         setFormInfo({ ...formInfo, [e.target.id]: e.target.value });
     };
