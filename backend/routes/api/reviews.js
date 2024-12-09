@@ -15,6 +15,19 @@ const validateReview = [
         .notEmpty()
         .withMessage('Review text is required'),
     check('stars')
+        .exists({checkFalsy: true})
+        .isInt({min: 1, max: 5})
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+];
+
+const validateUpdateReview = [
+    check('review')
+        .optional()
+        .isString()
+        .notEmpty()
+        .withMessage('Please provide a desciptive review'),
+    check('stars')
         .isInt({min: 1, max: 5})
         .withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors

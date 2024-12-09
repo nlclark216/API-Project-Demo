@@ -38,6 +38,33 @@ const validateBooking = [
     handleValidationErrors
   ];
 
+  const validateUpdateBooking = [
+    check('startDate')
+      .optional()
+      .isISO8601()
+      .withMessage('Start date must be a valid date')
+      .custom((value) => {
+        const startDate = new Date(value);
+        if (startDate < new Date()) {
+          throw new Error("startDate cannot be in the past");
+        }
+        return true;
+      }),
+    check('endDate')
+      .optional()
+      .isISO8601()
+      .withMessage('End date must be a valid date')
+      .custom((value, { req }) => {
+        const startDate = new Date(req.body.startDate);
+        const endDate = new Date(value);
+        if (endDate <= startDate) {
+          throw new Error("endDate cannot be on or before startDate");
+        }
+        return true;
+      }),
+    handleValidationErrors
+  ];
+
 // Get all of the Current User's Bookings
 router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
     
@@ -93,7 +120,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 });
 
 // Edit a Booking
-router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateBooking, async (req, res, next) => {
+router.put('/:bookingId', restoreUser, requireAuth, bookingAuth, validateUpdateBooking, async (req, res, next) => {
     
 
     try {

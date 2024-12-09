@@ -51,7 +51,50 @@ const validateSpot = [
     .withMessage("Description is required"),
   check('price')
     .exists({checkFalsy: true})
-    .isFloat({ gt: 0})
+    .isFloat({gt: 0})
+    .withMessage("Price per day must be a positive number"),
+  handleValidationErrors
+];
+
+const validateUpdateSpot = [
+  check('address')
+    .optional()
+    .isLength({min: 2}),
+  check('city')
+    .optional()
+    .isLength({min: 2})
+    .withMessage("City is required"),
+  check('state')
+    .optional()
+    .isLength({min: 2})
+    .withMessage("State is required"),
+  check('country')
+    .optional()
+    .isLength({min: 2})
+    .withMessage( "Country is required"),
+  check('lat')
+    .optional()
+    .isFloat({
+      min: -90,
+      max: 90})
+    .withMessage("Latitude must be within -90 and 90"),
+  check('lng')
+    .optional()
+    .isFloat({
+      min: -180,
+      max: 180})
+    .withMessage("Longitude must be within -180 and 180"),
+  check('name')
+    .optional()
+    .isLength({max: 50})
+    .withMessage("Name must be less than 50 characters"),
+  check('description')
+    .optional()
+    .isLength({min: 1})
+    .withMessage("Description is required"),
+  check('price')
+    .optional()
+    .isFloat({gt: 0})
     .withMessage("Price per day must be a positive number"),
   handleValidationErrors
 ];
@@ -406,7 +449,7 @@ router.post('/:spotId/images', restoreUser, requireAuth, spotAuth, async (req, r
 });
 
 // Edit a Spot by Id
-router.put('/:spotId', restoreUser, requireAuth, spotAuth, validateSpot, async (req, res, next) => {
+router.put('/:spotId', restoreUser, requireAuth, spotAuth, validateUpdateSpot, async (req, res, next) => {
   try {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
@@ -421,7 +464,7 @@ router.put('/:spotId', restoreUser, requireAuth, spotAuth, validateSpot, async (
       const existingAddress = await Spot.findOne({
         where: { address: address }});
         
-      if(existingAddress) {
+      if(existingAddress && existingAddress.id !== +spotId) {
         return res.status(500).json({
           message: "Spot with that address is already on file",
           errors: {
