@@ -7,6 +7,7 @@
 .update-spot-button button {
     min-height: 40px;
     min-width: 120px;
+    padding: 0px 14px;
 }
 
 .update-spot-button {

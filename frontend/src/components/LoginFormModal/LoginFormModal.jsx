@@ -28,20 +28,18 @@ export default function LoginFormModal({ navigate }) {
   return (
     <>
       <div className='login-modal'>
-        <h1>Log In</h1>
+        <h4>Log In</h4>
         <form onSubmit={handleSubmit}>
+          <div className='signup-modal-inputs'>
           {errors.message && <h5>{'The provided credentials were invalid'}</h5>}
-          <label>
-            <input
+          <input
               type="text"
               placeholder='Username or Email'
               value={credential}
               onChange={(e) => setCredential(e.target.value)}
               required
             />
-          </label>
-          <label>
-            <input
+            <input id='bottom'
               type="password"
               autoComplete='current-password'
               placeholder='Password'
@@ -49,7 +47,8 @@ export default function LoginFormModal({ navigate }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </label>
+          </div>
+        
           <button 
           type="submit"
           className='login-button'

@@ -6,7 +6,7 @@
 
 @media only screen and (max-width: 800px){
     .create-spot-form {
-        max-width: 65%;
+        max-width: 90%;
     }
 }
 
@@ -19,6 +19,7 @@
 .new-spot-form input {
     /* border: dotted pink; */
     height: 28px;
+    border-radius: 4px;
 }
 
 .new-spot-inputs {
@@ -132,13 +133,9 @@ input#price {
 .create-spot-button button {
     min-height: 40px;
     min-width: 120px;
+    padding: 0px 14px;
 }
-/* 
-.err-div {
-    display: inline-flex;
-    align-items: center;
-    column-gap: 8px;
-} */
+
 
 .create-spot-form h5 {
     margin: 0;

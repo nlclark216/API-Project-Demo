@@ -15,9 +15,8 @@
     width: 100%;
 }
 
-.login-modal h1 {
+.login-modal h4 {
     align-items: center;
-    font-size: 24px;
     margin-top: 0px;
     margin-bottom: 5px;
 }

@@ -41,68 +41,64 @@ export default function SignupFormModal() {
     return (
         <>
             <div className='signup-modal'>
-            <h1>Sign Up</h1>
+            <h4>Sign Up</h4>
             <form onSubmit={handleSubmit}>
-                <label>
-                    <input 
+                <div className='signup-modal-inputs'>
+                <input id='top'
                         type='text'
                         placeholder='Email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
-                </label>
-                {errors.email && <h5 className='errors'>{errors.email}</h5>}
-                <label>
-                    <input 
+
+                 {errors.email && <h5 className='errors'>{errors.email}</h5>}
+
+                 <input 
                         type='text'
                         placeholder='Username'
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                         required
                     />
-                </label>
                 {errors.username && <h5 className='errors'>{errors.username}</h5>}
-                <label>
-                    <input 
+                <input 
                         type='text'
                         placeholder='First Name'
                         value={firstName}
                         onChange={e => setFirstName(e.target.value)}
                         required
                     />
-                </label>
                 {errors.firstName && <h5 className='errors'>{errors.firstName}</h5>}
-                <label>
-                    <input 
+                <input 
                         type='text'
                         placeholder='Last Name'
                         value={lastName}
                         onChange={e => setLastName(e.target.value)}
                         required
                     />
-                </label>
                 {errors.lastName && <h5 className='errors'>{errors.lastName}</h5>}
-                <label>
-                    <input 
+                <input 
                         type='password'
                         placeholder='Password'
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         required
                     />
-                </label>
                 {errors.password && <h5 className='errors'>{errors.password}</h5>}
-                <label>
-                    <input 
+                <input id='bottom'
                         type='password'
                         placeholder='Confirm Password'
                         value={confirmPassword}
                         onChange={e => setConfirmPassword(e.target.value)}
                         required
                     />
-                </label>
                 {errors.confirmPassword && <h5 className='errors'>{errors.confirmPassword}</h5>}
+                </div>
+                
+                
+                
+
                 <button 
                 type='submit'
                 disabled={email.length<1 || username.length<1 || firstName.length<1 || lastName.length<1 ||

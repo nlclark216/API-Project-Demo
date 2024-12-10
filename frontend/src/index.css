@@ -59,11 +59,13 @@ textarea {
     width: 99%;
     height: 200px;
     text-indent: 4px;
+    border-radius: 8px;
 }
 
 input {
-    min-height: 28px;
+    min-height: 32px;
     font-family: 'Inter';
+    border: none;
 }
 
 ul, li {
@@ -72,6 +74,10 @@ ul, li {
 
 .star {
     color: yellow;
+}
+
+.star:hover {
+    cursor: text;
 }
 
 p {
