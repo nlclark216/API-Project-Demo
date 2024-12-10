@@ -15,9 +15,7 @@ export default function DemoUser({ navigate }) {
                 credential: 'Demo-lition',
                 password: 'password'
             })
-        )
-        closeModal();
-        navigate('/');
+        ).then(closeModal).then(navigate('/'));
     };
     
     return(
