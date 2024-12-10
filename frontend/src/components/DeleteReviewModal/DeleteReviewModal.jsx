@@ -24,7 +24,15 @@ export default function DeleteReviewModal({navigate, reviewId, spotId}) {
         <h1>Confirm Delete</h1>
         <h4>Are you sure you want to delete this review?</h4>
         {errors && <p>{errors.message}</p>}
-        <button onClick={handleClick} id='yes' >Yes (Delete Review)</button>
-        <button onClick={closeModal} id='no' >No (Keep Review)</button>
+        <button 
+        onClick={handleClick} 
+        id='yes'
+        aria-label='Yes (Delete Review)' 
+        >Yes (Delete Review)</button>
+        <button 
+        onClick={closeModal} 
+        id='no'
+        aria-label='No (Keep Review)'  
+        >No (Keep Review)</button>
         </div>);
 }

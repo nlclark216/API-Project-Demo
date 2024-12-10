@@ -222,6 +222,7 @@ export default function UpdateSpot() {
             >
                 <button
                 type='submit'
+                aria-label='Update your spot'
                 >Update your Spot</button>
             </div>
         </form>

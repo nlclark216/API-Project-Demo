@@ -53,6 +53,7 @@ export default function GetSpotReviews({id, sessionUser}) {
             <button 
             onClick={toggleMenu}
             className='delete-review'
+            aria-label='Delete Review'
             >
                 <OpenModalMenuItem
                 itemText="Delete"

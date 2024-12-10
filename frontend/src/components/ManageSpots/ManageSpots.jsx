@@ -45,7 +45,11 @@ export default function ManageSpots() {
     return (
     <div className='manage-current-spots'>
     <h1>Manage Spots</h1>
-    <button onClick={() => navigate('/spots/new')} id='create'>Create a New Spot</button>
+    <button
+    aria-label='Create a New Spot' 
+    onClick={() => navigate('/spots/new')} 
+    id='create'
+    >Create a New Spot</button>
     <div className='spot-tiles'>
         {spotArr && spotArr.map(spot=>(
 
@@ -63,7 +67,7 @@ export default function ManageSpots() {
             data-tooltip-content={spot.name}
             >
             <Tooltip id="tooltip" followCursor/>
-                <img src={spot.previewImage} height='300px' width='300px' />
+                <img src={spot.previewImage} height='300px' width='300px' alt='Preview image of location'/>
             </div>
             <div className='spot-info'>
                 <span>{`${spot.city}, ${spot.state}`}</span>
@@ -74,12 +78,14 @@ export default function ManageSpots() {
             </div>
         </Link>
         <div className='buttons'>
-                <button 
+                <button
+                aria-label='Update' 
                 className='update'
                 onClick={() => {navigate(`/spots/${spot.id}/edit`).then(window.location.reload()) }}
                 >Update</button>
                 <button 
                 className='delete'
+                aria-label='Delete'
                 onClick={toggleMenu}
                 ><OpenModalMenuItem 
                 itemText="Delete"

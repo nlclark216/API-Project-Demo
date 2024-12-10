@@ -52,6 +52,7 @@ export default function LoginFormModal({ navigate }) {
           <button 
           type="submit"
           className='login-button'
+          aria-label='Login'
           disabled={credential.length < 4 || password.length < 6}
           >Log In</button>
         </form>

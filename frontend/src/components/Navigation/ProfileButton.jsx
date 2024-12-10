@@ -48,7 +48,7 @@ export default function ProfileButton({ user }) {
 
     return (
         <>
-            <button className="nav-button" onClick={toggleMenu}>
+            <button className="nav-button" onClick={toggleMenu} aria-label="Profile Dropdown Menu">
               <IoMdMenu />
               <CgProfile />
             </button>
@@ -62,7 +62,11 @@ export default function ProfileButton({ user }) {
                       <Link to='spots/current' onClick={closeMenu} className="manage-link" >Manage Spots</Link>
                     </span>
                     <div className="button-div">
-                      <button onClick={logout} className="logout-button">Log Out</button>
+                      <button
+                      aria-label="Log Out" 
+                      onClick={logout} 
+                      className="logout-button"
+                      >Log Out</button>
                     </div>
                   </div>
                 </>

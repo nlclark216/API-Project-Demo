@@ -24,6 +24,8 @@ export default function DemoUser({ navigate }) {
        <button
        type="submit"
        onClick={handleClick}
-       className="demo-user">Log in as Demo User</button>
+       className="demo-user"
+       aria-label="Log in as Demo User"
+       >Log in as Demo User</button>
     );
 }

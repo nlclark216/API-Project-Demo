@@ -25,7 +25,15 @@ export default function DeleteSpotModal({ navigate, spotId }) {
     <h4>Are you sure you want to remove this spot
     from the listings?</h4>
     {errors && <p>{errors.message}</p>}
-    <button onClick={handleClick} id='yes' >Yes (Delete Spot)</button>
-    <button onClick={closeModal} id='no' >No (Keep Spot)</button>
+    <button 
+    onClick={handleClick} 
+    id='yes'
+    aria-label='Yes (Delete Spot)'  
+    >Yes (Delete Spot)</button>
+    <button 
+    onClick={closeModal} 
+    id='no'
+    aria-label='No (Keep Spot)'  
+    >No (Keep Spot)</button>
     </div>);
 }

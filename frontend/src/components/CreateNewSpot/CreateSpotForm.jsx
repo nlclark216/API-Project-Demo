@@ -293,6 +293,7 @@ return (
         <div className='create-spot-button'>
             <button
             type='submit'
+            aria-label='Create Spot'
             >Create Spot</button>
         </div>
     </form>

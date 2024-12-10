@@ -95,12 +95,10 @@ export default function SignupFormModal() {
                     />
                 {errors.confirmPassword && <h5 className='errors'>{errors.confirmPassword}</h5>}
                 </div>
-                
-                
-                
 
                 <button 
                 type='submit'
+                aria-label='Sign Up'
                 disabled={email.length<1 || username.length<1 || firstName.length<1 || lastName.length<1 ||
                     password.length<1 || confirmPassword.length<1 || username.length<4 || password.length<6}
                 >Sign Up</button>

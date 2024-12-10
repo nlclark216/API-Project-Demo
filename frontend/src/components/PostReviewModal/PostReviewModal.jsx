@@ -77,6 +77,7 @@ export default function PostReviewModal({ navigate }) {
             </div>
             {errors && <h5>{errors.message}</h5>}
             <button
+            aria-label="Submit Your Review"
             disabled={review.length < 10 || stars < 1}
             >Submit Your Review</button>
         </form>

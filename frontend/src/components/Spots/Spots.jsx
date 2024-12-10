@@ -34,7 +34,7 @@ export default function AllSpots() {
                 <Link to={`/spots/${spot.id}`} >
                     <div className="preview-img">
                         <Tooltip id="tooltip" followCursor/>
-                            <img src={spot.previewImage} height='300px' width='300px' />
+                            <img src={spot.previewImage} height='300px' width='300px' alt='Preview image of location' />
                     </div>
                     <div className="spot-info">
                         <span>{`${spot.city}, ${spot.state}`}</span>

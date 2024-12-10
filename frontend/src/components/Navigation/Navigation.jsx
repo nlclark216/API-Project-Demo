@@ -22,14 +22,14 @@ function Navigation({ isLoaded }) {
                   <SiAirbnb className='home-link'/>
                   demobnb</NavLink>
             </li>
-            <div className='disappearing-link'>
+            <ul className='disappearing-link'>
               {sessionUser && <Link to='spots/new'>Create a New Spot</Link>}
               {isLoaded && (
               <li className='profile'>
               <ProfileButton user={sessionUser} />
               </li>
               )}
-            </div>
+            </ul>
             
         </ul> 
     </nav>

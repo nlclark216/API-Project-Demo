@@ -95,12 +95,12 @@ export default function SingleSpot() {
             </div>
             <div className='not-preview-box'>
                <div className='row'>
-                <img className='not-preview' src={imgArr[1].url} />
-                <img className='not-preview' id='edge-top' src={imgArr[2].url} />
+                <img className='not-preview' alt='Image 1 of location' src={imgArr[1].url} />
+                <img className='not-preview' alt='Image 2 of location' id='edge-top' src={imgArr[2].url} />
                </div>
                <div className='row'>
-                <img className='not-preview' src={imgArr[3].url} />
-                <img className='not-preview' id='edge-bottom' src={imgArr[4].url} />
+                <img className='not-preview' alt='Image 3 of location' src={imgArr[3].url} />
+                <img className='not-preview' alt='Image 4 of location' id='edge-bottom' src={imgArr[4].url} />
                </div>
             </div>
         </div>
@@ -129,7 +129,10 @@ export default function SingleSpot() {
                         </>)
                     } 
                 </div>
-                <button onClick={handleClick} className='reserve'>Reserve</button>
+                <button 
+                onClick={handleClick} 
+                aria-label='Reserve'
+                className='reserve'>Reserve</button>
             </div>
         </div>
         <div className='spot-reviews'>
