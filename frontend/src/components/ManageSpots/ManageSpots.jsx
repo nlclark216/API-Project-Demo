@@ -6,6 +6,7 @@ import { FaStar } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
+import { Tooltip } from 'react-tooltip';
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
@@ -44,13 +45,24 @@ export default function ManageSpots() {
     return (
     <div className='manage-current-spots'>
     <h1>Manage Spots</h1>
-    <button onClick={() => navigate('/spots/new')}>Create a New Spot</button>
+    <button onClick={() => navigate('/spots/new')} id='create'>Create a New Spot</button>
     <div className='spot-tiles'>
         {spotArr && spotArr.map(spot=>(
 
-        <div className='manage-spot-container' key={spot.id}>
+        <div 
+        className='manage-spot-container' 
+        key={spot.id}
+        >
         <Link to={`/spots/${spot.id}`} className='spot-container'>
-            <div className='preview-img'>
+            <div 
+            className='preview-img'
+            data-tooltip-class-name="img-info"
+            data-tooltip-id="tooltip"
+            data-tooltip-float={true}
+            data-tooltip-place="bottom"
+            data-tooltip-content={spot.name}
+            >
+            <Tooltip id="tooltip" followCursor/>
                 <img src={spot.previewImage} height='300px' width='300px' />
             </div>
             <div className='spot-info'>

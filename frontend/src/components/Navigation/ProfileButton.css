@@ -53,11 +53,15 @@
 }
 
 .nav-button:hover {
+    border: solid 1px #00D199;
+    background-color: #00D199;
     cursor: pointer;
 }
 
 .menu-item:hover {
     cursor: pointer;
+    text-decoration: underline;
+    color: aqua;
 }
 
 .logged-user {
@@ -73,15 +77,16 @@
 }
 
 .profile-dropdown .logged-user button {
-    /* border: dotted; */
+    border: solid 2px #00D199;
     width: 100px;
     font-size: 1.125rem;
-    color: white;
-    background-color: #FF5A5E;
+    color: #00D199;
+    background-color: black;
 }
 
 .profile-dropdown .logged-user button:hover {
-    color: aqua;
+    color: white;
+    border: solid white 2px;
 }
 
 .profile-dropdown .logged-user {

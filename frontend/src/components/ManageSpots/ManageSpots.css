@@ -11,9 +11,20 @@
     padding-bottom: 20px;
 }
 
-.manage-current-spots button {
+.manage-current-spots button#create {
     height: 28px;
-    background-color: #FF5A5E;
+    color: aqua;
+    background-color: black;
+    border: solid 1px aqua;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.manage-current-spots button#create:hover {
+    border: solid 1px lightgray;
+    color: lightgray;
+    text-decoration: underline;
 }
 
 .buttons {
@@ -29,13 +40,26 @@
 }
 
 .buttons .update {
+    background-color: #00D199;
+}
+
+.buttons .update:hover {
     background-color: aqua;
+    color: black;
+    text-decoration: underline;
 }
 
 .buttons .delete {
     border: solid 1.5px lightgray;
     background-color: black;
     color: lightgray;
+}
+
+.buttons .delete:hover {
+    border: solid 1.5px aqua;
+    background-color: black;
+    color: aqua;
+    text-decoration: underline;
 }
 
 .spot-container {

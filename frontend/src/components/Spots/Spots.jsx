@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as spotActions from '../../store/spots';
 import { FaStar } from "react-icons/fa";
 import './Spots.css';
-import { Tooltip } from 'react-tooltip'
+import { Tooltip } from 'react-tooltip';
 
 import { Link } from "react-router-dom";
 
@@ -33,7 +33,7 @@ export default function AllSpots() {
              >
                 <Link to={`/spots/${spot.id}`} >
                     <div className="preview-img">
-                        <Tooltip id="tooltip" followCursor></Tooltip>
+                        <Tooltip id="tooltip" followCursor/>
                             <img src={spot.previewImage} height='300px' width='300px' />
                     </div>
                     <div className="spot-info">
