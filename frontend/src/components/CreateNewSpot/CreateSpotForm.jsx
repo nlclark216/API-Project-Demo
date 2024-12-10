@@ -139,7 +139,7 @@ return (
                         type="text"
                         value={city}
                         onChange={e=>setCity(e.target.value)}
-                        />,
+                        /> ,
                     </span>
                 </label>
                 
@@ -164,7 +164,7 @@ return (
                         id='lat'
                         placeholder='Latitude'
                         onChange={e=>setLatitude(parseFloat(e.target.value))}
-                        />,
+                        /> ,
                     </div>  
                 </label>
                 

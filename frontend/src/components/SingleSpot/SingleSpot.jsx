@@ -137,13 +137,13 @@ export default function SingleSpot() {
             {!checkRating ? 
                 (<>
                 <div className='new-user-rating'>
-                    <FaStar className='star'/>
+                    <FaStar className='star' id='icon' />
                         New
                 </div>
                 </>) : 
                 (<>
                 <div className='rating'>
-                <FaStar className='star' />
+                <FaStar className='star' id='icon' />
                 {spot && targetSpot.avgStarRating.toFixed(1)}
                 <LuDot />
                 {spot && <span>{targetSpot.numReviews}</span>} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
