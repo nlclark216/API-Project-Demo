@@ -63,7 +63,7 @@ textarea {
 }
 
 input {
-    min-height: 32px;
+    min-height: 36px;
     font-family: 'Inter';
     border: none;
 }

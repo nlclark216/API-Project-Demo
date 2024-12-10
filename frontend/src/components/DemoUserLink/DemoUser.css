@@ -2,13 +2,14 @@
     border: none;
     background-color: black;
     color: #00D199;
-    text-decoration: underline;
+    
     font-size: 18px;
     width: fit-content;
     margin: 0 auto;
-    padding: 20px 0px;
+    padding: 10px 0px;
 }
 
 .demo-user:hover {
     color: white;
+    text-decoration: underline;
 }

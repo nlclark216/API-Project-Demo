@@ -119,7 +119,7 @@ export default function UpdateSpot() {
                             type="text"
                             value={formInfo.city}
                             onChange={handleChange}
-                            />,
+                            /> ,
                         </span>
                     </label>
                     
@@ -145,7 +145,7 @@ export default function UpdateSpot() {
                             placeholder='Latitude'
                             value={formInfo.lat}
                             onChange={handleChange}
-                            />,
+                            /> ,
                         </div>  
                     </label>
                     

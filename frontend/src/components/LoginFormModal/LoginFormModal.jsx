@@ -32,7 +32,7 @@ export default function LoginFormModal({ navigate }) {
         <form onSubmit={handleSubmit}>
           <div className='signup-modal-inputs'>
           {errors.message && <h5>{'The provided credentials were invalid'}</h5>}
-          <input
+          <input id='top'
               type="text"
               placeholder='Username or Email'
               value={credential}

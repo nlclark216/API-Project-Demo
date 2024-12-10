@@ -3,10 +3,12 @@ import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import { SiAirbnb } from "react-icons/si";
+import { useModal } from '../../context/Modal';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
+  const { closeModal } = useModal();
 
   return (
     <nav className='navigation-bar'>
@@ -15,6 +17,7 @@ function Navigation({ isLoaded }) {
                 <NavLink 
                 to="/"
                 className='home'
+                onClick={closeModal}
                 >
                   <SiAirbnb className='home-link'/>
                   demobnb</NavLink>
