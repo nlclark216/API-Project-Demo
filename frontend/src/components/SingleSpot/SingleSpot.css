@@ -185,4 +185,5 @@ p.price {
 .star#home {
     /* border: dotted; */
     font-size: 16px;
+    color: yellow;
 }

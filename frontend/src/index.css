@@ -72,10 +72,6 @@ ul, li {
     list-style-type: none;
 }
 
-.star {
-    color: yellow;
-}
-
 .star:hover {
     cursor: text;
 }
@@ -95,4 +91,8 @@ h1 {
 
 .error {
     color: red;
+}
+
+.star#icon {
+    color: yellow;
 }

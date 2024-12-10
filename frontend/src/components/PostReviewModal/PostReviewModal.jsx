@@ -35,6 +35,7 @@ export default function PostReviewModal({ navigate }) {
             <div className="star-rating">
                 {[1,2,3,4,5].map(val=>(
                     <span
+                    id="review"
                     key={val}
                     className={`star ${val <= (hoverVal || stars ) ? 'filled' : '}'}`}
                     onClick={() => handleStarClick(val)}
