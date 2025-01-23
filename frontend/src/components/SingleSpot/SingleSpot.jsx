@@ -52,13 +52,13 @@ export default function SingleSpot() {
 
     if(spot) { 
         targetSpot = {...spot}; 
-        checkRating = targetSpot.avgStarRating > 0;
+        checkRating = targetSpot?.avgStarRating > 0;
     }
 
 
     let imgArr = [];
 
-    if (spot) if(spot.SpotImages) Object.values(targetSpot.SpotImages).map(img=>imgArr.push(img));
+    if (spot) if(spot.SpotImages) Object.values(targetSpot?.SpotImages).map(img=>imgArr.push(img));
 
     for(let i = 0; i < 5; i++){
         if(!imgArr[i]) imgArr.push({
@@ -75,11 +75,11 @@ export default function SingleSpot() {
     let findExistingReview
 
     if(sessionUser && reviews) {
-        findExistingReview = reviews.find(review=>review.userId===sessionUser.id);
+        findExistingReview = reviews.find(review=>review?.userId===sessionUser.id);
     }
 
     if(sessionUser && spot) {
-        if(sessionUser.id === spot.Owner.id) isOwner = true;
+        if(sessionUser.id === spot?.Owner.id) isOwner = true;
     }
 
 
@@ -87,31 +87,31 @@ export default function SingleSpot() {
     
     return (
     <div className='single-spot'>
-        {spot && <h1>{targetSpot.name}</h1>}
-        {spot && <h4>{`${targetSpot.city}, ${targetSpot.state}, ${targetSpot.country}`}</h4>}
+        {spot && <h1>{targetSpot?.name}</h1>}
+        {spot && <h4>{`${targetSpot?.city}, ${targetSpot?.state}, ${targetSpot?.country}`}</h4>}
         <div className='img-grid'>
             <div className='preview'>
-                {spot && <img src={imgArr[0].url} />}
+                {spot && <img src={imgArr[0]?.url} />}
             </div>
             <div className='not-preview-box'>
                <div className='row'>
-                <img className='not-preview' alt='Image 1 of location' src={imgArr[1].url} />
-                <img className='not-preview' alt='Image 2 of location' id='edge-top' src={imgArr[2].url} />
+                <img className='not-preview' alt='Image 1 of location' src={imgArr[1]?.url} />
+                <img className='not-preview' alt='Image 2 of location' id='edge-top' src={imgArr[2]?.url} />
                </div>
                <div className='row'>
-                <img className='not-preview' alt='Image 3 of location' src={imgArr[3].url} />
-                <img className='not-preview' alt='Image 4 of location' id='edge-bottom' src={imgArr[4].url} />
+                <img className='not-preview' alt='Image 3 of location' src={imgArr[3]?.url} />
+                <img className='not-preview' alt='Image 4 of location' id='edge-bottom' src={imgArr[4]?.url} />
                </div>
             </div>
         </div>
         <div className='host-info-and-price'>
             <div className='host-info'>
-                {spot && targetSpot.Owner && <h2>Hosted By {targetSpot.Owner.firstName} {targetSpot.Owner.lastName}</h2>}
+                {spot && targetSpot?.Owner && <h2>Hosted By {targetSpot?.Owner.firstName} {targetSpot?.Owner.lastName}</h2>}
                 <p className='info'>Lorem ipsum odor amet, consectetuer adipiscing elit. Augue suscipit ornare litora congue eget. Phasellus duis netus per sapien suscipit class vitae. Potenti magnis vehicula nullam cubilia feugiat. Turpis efficitur pellentesque massa enim morbi accumsan velit dictumst tempor. </p><p className='info'>Velit gravida risus; in libero ultricies senectus. Finibus accumsan mus mauris convallis integer a ut. Facilisi cursus elit vivamus elementum porttitor; luctus per. Auctor aliquet curae eget auctor; sociosqu nibh consectetur magnis.</p>
             </div>
             <div className='price-review-box'>
                 <div className='price-review'>
-                    {spot && <span className='price'><h2 >${targetSpot.price}</h2>night</span>}
+                    {spot && <span className='price'><h2 >${targetSpot?.price}</h2>night</span>}
                     {!checkRating ? 
                         (<>
                         <div className='new-user-rating'>
@@ -122,9 +122,9 @@ export default function SingleSpot() {
                         (<>
                         <div className='rating' id='in-box'>
                         <FaStar className='star' id='icon' />
-                        {spot && targetSpot.avgStarRating.toFixed(1)}
+                        {spot && targetSpot?.avgStarRating.toFixed(1)}
                         <LuDot />
-                        {spot && targetSpot.numReviews} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
+                        {spot && targetSpot?.numReviews} {targetSpot?.numReviews > 1 ? <>reviews</> : <>review</>}
                         </div>
                         </>)
                     } 
@@ -147,9 +147,9 @@ export default function SingleSpot() {
                 (<>
                 <div className='rating'>
                 <FaStar className='star' id='icon' />
-                {spot && targetSpot.avgStarRating.toFixed(1)}
+                {spot && targetSpot?.avgStarRating.toFixed(1)}
                 <LuDot />
-                {spot && <span>{targetSpot.numReviews}</span>} {targetSpot.numReviews > 1 ? <>reviews</> : <>review</>}
+                {spot && <span>{targetSpot?.numReviews}</span>} {targetSpot?.numReviews > 1 ? <>reviews</> : <>review</>}
                 </div>
                 </>)
             }

@@ -24,24 +24,24 @@ export default function AllSpots() {
         <div className="spot-tiles">
         {spotArr && spotArr.map(spot=>(
             <div
-             key={spot.id}
+             key={spot?.id}
              data-tooltip-class-name="img-info"
              data-tooltip-id="tooltip"
              data-tooltip-float={true}
              data-tooltip-place="bottom"
-             data-tooltip-content={spot.name}
+             data-tooltip-content={spot?.name}
              >
-                <Link to={`/spots/${spot.id}`} >
+                <Link to={`/spots/${spot?.id}`} >
                     <div className="preview-img">
                         <Tooltip id="tooltip" followCursor/>
-                            <img src={spot.previewImage} height='300px' width='300px' alt='Preview image of location' />
+                            <img src={spot?.previewImage} height='300px' width='300px' alt='Preview image of location' />
                     </div>
                     <div className="spot-info">
-                        <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span className="rating"><FaStar className="star" id="home" />{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span>
+                        <span>{`${spot?.city}, ${spot?.state}`}</span>
+                        <span className="rating"><FaStar className="star" id="home" />{spot?.avgRating ? spot?.avgRating.toFixed(1) : "New"}</span>
                     </div>
                     <div>
-                        <span className="price"><b>${spot.price}</b>night</span>
+                        <span className="price"><b>${spot?.price}</b>night</span>
                     </div>
                 </Link>
             </div>

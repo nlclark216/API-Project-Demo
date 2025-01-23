@@ -55,33 +55,33 @@ export default function ManageSpots() {
 
         <div 
         className='manage-spot-container' 
-        key={spot.id}
+        key={spot?.id}
         >
-        <Link to={`/spots/${spot.id}`} className='spot-container'>
+        <Link to={`/spots/${spot?.id}`} className='spot-container'>
             <div 
             className='preview-img'
             data-tooltip-class-name="img-info"
             data-tooltip-id="tooltip"
             data-tooltip-float={true}
             data-tooltip-place="bottom"
-            data-tooltip-content={spot.name}
+            data-tooltip-content={spot?.name}
             >
             <Tooltip id="tooltip" followCursor/>
-                <img src={spot.previewImage} height='300px' width='300px' alt='Preview image of location'/>
+                <img src={spot?.previewImage} height='300px' width='300px' alt='Preview image of location'/>
             </div>
             <div className='spot-info'>
-                <span>{`${spot.city}, ${spot.state}`}</span>
-                <span className="rating"><FaStar className='star' id='home' />{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span>
+                <span>{`${spot?.city}, ${spot?.state}`}</span>
+                <span className="rating"><FaStar className='star' id='home' />{spot?.avgRating ? spot?.avgRating.toFixed(1) : "New"}</span>
             </div>
             <div>
-                <span className="price"><b>${spot.price}</b>/night</span>
+                <span className="price"><b>${spot?.price}</b>/night</span>
             </div>
         </Link>
         <div className='buttons'>
                 <button
                 aria-label='Update' 
                 className='update'
-                onClick={() => {navigate(`/spots/${spot.id}/edit`).then(window.location.reload()) }}
+                onClick={() => {navigate(`/spots/${spot?.id}/edit`).then(window.location.reload()) }}
                 >Update</button>
                 <button 
                 className='delete'
@@ -90,7 +90,7 @@ export default function ManageSpots() {
                 ><OpenModalMenuItem 
                 itemText="Delete"
                 onItemClick={closeMenu}
-                modalComponent={<DeleteSpotModal navigate={navigate} spotId={spot.id} />} 
+                modalComponent={<DeleteSpotModal navigate={navigate} spotId={spot?.id} />} 
                 /></button>
         </div>
         
