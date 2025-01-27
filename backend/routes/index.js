@@ -2,8 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const apiRouter = require('./api');
+const mapsRouter = require('./maps');
 
 router.use('/api', apiRouter);
+router.use('/maps', mapsRouter);
 
 // Static routes
 // Serve React build files in production
