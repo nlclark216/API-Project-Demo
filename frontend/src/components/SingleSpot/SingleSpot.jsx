@@ -5,6 +5,8 @@ import * as spotActions from '../../store/spots';
 import GetSpotReviews from '../GetSpotReviews/GetSpotReviews';
 import PostReviewModal from '../PostReviewModal/PostReviewModal';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import MapContainer from '../Maps';
+import { getKey } from '../../store/maps';
 import { FaStar } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import './SingleSpot.css';
@@ -42,6 +44,7 @@ export default function SingleSpot() {
 
     useEffect(() => {
         dispatch(spotActions.getSpotById(id));
+        dispatch(getKey());
     }, [dispatch, id]);
 
     const spot = useSelector(state=>state.spots.spotDetails[id]);
@@ -134,6 +137,9 @@ export default function SingleSpot() {
                 aria-label='Reserve'
                 className='reserve'>Reserve</button>
             </div>
+     
+            <MapContainer />
+
         </div>
         <div className='spot-reviews'>
             <h2 className='review-header'>
