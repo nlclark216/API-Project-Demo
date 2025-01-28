@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 import { Tooltip } from 'react-tooltip';
+import StateAbbObj from '../StateAbbr/StateAbbr';
 
 export default function ManageSpots() {
     const dispatch = useDispatch();
@@ -70,18 +71,18 @@ export default function ManageSpots() {
                 <img src={spot?.previewImage} height='300px' width='300px' alt='Preview image of location'/>
             </div>
             <div className='spot-info'>
-                <span>{`${spot?.city}, ${spot?.state}`}</span>
+                <span>{spot?.city}, <StateAbbObj state={spot?.state} /></span>
                 <span className="rating"><FaStar className='star' id='home' />{spot?.avgRating ? spot?.avgRating.toFixed(1) : "New"}</span>
             </div>
             <div>
-                <span className="price"><b>${spot?.price}</b>/night</span>
+                <span className="price"><b>${spot?.price}</b>night</span>
             </div>
         </Link>
         <div className='buttons'>
                 <button
                 aria-label='Update' 
                 className='update'
-                onClick={() => {navigate(`/spots/${spot?.id}/edit`).then(window.location.reload()) }}
+                onClick={() => {navigate(`/spots/${+spot?.id}/edit`)}}
                 >Update</button>
                 <button 
                 className='delete'
@@ -90,7 +91,7 @@ export default function ManageSpots() {
                 ><OpenModalMenuItem 
                 itemText="Delete"
                 onItemClick={closeMenu}
-                modalComponent={<DeleteSpotModal navigate={navigate} spotId={spot?.id} />} 
+                modalComponent={<DeleteSpotModal navigate={navigate} spotId={+spot?.id} />} 
                 /></button>
         </div>
         

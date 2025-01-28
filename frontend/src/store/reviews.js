@@ -37,17 +37,17 @@ export const deleteReview = reviewId => {
 
 // Fetch reviews thunk
 export const loadSpotReviews = spotId => async dispatch => {
-    const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
+    const res = await csrfFetch(`/api/spots/${+spotId}/reviews`);
     if(res.ok) {
         const reviews = await res.json();
-        dispatch(loadReviews(reviews.Reviews));
+        dispatch(loadReviews(reviews?.Reviews));
         return reviews;
     }
 }
 
 // Add spot review thunk
 export const addSpotReview = (review, spotId, navigate) => async dispatch => {
-    const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+    const res = await csrfFetch(`/api/spots/${+spotId}/reviews`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(review)
@@ -55,7 +55,7 @@ export const addSpotReview = (review, spotId, navigate) => async dispatch => {
     if(res.ok) {
         const review = await res.json();
         dispatch(addReview(review));
-        navigate(`/spots/${spotId}`)
+        navigate(`/spots/${+spotId}`)
         window.location.reload();
         return review;
     }
@@ -64,11 +64,11 @@ export const addSpotReview = (review, spotId, navigate) => async dispatch => {
 // Delete review thunk
 
 export const deleteTargetReview = reviewId => async dispatch => {
-    const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    const res = await csrfFetch(`/api/reviews/${+reviewId}`, {
         method: 'DELETE',
     })
     if(res.ok){
-        dispatch(deleteReview(reviewId));
+        dispatch(deleteReview(+reviewId));
         window.location.reload();
     }
 }

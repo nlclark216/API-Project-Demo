@@ -4,6 +4,7 @@ import * as spotActions from '../../store/spots';
 import { FaStar } from "react-icons/fa";
 import './Spots.css';
 import { Tooltip } from 'react-tooltip';
+import StateAbbObj from "../StateAbbr/StateAbbr";
 
 import { Link } from "react-router-dom";
 
@@ -37,7 +38,7 @@ export default function AllSpots() {
                             <img src={spot?.previewImage} height='300px' width='300px' alt='Preview image of location' />
                     </div>
                     <div className="spot-info">
-                        <span>{`${spot?.city}, ${spot?.state}`}</span>
+                        <span>{spot?.city}, <StateAbbObj state={spot?.state} /></span>
                         <span className="rating"><FaStar className="star" id="home" />{spot?.avgRating ? spot?.avgRating.toFixed(1) : "New"}</span>
                     </div>
                     <div>

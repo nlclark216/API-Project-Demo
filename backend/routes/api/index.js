@@ -5,6 +5,7 @@ const usersRouter = require('./users.js');
 const spotsRouter = require('./spots.js');
 const reviewsRouter = require('./reviews.js');
 const bookingsRouter = require('./bookings.js');
+const mapsRouter = require('./maps');
 
 
 // GET /api/restore-user
@@ -17,6 +18,7 @@ router.use('/users', usersRouter);
 router.use('/spots', spotsRouter);
 router.use('/reviews', reviewsRouter);
 router.use('/bookings', bookingsRouter);
+router.use('/maps', mapsRouter);
 
 // Keep this route to test frontend setup in Mod 5
 router.post('/test', function (req, res) {

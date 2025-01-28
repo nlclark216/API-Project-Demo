@@ -164,7 +164,7 @@ export const addImgToSpot = (spotId, img) => async dispatch => {
 // Update spot
 // delete all ratings and reviews on update
 export const updateTargetSpot = (id, spotInfo, navigate) => async dispatch => {
-  const res = await csrfFetch(`/api/spots/${id}`, {
+  const res = await csrfFetch(`/api/spots/${+id}`, {
     method: "PUT",
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(spotInfo),
@@ -172,7 +172,7 @@ export const updateTargetSpot = (id, spotInfo, navigate) => async dispatch => {
   if (res.ok) {
     const updatedSpot = await res.json();
     dispatch(updateSpot(updatedSpot));
-    navigate(`/spots/${id}`);
+    navigate(`/spots/${+id}`);
     window.location.reload();
     return updatedSpot;
   } else {
@@ -183,9 +183,9 @@ export const updateTargetSpot = (id, spotInfo, navigate) => async dispatch => {
 
 // find review by spot Id
 export const findReviewBySpot = spotId => async dispatch => {
-  const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
+  const res = await csrfFetch(`/api/spots/${+spotId}/reviews`);
   if(res.ok) {
-      dispatch(getReviews(spotId));
+      dispatch(getReviews(+spotId));
   }
 }
 
@@ -205,7 +205,7 @@ export default function spotsReducer(state = initialState, action) {
       const newState = { ...state, allSpots: {} };
       const spotsArray = action.payload.Spots;
       spotsArray.forEach((spot) => {
-        newState.allSpots[spot.id] = spot;
+        newState.allSpots[spot?.id] = spot;
       });
       return newState;
     }

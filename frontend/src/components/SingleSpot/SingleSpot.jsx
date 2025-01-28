@@ -5,8 +5,10 @@ import * as spotActions from '../../store/spots';
 import GetSpotReviews from '../GetSpotReviews/GetSpotReviews';
 import PostReviewModal from '../PostReviewModal/PostReviewModal';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+import MapContainer from '../Maps';
 import { FaStar } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
+import StateAbbObj from '../StateAbbr/StateAbbr';
 import './SingleSpot.css';
 
 
@@ -47,18 +49,18 @@ export default function SingleSpot() {
     const spot = useSelector(state=>state.spots.spotDetails[id]);
     let targetSpot;
     let checkRating;
+    let imgArr = [];
+    let center = {};
     let isOwner = false;
 
 
     if(spot) { 
         targetSpot = {...spot}; 
         checkRating = targetSpot?.avgStarRating > 0;
+        center.lat= +spot?.lat;
+        center.lng = +spot?.lng;
+        if(spot?.SpotImages) {Object.values(targetSpot?.SpotImages).map(img=>imgArr.push(img));}
     }
-
-
-    let imgArr = [];
-
-    if (spot) if(spot.SpotImages) Object.values(targetSpot?.SpotImages).map(img=>imgArr.push(img));
 
     for(let i = 0; i < 5; i++){
         if(!imgArr[i]) imgArr.push({
@@ -68,11 +70,14 @@ export default function SingleSpot() {
         })
     }
 
+    const country = input => {
+        if (input.startsWith('United')) return 'USA'
+    }
 
     const sessionUser = useSelector(state=>state.session.user);
     const reviews = useSelector(state=>state.reviews.reviews);
     
-    let findExistingReview
+    let findExistingReview;
 
     if(sessionUser && reviews) {
         findExistingReview = reviews.find(review=>review?.userId===sessionUser.id);
@@ -88,7 +93,7 @@ export default function SingleSpot() {
     return (
     <div className='single-spot'>
         {spot && <h1>{targetSpot?.name}</h1>}
-        {spot && <h4>{`${targetSpot?.city}, ${targetSpot?.state}, ${targetSpot?.country}`}</h4>}
+        {spot && <h4>{targetSpot?.city}, <StateAbbObj state={targetSpot?.state} />, {country(targetSpot?.country)}</h4>}
         <div className='img-grid'>
             <div className='preview'>
                 {spot && <img src={imgArr[0]?.url} />}
@@ -106,34 +111,41 @@ export default function SingleSpot() {
         </div>
         <div className='host-info-and-price'>
             <div className='host-info'>
-                {spot && targetSpot?.Owner && <h2>Hosted By {targetSpot?.Owner.firstName} {targetSpot?.Owner.lastName}</h2>}
+                {spot && targetSpot?.Owner && <h2>Hosted By: {targetSpot?.Owner.firstName} {targetSpot?.Owner.lastName}</h2>}
                 <p className='info'>Lorem ipsum odor amet, consectetuer adipiscing elit. Augue suscipit ornare litora congue eget. Phasellus duis netus per sapien suscipit class vitae. Potenti magnis vehicula nullam cubilia feugiat. Turpis efficitur pellentesque massa enim morbi accumsan velit dictumst tempor. </p><p className='info'>Velit gravida risus; in libero ultricies senectus. Finibus accumsan mus mauris convallis integer a ut. Facilisi cursus elit vivamus elementum porttitor; luctus per. Auctor aliquet curae eget auctor; sociosqu nibh consectetur magnis.</p>
             </div>
-            <div className='price-review-box'>
-                <div className='price-review'>
-                    {spot && <span className='price'><h2 >${targetSpot?.price}</h2>night</span>}
-                    {!checkRating ? 
-                        (<>
-                        <div className='new-user-rating'>
+            <div className='map-review-box'>
+                <div className='price-review-box'>
+                    <div className='price-review'>
+                        {spot && <span className='price'><h2 >${targetSpot?.price}</h2>night</span>}
+                        {!checkRating ? 
+                            (<>
+                            <div className='new-user-rating'>
+                                <FaStar className='star' id='icon' />
+                                New
+                            </div>
+                            </>) : 
+                            (<>
+                            <div className='rating' id='in-box'>
                             <FaStar className='star' id='icon' />
-                             New
-                        </div>
-                        </>) : 
-                        (<>
-                        <div className='rating' id='in-box'>
-                        <FaStar className='star' id='icon' />
-                        {spot && targetSpot?.avgStarRating.toFixed(1)}
-                        <LuDot />
-                        {spot && targetSpot?.numReviews} {targetSpot?.numReviews > 1 ? <>reviews</> : <>review</>}
-                        </div>
-                        </>)
-                    } 
-                </div>
-                <button 
-                onClick={handleClick} 
-                aria-label='Reserve'
-                className='reserve'>Reserve</button>
+                            {spot && targetSpot?.avgStarRating.toFixed(1)}
+                            <LuDot />
+                            {spot && targetSpot?.numReviews} {targetSpot?.numReviews > 1 ? <>reviews</> : <>review</>}
+                            </div>
+                            </>)
+                        } 
+                    </div>
+                    <button 
+                    onClick={handleClick} 
+                    aria-label='Reserve'
+                    className='reserve'>Reserve</button>
+                </div> 
+                <MapContainer center={center} />
             </div>
+           
+
+            
+
         </div>
         <div className='spot-reviews'>
             <h2 className='review-header'>

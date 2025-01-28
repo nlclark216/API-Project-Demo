@@ -32,7 +32,7 @@ export default function UpdateSpot() {
 
     useEffect(() => {
         if(spot) {
-            Object.values(spot).map(spot=>{
+            Object.values(spot)?.map(spot=>{
                 const { address, city, state, country, lat, lng,
                     description, price, name, previewImage
                  } = spot
@@ -92,7 +92,7 @@ export default function UpdateSpot() {
                     id="country"
                     placeholder="Country"
                     type="text"
-                    value={formInfo.country}
+                    value={formInfo?.country}
                     onChange={handleChange}
                     />
                 </label>
@@ -103,7 +103,7 @@ export default function UpdateSpot() {
                     id="address"
                     placeholder="Street Address"
                     type="text"
-                    value={formInfo.address}
+                    value={formInfo?.address}
                     onChange={handleChange}
                     />
                 </label>
@@ -117,7 +117,7 @@ export default function UpdateSpot() {
                             className=''
                             placeholder="City"
                             type="text"
-                            value={formInfo.city}
+                            value={formInfo?.city}
                             onChange={handleChange}
                             /> ,
                         </span>
@@ -129,7 +129,7 @@ export default function UpdateSpot() {
                         id="state"
                         placeholder="STATE"
                         type="text"
-                        value={formInfo.state}
+                        value={formInfo?.state}
                         onChange={handleChange}
                         />
                     </label>
@@ -143,7 +143,7 @@ export default function UpdateSpot() {
                             type='decimal'
                             id='lat'
                             placeholder='Latitude'
-                            value={formInfo.lat}
+                            value={formInfo?.lat}
                             onChange={handleChange}
                             /> ,
                         </div>  
@@ -155,7 +155,7 @@ export default function UpdateSpot() {
                         type='decimal'
                         id='lng'
                         placeholder='Longitude'
-                        value={formInfo.lng}
+                        value={formInfo?.lng}
                         onChange={handleChange}
                         />
                     </label>
@@ -172,7 +172,7 @@ export default function UpdateSpot() {
                     className='form-textarea'
                     placeholder="Please describe your spot using at least 30 characters"
                     id="description"
-                    value={formInfo.description}
+                    value={formInfo?.description}
                     onChange={handleChange}
                     />  
                 </label>
@@ -190,7 +190,7 @@ export default function UpdateSpot() {
                     placeholder="Name of your spot"
                     type="text"
                     id="name"
-                    value={formInfo.name}
+                    value={formInfo?.name}
                     onChange={handleChange}
                     /> 
                 </label>
@@ -208,7 +208,7 @@ export default function UpdateSpot() {
                         placeholder="Price per night (USD)"
                         type="number"
                         id="price"
-                        value={formInfo.price}
+                        value={formInfo?.price}
                         onChange={handleChange}
                         />  
                     </label>

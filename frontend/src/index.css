@@ -16,6 +16,7 @@ body {
     color: white;
     margin: 0;
     padding: 0;
+    /* overflow: hidden; */
 }
 
 button {
@@ -66,6 +67,12 @@ input {
     min-height: 36px;
     font-family: 'Inter';
     border: none;
+}
+
+input:autofill{
+    /* border: solid red; */
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 ul, li {
