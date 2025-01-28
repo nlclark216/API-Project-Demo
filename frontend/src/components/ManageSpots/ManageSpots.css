@@ -24,7 +24,6 @@
 .manage-current-spots button#create:hover {
     border: solid 1px lightgray;
     color: lightgray;
-    text-decoration: underline;
 }
 
 .buttons {
@@ -46,7 +45,6 @@
 .buttons .update:hover {
     background-color: aqua;
     color: black;
-    text-decoration: underline;
 }
 
 .buttons .delete {
@@ -59,7 +57,6 @@
     border: solid 1.5px aqua;
     background-color: black;
     color: aqua;
-    text-decoration: underline;
 }
 
 .spot-container {
