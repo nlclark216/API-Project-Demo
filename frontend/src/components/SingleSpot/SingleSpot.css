@@ -223,20 +223,12 @@ p.price {
         width: 100%;
     }
 
-    .preview img,
-    .not-preview#edge-top,
-    .not-preview#edge-bottom {
+    .preview img {
         border-radius: 8px;
     }
 
     .not-preview-box {
         /* border: solid red; */
-        width: 100%;
-    }
-
-    .not-preview-box img {
-        height: 200px;
-        width: 50%;
-        border-radius: 8px;
+        display: none;
     }
 }
