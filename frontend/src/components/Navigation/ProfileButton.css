@@ -101,8 +101,7 @@
 .logout-button {
     height: 40px;
     border-radius: 20px;
-    background-color: aqua;
-    width: 100px;
+    min-width: fit-content;
 }
 
 .logout-button:hover {
