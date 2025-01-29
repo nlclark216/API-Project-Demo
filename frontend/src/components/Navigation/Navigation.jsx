@@ -23,7 +23,7 @@ function Navigation({ isLoaded }) {
                   demobnb</NavLink>
             </li>
             <ul className='disappearing-link'>
-              {sessionUser && <Link to='spots/new'>Create a New Spot</Link>}
+              {sessionUser && <Link className='create-spot-link' to='spots/new'>Create a New Spot</Link>}
               {isLoaded && (
               <li className='profile'>
               <ProfileButton user={sessionUser} />

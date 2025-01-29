@@ -37,8 +37,8 @@
 
 .preview-img {
     /* border: dashed; */
-    max-height: 300px;
-    max-width: 300px;
+    max-height: auto;
+    max-width: fit-content;
     margin-bottom: 15px;
     object-fit: fill;
 }

@@ -41,7 +41,7 @@
 .nav-button {
     width: 75px;
     height: 45px;
-    font-size: 25px;
+    font-size: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;

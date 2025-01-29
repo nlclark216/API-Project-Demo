@@ -26,6 +26,7 @@ export default function AllSpots() {
         {spotArr && spotArr.map(spot=>(
             <div
              key={spot?.id}
+             className="tile"
              data-tooltip-class-name="img-info"
              data-tooltip-id="tooltip"
              data-tooltip-float={true}
