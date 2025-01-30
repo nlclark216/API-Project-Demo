@@ -23,7 +23,7 @@ const Maps = memo(({ apiKey, center }) => {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
-          zoom={10}
+          zoom={12}
         ><Marker position={center} clickable={false} /></GoogleMap> 
         </>  
       )}
