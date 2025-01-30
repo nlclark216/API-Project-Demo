@@ -1,6 +1,6 @@
 // frontend/src/components/Maps/Maps.js
 import {memo} from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
   maxWidth: '400px',
@@ -15,15 +15,19 @@ const Maps = memo(({ apiKey, center }) => {
     googleMapsApiKey: apiKey,
   });
 
+
   return (
     <>
       {isLoaded && (
+        <>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-        />
+        ><Marker position={center} clickable={false} /></GoogleMap> 
+        </>  
       )}
+      
     </>
   );
 });
