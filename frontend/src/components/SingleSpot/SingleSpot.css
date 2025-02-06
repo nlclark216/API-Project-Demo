@@ -112,8 +112,8 @@
 .price {
     /* border: solid blue; */
     max-height: fit-content;
-    display: inline-flex;
-    align-items: end;
+    display: flex;
+    align-items: center;
     column-gap: 4px;
 }
 
